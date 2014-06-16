@@ -14,27 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with pwt.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.putnami.pwt.core.common.client.util;
+package fr.putnami.pwt.core.error.client;
 
-public final class EnumUtil {
+public interface ErrorHandler {
 
-	public static <T extends Enum<T>> T safeValueOf(Class<T> targetType, String value) {
-		if (value != null) {
-			try {
-				return Enum.valueOf(targetType, value);
-			}
-			catch (IllegalArgumentException exc) {
-				return null;
-			}
-		}
-		return null;
-	}
+	int DEFAULT_PRIORITY = 0;
+	int LOW_PRIORITY = Integer.MIN_VALUE;
 
-	public static <T extends Enum<T>> T safeValueOf(Class<T> targetType, T value) {
-		return EnumUtil.safeValueOf(targetType, value == null ? (String) null : "" + value.toString());
-	}
+	boolean handle(Throwable error);
 
-	private EnumUtil() {
-	}
+	int getPriority();
 
 }

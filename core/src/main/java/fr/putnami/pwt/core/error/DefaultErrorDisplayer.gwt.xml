@@ -21,4 +21,8 @@
 	<inherits name="fr.putnami.pwt.core.widget.Widget" />
 
 	<source path="client"/>
+		
+	<replace-with class="fr.putnami.pwt.core.error.client.DefaultErrorManager">
+		<when-type-is class="fr.putnami.pwt.core.error.client.ErrorManager"/>
+	</replace-with>
 </module>

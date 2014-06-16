@@ -22,7 +22,6 @@ import java.util.Set;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.EditorInput;
 import fr.putnami.pwt.core.editor.client.EditorLeaf;
 import fr.putnami.pwt.core.editor.client.EditorOutput;
@@ -41,6 +40,7 @@ import fr.putnami.pwt.core.editor.client.event.ResetDisplayEvent;
 import fr.putnami.pwt.core.editor.client.event.ResetDisplayEvent.HasResetDisplayHandlers;
 import fr.putnami.pwt.core.editor.client.helper.MessageHelper;
 import fr.putnami.pwt.core.editor.client.validator.Validator;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.model.client.ModelDriver;
 import fr.putnami.pwt.core.model.client.base.EditorModel;
 import fr.putnami.pwt.core.model.client.base.HasDrawable;

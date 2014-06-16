@@ -27,7 +27,7 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;
 import fr.putnami.pwt.core.widget.client.base.SimpleStyle;
 import fr.putnami.pwt.core.widget.client.event.CollapseEvent;

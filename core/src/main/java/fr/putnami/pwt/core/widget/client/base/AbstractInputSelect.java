@@ -36,9 +36,9 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.event.DirtyEvent.Handler;
 import fr.putnami.pwt.core.editor.client.helper.MessageHelper;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.model.client.base.HasDrawable;
 import fr.putnami.pwt.core.model.client.base.HasMessageHelper;
 import fr.putnami.pwt.core.model.client.base.HasPlaceholder;

@@ -22,8 +22,4 @@
 	<inherits name="com.google.common.base.Base" />
 
 	<source path="client"/>
-	
-	<replace-with class="fr.putnami.pwt.core.common.client.error.DefaultErrorManager">
-		<when-type-is class="fr.putnami.pwt.core.common.client.error.ErrorManager"/>
-	</replace-with>
 </module>

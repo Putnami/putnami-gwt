@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with pwt.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.putnami.pwt.core.error.client;
+package fr.putnami.pwt.core.error.client.widget;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
@@ -24,10 +24,10 @@ import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Label;
 
-import fr.putnami.pwt.core.common.client.error.ErrorDisplayer.Severity;
+import fr.putnami.pwt.core.error.client.ErrorDisplayer.Severity;
 import fr.putnami.pwt.core.widget.client.Alert;
-import fr.putnami.pwt.core.widget.client.Button;
 import fr.putnami.pwt.core.widget.client.Alert.Type;
+import fr.putnami.pwt.core.widget.client.Button;
 import fr.putnami.pwt.core.widget.client.binder.UiBinderLocalized;
 import fr.putnami.pwt.core.widget.client.constant.IconType;
 import fr.putnami.pwt.core.widget.client.event.CollapseEvent;

@@ -37,7 +37,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import fr.putnami.pwt.core.common.client.event.HandlerRegistrationCollection;
+import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.widget.client.base.AbstractTableCell;
 import fr.putnami.pwt.core.widget.client.base.AbstractTableColumn;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;

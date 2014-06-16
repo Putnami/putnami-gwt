@@ -25,6 +25,7 @@ import fr.putnami.pwt.core.widget.client.InputBoolean;
 import fr.putnami.pwt.core.widget.client.InputDate;
 import fr.putnami.pwt.core.widget.client.InputList;
 import fr.putnami.pwt.core.widget.client.InputNumber;
+import fr.putnami.pwt.core.widget.client.InputNumber.NumberType;
 import fr.putnami.pwt.core.widget.client.InputSelect;
 import fr.putnami.pwt.core.widget.client.InputText;
 import fr.putnami.pwt.core.widget.client.OutputBoolean;
@@ -33,7 +34,6 @@ import fr.putnami.pwt.core.widget.client.OutputEnum;
 import fr.putnami.pwt.core.widget.client.OutputList;
 import fr.putnami.pwt.core.widget.client.OutputNumber;
 import fr.putnami.pwt.core.widget.client.OutputText;
-import fr.putnami.pwt.core.widget.client.InputNumber.NumberType;
 
 public class DefaultEditorFactoryManager extends EditorFactoryManager {
 

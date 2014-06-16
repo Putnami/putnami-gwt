@@ -28,13 +28,13 @@ import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.util.HTMLUtils;
 import fr.putnami.pwt.core.editor.client.event.DirtyEvent.Handler;
 import fr.putnami.pwt.core.model.client.base.HasPlaceholder;
 import fr.putnami.pwt.core.widget.client.assist.ContentAssistAspect;
 import fr.putnami.pwt.core.widget.client.base.AbstractInput;
 import fr.putnami.pwt.core.widget.client.event.ChangeEvent;
 import fr.putnami.pwt.core.widget.client.helper.CompositeFocusHelper;
+import fr.putnami.pwt.core.widget.client.util.HTMLUtils;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 import fr.putnami.pwt.plugin.code.client.aspect.CodeEditorAspect;
 import fr.putnami.pwt.plugin.code.client.base.CodeEditor;

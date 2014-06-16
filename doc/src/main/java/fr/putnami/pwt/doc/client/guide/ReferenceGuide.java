@@ -28,8 +28,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.putnami.pwt.core.common.client.error.ErrorManager;
-import fr.putnami.pwt.core.error.client.SimpleErrorDisplayer;
+import fr.putnami.pwt.core.error.client.ErrorManager;
+import fr.putnami.pwt.core.error.client.widget.SimpleErrorDisplayer;
 import fr.putnami.pwt.core.theme.client.CssLink;
 import fr.putnami.pwt.core.theme.client.Theme;
 import fr.putnami.pwt.core.theme.client.ThemeController;

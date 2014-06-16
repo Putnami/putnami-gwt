@@ -22,7 +22,7 @@
 	<inherits name="com.google.gwt.i18n.I18N"/>
 	<inherits name="com.google.gwt.resources.Resources" />
 	
-	<inherits name="fr.putnami.pwt.core.common.Common"/>
+	<inherits name="fr.putnami.pwt.core.event.Event"/>
 	<inherits name="fr.putnami.pwt.core.editor.Editor"/>
 	<inherits name="fr.putnami.pwt.core.model.Model"/>
 	<inherits name="fr.putnami.pwt.core.theme.Theme"/>

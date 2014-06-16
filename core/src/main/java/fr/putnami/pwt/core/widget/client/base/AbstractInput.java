@@ -89,7 +89,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.impl.FocusImpl;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.EditorInput;
 import fr.putnami.pwt.core.editor.client.EditorLeaf;
 import fr.putnami.pwt.core.editor.client.Error;
@@ -97,6 +96,7 @@ import fr.putnami.pwt.core.editor.client.event.DirtyEvent;
 import fr.putnami.pwt.core.editor.client.event.DirtyEvent.Handler;
 import fr.putnami.pwt.core.editor.client.util.ValidationUtils;
 import fr.putnami.pwt.core.editor.client.validator.Validator;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.model.client.base.HasHtmlId;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 

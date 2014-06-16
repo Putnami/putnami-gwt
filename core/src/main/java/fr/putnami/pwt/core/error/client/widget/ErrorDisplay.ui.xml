@@ -22,7 +22,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	>
 
-	<ui:with field="constants" type="fr.putnami.pwt.core.error.client.ErrorDisplay.Constants" />
+	<ui:with field="constants" type="fr.putnami.pwt.core.error.client.widget.ErrorDisplay.Constants" />
 	
 	<a:Modal ui:field="modal" title="{constants.errorDialogTitle}">
 		<g:FlowPanel ui:field="modalContent" />

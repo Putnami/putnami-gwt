@@ -19,8 +19,8 @@ package fr.putnami.pwt.plugin.code.client;
 import com.google.gwt.user.client.ui.HasHTML;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import fr.putnami.pwt.core.common.client.util.HTMLUtils;
 import fr.putnami.pwt.core.widget.client.base.AbstractComposite;
+import fr.putnami.pwt.core.widget.client.util.HTMLUtils;
 import fr.putnami.pwt.plugin.code.client.base.CodeEditor;
 import fr.putnami.pwt.plugin.code.client.base.CodeEditorDriver;
 import fr.putnami.pwt.plugin.code.client.base.CodeEditorDriverImpl;

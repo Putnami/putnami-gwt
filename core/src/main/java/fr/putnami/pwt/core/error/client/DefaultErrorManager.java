@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with pwt.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.putnami.pwt.core.common.client.error;
+package fr.putnami.pwt.core.error.client;
 
 import java.util.Collections;
 import java.util.Comparator;

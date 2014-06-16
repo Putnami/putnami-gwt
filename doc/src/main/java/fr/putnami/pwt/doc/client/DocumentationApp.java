@@ -22,8 +22,8 @@ import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import fr.putnami.pwt.core.common.client.error.ErrorManager;
-import fr.putnami.pwt.core.error.client.SimpleErrorDisplayer;
+import fr.putnami.pwt.core.error.client.ErrorManager;
+import fr.putnami.pwt.core.error.client.widget.SimpleErrorDisplayer;
 import fr.putnami.pwt.core.mvp.client.MvpController;
 import fr.putnami.pwt.core.theme.client.CssLink;
 import fr.putnami.pwt.core.theme.client.Theme;

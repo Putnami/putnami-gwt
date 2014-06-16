@@ -41,13 +41,13 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.event.DirtyEvent;
 import fr.putnami.pwt.core.editor.client.event.DirtyEvent.Handler;
+import fr.putnami.pwt.core.event.client.EventBus;
+import fr.putnami.pwt.core.widget.client.base.AbstractHover.Trigger;
 import fr.putnami.pwt.core.widget.client.base.AbstractInput;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;
 import fr.putnami.pwt.core.widget.client.base.SimpleStyle;
-import fr.putnami.pwt.core.widget.client.base.AbstractHover.Trigger;
 import fr.putnami.pwt.core.widget.client.event.ChangeEvent;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 

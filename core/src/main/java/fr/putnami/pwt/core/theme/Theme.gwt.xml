@@ -20,7 +20,7 @@
 <module>
 	<inherits name="com.google.gwt.user.User" />
 	
-	<inherits name="fr.putnami.pwt.core.common.Common"/>
+	<inherits name="fr.putnami.pwt.core.event.Event"/>
 
 	<replace-with class="fr.putnami.pwt.core.theme.client.DefaultThemeController">
 		<when-type-is class="fr.putnami.pwt.core.theme.client.ThemeController"/>

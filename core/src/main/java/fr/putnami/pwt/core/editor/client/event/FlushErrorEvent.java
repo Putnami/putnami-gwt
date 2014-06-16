@@ -23,9 +23,9 @@ import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.Editor;
 import fr.putnami.pwt.core.editor.client.Error;
+import fr.putnami.pwt.core.event.client.EventBus;
 
 public final class FlushErrorEvent extends GwtEvent<FlushErrorEvent.Handler> {
 

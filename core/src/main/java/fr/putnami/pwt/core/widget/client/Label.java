@@ -23,8 +23,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.EditorLabel;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.model.client.base.HasHtmlFor;
 import fr.putnami.pwt.core.widget.client.base.AbstractWidget;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;

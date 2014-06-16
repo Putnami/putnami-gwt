@@ -40,8 +40,8 @@ import com.google.gwt.user.client.rpc.impl.RpcStatsContext;
 import com.google.gwt.user.client.rpc.impl.Serializer;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.error.ErrorManager;
-import fr.putnami.pwt.core.common.client.event.EventBus;
+import fr.putnami.pwt.core.error.client.ErrorManager;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.service.client.error.ClientErrorHandler;
 import fr.putnami.pwt.core.service.client.error.DefaultCommandExceptionErrorHandler;
 import fr.putnami.pwt.core.service.client.error.ServerErrorHandler;

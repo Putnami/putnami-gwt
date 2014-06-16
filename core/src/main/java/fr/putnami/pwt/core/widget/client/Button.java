@@ -33,9 +33,9 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.impl.FocusImpl;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.editor.client.EditorLabel;
 import fr.putnami.pwt.core.editor.client.EditorValue;
+import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.widget.client.base.AbstractWidget;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;
 import fr.putnami.pwt.core.widget.client.base.SimpleStyle;

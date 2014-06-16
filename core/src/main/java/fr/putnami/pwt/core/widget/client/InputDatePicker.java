@@ -56,12 +56,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
 import fr.putnami.pwt.core.editor.client.EditorInput;
 import fr.putnami.pwt.core.editor.client.EditorLeaf;
 import fr.putnami.pwt.core.editor.client.Error;
 import fr.putnami.pwt.core.editor.client.util.ValidationUtils;
 import fr.putnami.pwt.core.editor.client.validator.Validator;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.model.client.base.HasDrawable;
 import fr.putnami.pwt.core.model.client.base.HasHtmlId;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;

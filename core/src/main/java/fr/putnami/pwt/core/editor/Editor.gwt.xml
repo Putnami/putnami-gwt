@@ -21,7 +21,7 @@
 	<inherits name="com.google.gwt.user.User" />
 	<inherits name="com.google.gwt.i18n.I18N" />
 
-	<inherits name="fr.putnami.pwt.core.common.Common" />
+	<inherits name="fr.putnami.pwt.core.event.Event" />
 
 	<source path="client"/>
 	<source path="shared"/>

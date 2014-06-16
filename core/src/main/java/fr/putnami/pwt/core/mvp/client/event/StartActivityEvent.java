@@ -25,7 +25,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
+import fr.putnami.pwt.core.event.client.EventBus;
 
 public final class StartActivityEvent extends GwtEvent<StartActivityEvent.Handler> {
 

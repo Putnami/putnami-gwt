@@ -24,7 +24,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
+import fr.putnami.pwt.core.event.client.EventBus;
 
 public final class MayStopActivityEvent extends GwtEvent<MayStopActivityEvent.Handler> {
 

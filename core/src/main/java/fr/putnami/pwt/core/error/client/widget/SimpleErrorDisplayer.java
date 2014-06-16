@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with pwt.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.putnami.pwt.core.error.client;
+package fr.putnami.pwt.core.error.client.widget;
 
 import java.util.MissingResourceException;
 
@@ -22,7 +22,7 @@ import com.google.common.base.CaseFormat;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.logging.impl.StackTracePrintStream;
 
-import fr.putnami.pwt.core.common.client.error.ErrorDisplayer;
+import fr.putnami.pwt.core.error.client.ErrorDisplayer;
 import fr.putnami.pwt.core.service.shared.exception.CommandException;
 
 public class SimpleErrorDisplayer implements ErrorDisplayer {

@@ -19,8 +19,8 @@ package fr.putnami.pwt.core.service.client.error;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.StatusCodeException;
 
-import fr.putnami.pwt.core.common.client.error.ErrorManager;
-import fr.putnami.pwt.core.common.client.error.ErrorDisplayer.Severity;
+import fr.putnami.pwt.core.error.client.ErrorDisplayer.Severity;
+import fr.putnami.pwt.core.error.client.ErrorManager;
 import fr.putnami.pwt.core.service.client.error.constant.ServerErrorConstants;
 
 public class ServerErrorHandler extends AbstractStatusCodeErrorHandler {

@@ -18,9 +18,9 @@ package fr.putnami.pwt.doc.client.application.error;
 
 import com.google.gwt.event.shared.UmbrellaException;
 
-import fr.putnami.pwt.core.common.client.error.AbstractErrorHandler;
-import fr.putnami.pwt.core.common.client.error.ErrorManager;
-import fr.putnami.pwt.core.common.client.error.ErrorDisplayer.Severity;
+import fr.putnami.pwt.core.error.client.AbstractErrorHandler;
+import fr.putnami.pwt.core.error.client.ErrorDisplayer.Severity;
+import fr.putnami.pwt.core.error.client.ErrorManager;
 
 public class UmbrellaExceptionHandler extends AbstractErrorHandler {
 

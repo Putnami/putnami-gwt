@@ -24,7 +24,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.model.client.base.HasDrawable;
 import fr.putnami.pwt.core.widget.client.base.AbstractHTMLPanel;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;

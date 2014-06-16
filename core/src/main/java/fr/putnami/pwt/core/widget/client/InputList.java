@@ -36,7 +36,6 @@ import com.google.gwt.user.client.ui.Focusable;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-import fr.putnami.pwt.core.common.client.event.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.editor.client.EditorCollection;
 import fr.putnami.pwt.core.editor.client.EditorInput;
 import fr.putnami.pwt.core.editor.client.EditorOutput;
@@ -48,6 +47,7 @@ import fr.putnami.pwt.core.editor.client.factory.OutputFactory;
 import fr.putnami.pwt.core.editor.client.helper.MessageHelper;
 import fr.putnami.pwt.core.editor.client.util.ValidationUtils;
 import fr.putnami.pwt.core.editor.client.validator.Validator;
+import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.model.client.ModelDriver;
 import fr.putnami.pwt.core.model.client.base.EditorModel;
 import fr.putnami.pwt.core.model.client.base.EditorProvider;

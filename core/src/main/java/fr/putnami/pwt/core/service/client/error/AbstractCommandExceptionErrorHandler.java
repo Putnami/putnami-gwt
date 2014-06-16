@@ -16,7 +16,7 @@
  */
 package fr.putnami.pwt.core.service.client.error;
 
-import fr.putnami.pwt.core.common.client.error.AbstractErrorHandler;
+import fr.putnami.pwt.core.error.client.AbstractErrorHandler;
 import fr.putnami.pwt.core.service.shared.exception.CommandException;
 
 public abstract class AbstractCommandExceptionErrorHandler extends AbstractErrorHandler {

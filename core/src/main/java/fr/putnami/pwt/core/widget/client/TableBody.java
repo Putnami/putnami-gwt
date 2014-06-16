@@ -27,9 +27,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiConstructor;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
-import fr.putnami.pwt.core.common.client.event.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.editor.client.factory.CloneableWidget;
+import fr.putnami.pwt.core.event.client.EventBus;
+import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.model.client.base.HasReadonly;
 import fr.putnami.pwt.core.widget.client.base.AbstractPanel;
 import fr.putnami.pwt.core.widget.client.event.RowClickEvent;

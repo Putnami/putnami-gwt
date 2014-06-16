@@ -38,11 +38,11 @@ import com.google.gwt.user.client.ui.HasWidgets;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.putnami.pwt.core.common.client.event.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.editor.client.Editor;
 import fr.putnami.pwt.core.editor.client.EditorComposite;
 import fr.putnami.pwt.core.editor.client.Path;
 import fr.putnami.pwt.core.editor.client.factory.CloneableWidget;
+import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 import fr.putnami.pwt.core.widget.client.util.WidgetUtils;
 

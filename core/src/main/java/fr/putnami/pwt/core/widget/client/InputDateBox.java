@@ -31,9 +31,9 @@ import fr.putnami.pwt.core.widget.client.helper.DateParser;
 import fr.putnami.pwt.core.widget.client.helper.DateRenderer;
 import fr.putnami.pwt.core.widget.client.mask.IntegerTokenHelper;
 import fr.putnami.pwt.core.widget.client.mask.MaskValueBoxHelper;
+import fr.putnami.pwt.core.widget.client.mask.MaskValueBoxHelper.TokenHelper;
 import fr.putnami.pwt.core.widget.client.mask.RestrictedStringTokenHelpler;
 import fr.putnami.pwt.core.widget.client.mask.StaticStringTokenHelper;
-import fr.putnami.pwt.core.widget.client.mask.MaskValueBoxHelper.TokenHelper;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 
 public class InputDateBox extends AbstractInputBox<TextBox, Date> {

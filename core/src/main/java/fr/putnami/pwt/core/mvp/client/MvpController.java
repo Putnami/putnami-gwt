@@ -34,7 +34,7 @@ import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.HandlerRegistration;
 
-import fr.putnami.pwt.core.common.client.event.EventBus;
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.mvp.client.event.MayStopActivityEvent;
 import fr.putnami.pwt.core.mvp.client.event.MayStopActivityEvent.HasMayStopActivityHandlers;
 import fr.putnami.pwt.core.mvp.client.event.StartActivityEvent;

@@ -21,7 +21,7 @@ import java.util.MissingResourceException;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.google.gwt.user.client.rpc.StatusCodeException;
 
-import fr.putnami.pwt.core.common.client.error.AbstractErrorHandler;
+import fr.putnami.pwt.core.error.client.AbstractErrorHandler;
 
 public abstract class AbstractStatusCodeErrorHandler extends AbstractErrorHandler {
 

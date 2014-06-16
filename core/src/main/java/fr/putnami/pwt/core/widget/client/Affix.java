@@ -31,7 +31,7 @@ import com.google.gwt.user.client.Window.ScrollEvent;
 import com.google.gwt.user.client.Window.ScrollHandler;
 import com.google.gwt.user.client.ui.IsWidget;
 
-import fr.putnami.pwt.core.common.client.event.HandlerRegistrationCollection;
+import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.widget.client.base.CssStyle;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 import fr.putnami.pwt.core.widget.client.util.WidgetUtils;

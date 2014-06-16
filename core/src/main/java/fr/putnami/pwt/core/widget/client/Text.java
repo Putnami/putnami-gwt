@@ -22,8 +22,8 @@ import com.google.gwt.user.client.ui.HasText;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.Widget;
 
-import fr.putnami.pwt.core.common.client.util.HTMLUtils;
 import fr.putnami.pwt.core.editor.client.factory.CloneableWidget;
+import fr.putnami.pwt.core.widget.client.util.HTMLUtils;
 
 public class Text extends Widget implements
 		HasText,

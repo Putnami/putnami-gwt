@@ -22,7 +22,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	>
 
-	<ui:with field="constants" type="fr.putnami.pwt.core.error.client.ErrorAlert.Constants" />
+	<ui:with field="constants" type="fr.putnami.pwt.core.error.client.widget.ErrorAlert.Constants" />
 	
 	<a:Alert ui:field="alert" dismissable="true">
 		<g:HTMLPanel>

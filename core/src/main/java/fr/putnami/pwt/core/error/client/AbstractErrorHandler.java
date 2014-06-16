@@ -14,15 +14,16 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with pwt.  If not, see <http://www.gnu.org/licenses/>.
  */
-package fr.putnami.pwt.core.common.client.error;
+package fr.putnami.pwt.core.error.client;
 
-public interface ErrorHandler {
+ 
+public abstract class AbstractErrorHandler implements ErrorHandler {
 
-	int DEFAULT_PRIORITY = 0;
-	int LOW_PRIORITY = Integer.MIN_VALUE;
+	@Override
+	public int getPriority() {
+		return DEFAULT_PRIORITY;
+	}
 
-	boolean handle(Throwable error);
-
-	int getPriority();
-
+	@Override
+	public abstract boolean handle(Throwable error);
 }
