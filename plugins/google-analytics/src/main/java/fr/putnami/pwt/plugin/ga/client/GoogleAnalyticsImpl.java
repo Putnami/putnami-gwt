@@ -53,12 +53,13 @@ public class GoogleAnalyticsImpl extends GoogleAnalytics implements StartActivit
 		initScript();
 		MvpController.get().addStartActivityHandler(this);
 		createTracker(account);
+		trackPage();
 	}
 
 	@Override
 	public void onStartActivity(StartActivityEvent event) {
 		String placeToken = MvpController.get().getToken(event.getPlace());
-		trackPage("/" + placeToken);
+		trackPage("/#" + placeToken);
 	}
 
 	private native void createGaObject()
