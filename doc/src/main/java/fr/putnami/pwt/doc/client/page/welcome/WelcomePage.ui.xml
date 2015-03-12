@@ -31,6 +31,7 @@ h2{
 }
 
 		</style>
+		<w:Button ui:field="clickMe" > Click</w:Button>
 		<div ui:field="jumbotronDiv" class="jumbotron teaser">
 			<div class="forkMeOnGitHub">
 				<a href="https://github.com/putnami/putnami-pwt" target="_BLANK"><img src="assets/img/forkMe.png" /></a>

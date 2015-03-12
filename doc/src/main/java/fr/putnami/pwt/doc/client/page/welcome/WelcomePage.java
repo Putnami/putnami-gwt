@@ -14,17 +14,45 @@
  */
 package fr.putnami.pwt.doc.client.page.welcome;
 
+import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 
+import fr.putnami.pwt.core.inject.client.annotation.InjectService;
+import fr.putnami.pwt.core.inject.client.annotation.PresentHandler;
 import fr.putnami.pwt.core.inject.client.annotation.Templated;
 import fr.putnami.pwt.core.mvp.client.View;
 import fr.putnami.pwt.core.mvp.client.ViewPlace;
 import fr.putnami.pwt.core.mvp.client.annotation.ActivityDescription;
+import fr.putnami.pwt.core.service.client.annotation.AsyncHandler;
+import fr.putnami.pwt.core.service.client.websocket.WebSocket;
+import fr.putnami.pwt.core.widget.client.event.ButtonEvent;
+import fr.putnami.pwt.doc.shared.service.DocService;
 
 @Templated
 public class WelcomePage extends Composite implements View {
 
 	@ActivityDescription(view = WelcomePage.class)
 	public static class WelcomePlace extends ViewPlace {
+	}
+
+	private WebSocket socket;
+
+	@InjectService
+	DocService docService;
+
+	@PresentHandler
+	void present(){
+		docService.sayHi("Fabien");
+	}
+
+	@UiHandler("clickMe")
+	void click(ButtonEvent event) {
+		socket.send("yy");
+	}
+
+	@AsyncHandler
+	void onSayHi(String message) {
+		Window.alert(message);
 	}
 }
