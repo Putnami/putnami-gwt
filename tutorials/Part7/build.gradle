@@ -1,13 +1,12 @@
 apply plugin: 'java'
-apply plugin: 'gwt'
-apply plugin: 'jetty'
+apply plugin: 'fr.putnami.gwt'
 
 buildscript {
 	repositories {
-		jcenter()
+		mavenCentral()
 	}
 	dependencies {
-		classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5'
+		classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.2.0'
 	}
 }
 
@@ -22,30 +21,13 @@ dependencies {
 	providedCompile 'javax.validation:validation-api:1.0.0.GA'
 }
 
-gwt {
-	gwtVersion = '2.7.0'
-	maxHeapSize = "2G";
-
-	// Modules used in production
-	modules = ['fr.putnami.pwt.tutorial.Tutorial']
-	// Modules used in dev mode and super dev mode.
-	devModules = ['fr.putnami.pwt.tutorial.TutorialDev']
-
-	superDev {
-	noPrecompile=true
+putnami {
+	module 'fr.putnami.pwt.tutorial.Tutorial'
+	
+	dev {
+		logLevel = "INFO"
 	}
-
-	// You can skip it if you won't use it
-	// If you add it, you'll have to apply the jetty plugin first.
-	gwtDev {
-		// Allows to debug with the standard Dev mode
-		// ( no more supported on Chrome for Linux or on Firefox)
-		jvmArgs('-Xdebug',  '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000')
+	jetty {
+		debugJava = true
 	}
-}
-
-task jettyDraftWar(type: JettyRunWar) {
-	dependsOn draftWar
-	dependsOn.remove('war')
-	webApp=draftWar.archivePath
 }
