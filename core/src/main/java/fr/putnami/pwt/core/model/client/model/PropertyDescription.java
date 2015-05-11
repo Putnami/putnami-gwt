@@ -28,6 +28,7 @@ public final class PropertyDescription {
 	private boolean hasGetter;
 	private boolean hasSetter;
 	private Collection<Validator<?>> validators;
+	private boolean isFinal;
 
 	public PropertyDescription() {
 	}
@@ -85,6 +86,14 @@ public final class PropertyDescription {
 			this.validators = Lists.newArrayList();
 		}
 		this.validators.add(validator);
+	}
+
+	public void setFinal(boolean isFinal) {
+		this.isFinal = isFinal;
+	}
+
+	public boolean isFinal() {
+		return isFinal;
 	}
 
 }

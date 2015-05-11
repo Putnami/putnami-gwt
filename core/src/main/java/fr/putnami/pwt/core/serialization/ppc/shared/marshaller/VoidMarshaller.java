@@ -34,7 +34,7 @@ public class VoidMarshaller extends AbstractMarshaller<Void> {
 	}
 
 	@Override
-	public Class<Void> getType() {
+	public Class<?> getType() {
 		return Void.class;
 	}
 }

@@ -43,7 +43,7 @@ public class DateMarshaller extends AbstractMarshaller<Date> {
 	}
 
 	@Override
-	public Class<Date> getType() {
+	public Class<?> getType() {
 		return Date.class;
 	}
 }

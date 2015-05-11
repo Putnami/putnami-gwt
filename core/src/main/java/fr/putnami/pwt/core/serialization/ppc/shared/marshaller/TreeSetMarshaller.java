@@ -26,7 +26,7 @@ public class TreeSetMarshaller extends AbstractCollectionMatshaller<TreeSet> {
 	}
 
 	@Override
-	public Class<TreeSet> getType() {
+	public Class<?> getType() {
 		return TreeSet.class;
 	}
 

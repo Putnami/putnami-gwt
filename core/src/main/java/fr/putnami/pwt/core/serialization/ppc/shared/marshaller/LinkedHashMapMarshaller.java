@@ -31,8 +31,7 @@ public class LinkedHashMapMarshaller<K, V> extends AbstractMapMatshaller<K, V, L
 	}
 
 	@Override
-	public Class<LinkedHashMap> getType() {
+	public Class<?> getType() {
 		return LinkedHashMap.class;
 	}
-
 }

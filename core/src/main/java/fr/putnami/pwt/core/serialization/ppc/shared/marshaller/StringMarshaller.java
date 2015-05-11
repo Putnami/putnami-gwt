@@ -31,11 +31,11 @@ public class StringMarshaller extends AbstractMarshaller<String> {
 
 	@Override
 	public String getTypeName() {
-		return "S";
+		return "X";
 	}
 
 	@Override
-	public Class<String> getType() {
+	public Class<?> getType() {
 		return String.class;
 	}
 }

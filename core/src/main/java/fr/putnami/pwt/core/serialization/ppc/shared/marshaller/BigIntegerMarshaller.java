@@ -37,7 +37,7 @@ public class BigIntegerMarshaller extends AbstractMarshaller<BigInteger> {
 	}
 
 	@Override
-	public Class<BigInteger> getType() {
+	public Class<?> getType() {
 		return BigInteger.class;
 	}
 }

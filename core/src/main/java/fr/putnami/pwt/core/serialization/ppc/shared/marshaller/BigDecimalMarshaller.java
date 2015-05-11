@@ -37,7 +37,7 @@ public class BigDecimalMarshaller extends AbstractMarshaller<BigDecimal> {
 	}
 
 	@Override
-	public Class<BigDecimal> getType() {
+	public Class<?> getType() {
 		return BigDecimal.class;
 	}
 }

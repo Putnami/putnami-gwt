@@ -25,6 +25,7 @@ import fr.putnami.pwt.core.serialization.ppc.shared.BeanPublicFields;
 import fr.putnami.pwt.core.serialization.ppc.shared.BeanSetters;
 import fr.putnami.pwt.core.serialization.ppc.shared.Gender;
 import fr.putnami.pwt.core.serialization.ppc.shared.Manager;
+import fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry;
 import fr.putnami.pwt.core.serialization.ppc.shared.Person;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcSerializer;
 
@@ -57,11 +58,12 @@ public class PpcGwtTest extends AbstractPpcTest {
 			Model<BeanPublicFields> beanPublicFieldsModel = GWT.create(BeanPublicFieldsModel.class);
 			Model<BeanSetters> beanSettersModel = GWT.create(BeanSettersModel.class);
 
-			serializer.getMarshallerRegistry().register(new ModelMarshaller<Person>(personModel));
-			serializer.getMarshallerRegistry().register(new ModelMarshaller<Manager>(managerModel));
-			serializer.getMarshallerRegistry().register(new ModelMarshaller<BeanPublicFields>(beanPublicFieldsModel));
-			serializer.getMarshallerRegistry().register(new ModelMarshaller<BeanSetters>(beanSettersModel));
-			serializer.getMarshallerRegistry().register(new EnumMarshaller<Gender>(Gender.class));
+			MarshallerRegistry registry = serializer.getMarshallerRegistry();
+			registry.register(new ModelMarshaller<Person>(personModel, registry));
+			registry.register(new ModelMarshaller<Manager>(managerModel, registry));
+			registry.register(new ModelMarshaller<BeanPublicFields>(beanPublicFieldsModel, registry));
+			registry.register(new ModelMarshaller<BeanSetters>(beanSettersModel, registry));
+			registry.register(new EnumMarshaller<Gender>(Gender.class));
 		}
 		return serializer;
 	}

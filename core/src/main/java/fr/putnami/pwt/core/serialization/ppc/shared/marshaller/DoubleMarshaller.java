@@ -41,7 +41,7 @@ public class DoubleMarshaller extends AbstractMarshaller<Double> {
 	}
 
 	@Override
-	public Class<Double> getType() {
+	public Class<?> getType() {
 		return Double.class;
 	}
 }

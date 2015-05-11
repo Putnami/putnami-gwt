@@ -26,7 +26,7 @@ public class LinkedHashSetMarshaller extends AbstractCollectionMatshaller<Linked
 	}
 
 	@Override
-	public Class<LinkedHashSet> getType() {
+	public Class<?> getType() {
 		return LinkedHashSet.class;
 	}
 

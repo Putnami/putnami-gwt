@@ -14,25 +14,34 @@
  */
 package fr.putnami.pwt.core.serialization.ppc.shared.marshaller;
 
-import com.google.common.collect.Lists;
+import com.google.common.base.Strings;
 
-import java.util.LinkedList;
+import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
+import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 
-public class LinkedListMarshaller extends AbstractCollectionMatshaller<LinkedList> {
+public class PShortMarshaller extends AbstractMarshaller<Short> {
+
+	@Override
+	public void marshal(Short value, PpcWriter writer) {
+		writer.write(value.shortValue());
+	}
+
+	@Override
+	public Short unmarshal(PpcReader reader) {
+		String token = reader.next();
+		if (Strings.isNullOrEmpty(token)) {
+			return null;
+		}
+		return Short.valueOf(token);
+	}
 
 	@Override
 	public String getTypeName() {
-		return "LL";
+		return "s";
 	}
 
 	@Override
 	public Class<?> getType() {
-		return LinkedList.class;
+		return short.class;
 	}
-
-	@Override
-	public LinkedList newInstance() {
-		return Lists.newLinkedList();
-	}
-
 }

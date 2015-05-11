@@ -41,7 +41,7 @@ public class FloatMarshaller extends AbstractMarshaller<Float> {
 	}
 
 	@Override
-	public Class<Float> getType() {
+	public Class<?> getType() {
 		return Float.class;
 	}
 }

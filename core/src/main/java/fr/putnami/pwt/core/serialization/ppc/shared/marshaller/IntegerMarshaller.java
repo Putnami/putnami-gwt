@@ -40,8 +40,9 @@ public class IntegerMarshaller extends AbstractMarshaller<Integer> {
 		return "I";
 	}
 
+
 	@Override
-	public Class<Integer> getType() {
+	public Class<?> getType() {
 		return Integer.class;
 	}
 }

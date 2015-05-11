@@ -29,8 +29,7 @@ public class TreeMapMarshaller<K, V> extends AbstractMapMatshaller<K, V, TreeMap
 	}
 
 	@Override
-	public Class<TreeMap> getType() {
+	public Class<?> getType() {
 		return TreeMap.class;
 	}
-
 }

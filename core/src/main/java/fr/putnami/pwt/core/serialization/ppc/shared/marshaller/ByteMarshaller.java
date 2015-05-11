@@ -37,11 +37,11 @@ public class ByteMarshaller extends AbstractMarshaller<Byte> {
 
 	@Override
 	public String getTypeName() {
-		return "O";
+		return "B";
 	}
 
 	@Override
-	public Class<Byte> getType() {
+	public Class<?> getType() {
 		return Byte.class;
 	}
 }

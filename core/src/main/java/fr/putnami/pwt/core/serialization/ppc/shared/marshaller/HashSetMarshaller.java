@@ -26,7 +26,7 @@ public class HashSetMarshaller extends AbstractCollectionMatshaller<HashSet> {
 	}
 
 	@Override
-	public Class<HashSet> getType() {
+	public Class<?> getType() {
 		return HashSet.class;
 	}
 

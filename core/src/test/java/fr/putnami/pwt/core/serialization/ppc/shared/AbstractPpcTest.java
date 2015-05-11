@@ -69,8 +69,8 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		assertEquals(false, createReader("0").readBoolean());
 
 		// Boolean object
-		assertEquals("0|1|--|B", createWriter().write(Boolean.TRUE).flush());
-		assertEquals(Boolean.FALSE, createReader("0|0|--|B").readObject());
+		assertEquals("0|1|--|Z", createWriter().write(Boolean.TRUE).flush());
+		assertEquals(Boolean.FALSE, createReader("0|0|--|Z").readObject());
 	}
 
 	@Test
@@ -81,8 +81,8 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		assertEquals(Byte.MAX_VALUE, createReader("127").readByte());
 
 		// Byte object
-		assertEquals("0|127|--|O", createWriter().write((Byte) Byte.MAX_VALUE).flush());
-		assertEquals(Byte.MIN_VALUE, createReader("0|-128|--|O").readObject());
+		assertEquals("0|127|--|B", createWriter().write((Byte) Byte.MAX_VALUE).flush());
+		assertEquals(Byte.MIN_VALUE, createReader("0|-128|--|B").readObject());
 	}
 
 	@Test
@@ -145,8 +145,8 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		assertEquals(2L, reader.readLong());
 
 		// Long object
-		assertEquals("0|25|--|L", createWriter().write((Long) 25L).flush());
-		assertEquals(Long.valueOf(35), createReader("0|35|--|L").readObject());
+		assertEquals("0|25|--|J", createWriter().write((Long) 25L).flush());
+		assertEquals(Long.valueOf(35), createReader("0|35|--|J").readObject());
 	}
 
 	@Test
@@ -162,8 +162,8 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		assertEquals((short) 3, reader.readShort());
 
 		// Short object
-		assertEquals("0|-32768|--|SH", createWriter().write(new Short(Short.MIN_VALUE)).flush());
-		assertEquals(new Short(Short.MIN_VALUE), createReader("0|-32768|--|SH").readObject());
+		assertEquals("0|-32768|--|S", createWriter().write(new Short(Short.MIN_VALUE)).flush());
+		assertEquals(new Short(Short.MIN_VALUE), createReader("0|-32768|--|S").readObject());
 	}
 
 	@Test
@@ -230,10 +230,123 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 	}
 
 	@Test
+	public void testVoid() {
+		assertEquals(null, createReader("0|--|V").readObject());
+	}
+
+	@Test
+	public void testEnum() {
+		// write
+		assertEquals("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE", createWriter().write(
+			Gender.MALE)
+			.flush());
+		// read
+		assertEquals(Gender.MALE, createReader("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE")
+			.<Gender> readObject());
+	}
+
+	@Test
+	public void testArray() {
+		boolean[] booleans = {true, false};
+		System.out.println(booleans.getClass().getName());
+		String serial = createWriter().write(booleans).flush();
+		assertEquals("0|2|1|1|1|0|--|[z@0|Z", serial);
+		assertArrayEquals(booleans, createReader(serial).readObject());
+		Boolean[] bBooleans = {true, false};
+		System.out.println(bBooleans.getClass().getName());
+		serial = createWriter().write(bBooleans).flush();
+		assertEquals("0|2|1|1|1|0|--|[Z@0|Z", serial);
+		assertArrayEquals(bBooleans, createReader(serial).readObject());
+
+		byte[] bytes = {1};
+		System.out.println(bytes.getClass().getName());
+		char[] chars = {'e'};
+		System.out.println(chars.getClass().getName());
+		double[] doubles = {1};
+		System.out.println(doubles.getClass().getName());
+		float[] floats = {1};
+		System.out.println(floats.getClass().getName());
+		int[] ints = {1};
+		System.out.println(ints.getClass().getName());
+		long[] longs = {1};
+		System.out.println(longs.getClass().getName());
+		short[] shorts = {1};
+		System.out.println(shorts.getClass().getName());
+
+		// String[] strings = {"a", "b", "a"};
+		// Gender[] longs = {Gender.MALE};
+		// String serial = createWriter().write(longs).flush();
+		// assertEquals("0|3|1|2|1|3|1|4|--|AL@0|S|a|b|c", serial);
+		// assertEquals(longs, createReader(serial).readObject());
+
+		// long[] longs = {1, 2, 3};
+		// serial = createWriter().write(longs).flush();
+		// assertEquals(longs, createReader(serial).readObject());
+	}
+
+	private void assertArrayEquals(Object expected, Object actual) {
+		assertEquals(expected.getClass(), actual.getClass());
+		assertEquals(toList(expected), toList(actual));
+	}
+
+	private List toList(Object value) {
+		Class<?> targetClass = value.getClass().getComponentType();
+
+		List list = Lists.newArrayList();
+		if (boolean.class.equals(targetClass)) {
+			boolean[] arr = (boolean[]) value;
+			for (boolean v : arr) {
+				list.add(v);
+			}
+		} else if (byte.class.equals(targetClass)) {
+			byte[] arr = (byte[]) value;
+			for (byte v : arr) {
+				list.add(v);
+			}
+		} else if (char.class.equals(targetClass)) {
+			char[] arr = (char[]) value;
+			for (char v : arr) {
+				list.add(v);
+			}
+		} else if (double.class.equals(targetClass)) {
+			double[] arr = (double[]) value;
+			for (double v : arr) {
+				list.add(v);
+			}
+		} else if (float.class.equals(targetClass)) {
+			float[] arr = (float[]) value;
+			for (float v : arr) {
+				list.add(v);
+			}
+		} else if (int.class.equals(targetClass)) {
+			int[] arr = (int[]) value;
+			for (int v : arr) {
+				list.add(v);
+			}
+		} else if (long.class.equals(targetClass)) {
+			long[] arr = (long[]) value;
+			for (long v : arr) {
+				list.add(v);
+			}
+		} else if (short.class.equals(targetClass)) {
+			short[] arr = (short[]) value;
+			for (short v : arr) {
+				list.add(v);
+			}
+		} else {
+			Object[] arr = (Object[]) value;
+			for (Object v : arr) {
+				list.add(v);
+			}
+		}
+		return list;
+	}
+
+	@Test
 	public void testArrayList() {
 		List<String> l = Lists.newArrayList("a", "b", "c");
 		String serial = createWriter().write(l).flush();
-		assertEquals("0|3|1|2|1|3|1|4|--|AL@0|S|a|b|c", serial);
+		assertEquals("0|3|1|2|1|3|1|4|--|AL@0|X|a|b|c", serial);
 		assertEquals(l, createReader(serial).readObject());
 		assertEquals(ArrayList.class, createReader(serial).readObject().getClass());
 	}
@@ -246,7 +359,7 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		l.add("a");
 
 		String serial = createWriter().write(l).flush();
-		assertEquals("0|3|1|2|1|3|1|2|--|LL@0|S|a|b", serial);
+		assertEquals("0|3|1|2|1|3|1|2|--|LL@0|X|a|b", serial);
 		assertEquals(l, createReader(serial).readObject());
 		assertEquals(LinkedList.class, createReader(serial).readObject().getClass());
 	}
@@ -271,7 +384,7 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		l.add("a");
 
 		String serial = createWriter().write(l).flush();
-		assertEquals("0|2|1|2|1|3|--|LHS@0|S|a|b", serial);
+		assertEquals("0|2|1|2|1|3|--|LHS@0|X|a|b", serial);
 		assertEquals(l, createReader(serial).readObject());
 		assertEquals(LinkedHashSet.class, createReader(serial).readObject().getClass());
 	}
@@ -284,7 +397,7 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		l.add("a");
 
 		String serial = createWriter().write(l).flush();
-		assertEquals("0|2|1|2|1|3|--|TS@0|S|a|b", serial);
+		assertEquals("0|2|1|2|1|3|--|TS@0|X|a|b", serial);
 		assertEquals(l, createReader(serial).readObject());
 		assertEquals(TreeSet.class, createReader(serial).readObject().getClass());
 	}
@@ -297,7 +410,7 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		l.add("a");
 
 		String serial = createWriter().write(l).flush();
-		assertEquals("0|3|1|2|1|3|1|2|--|VT@0|S|a|b", serial);
+		assertEquals("0|3|1|2|1|3|1|2|--|VT@0|X|a|b", serial);
 		assertEquals(l, createReader(serial).readObject());
 		assertEquals(Vector.class, createReader(serial).readObject().getClass());
 	}
@@ -310,7 +423,7 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		m.put(4L, "a");
 
 		String serial = createWriter().write(m).flush();
-		assertEquals("0|3|1|2|2|3|1|3|2|4|1|4|2|3|--|HM@0|L|S|a|b", serial);
+		assertEquals("0|3|1|2|2|3|1|3|2|4|1|4|2|3|--|HM@0|J|X|a|b", serial);
 		assertEquals(m, createReader(serial).readObject());
 		assertEquals(HashMap.class, createReader(serial).readObject().getClass());
 	}
@@ -336,7 +449,7 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		m.put(4L, "a");
 
 		String serial = createWriter().write(m).flush();
-		assertEquals("0|3|1|2|2|3|1|3|2|4|1|4|2|3|--|LHM@0|L|S|a|b", serial);
+		assertEquals("0|3|1|2|2|3|1|3|2|4|1|4|2|3|--|LHM@0|J|X|a|b", serial);
 		assertEquals(m, createReader(serial).readObject());
 		assertEquals(LinkedHashMap.class, createReader(serial).readObject().getClass());
 	}
@@ -349,25 +462,9 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		m.put(4L, "a");
 
 		String serial = createWriter().write(m).flush();
-		assertEquals("0|3|1|2|2|3|1|3|2|4|1|4|2|3|--|TM@0|L|S|a|b", serial);
+		assertEquals("0|3|1|2|2|3|1|3|2|4|1|4|2|3|--|TM@0|J|X|a|b", serial);
 		assertEquals(m, createReader(serial).readObject());
 		assertEquals(TreeMap.class, createReader(serial).readObject().getClass());
-	}
-
-	@Test
-	public void testEnum() {
-		// write
-		assertEquals("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE", createWriter().write(
-			Gender.MALE)
-			.flush());
-		// read
-		assertEquals(Gender.MALE, createReader("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE")
-			.<Gender> readObject());
-	}
-
-	@Test
-	public void testVoid() {
-		assertEquals(null, createReader("0|--|V").readObject());
 	}
 
 	@Test
@@ -398,7 +495,8 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		bean.shortObject = 223;
 
 		serial = createWriter().write(bean).flush();
-		System.out.println(serial);
+		assertEquals("0|1|1|127|127|A|A|1|1426028400000|12.4|12.4|4.1|4.1|12|12|62|62|223|223|2"
+			+ "|--|fr.putnami.pwt.core.serialization.ppc.shared.BeanPublicFields@0|DT|a", serial);
 		read = createReader(serial).readObject();
 		assertEquals(bean, read);
 	}
@@ -431,6 +529,8 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		bean.setShortObject((short) 223);
 
 		serial = createWriter().write(bean).flush();
+		assertEquals("0|1|1|127|127|A|A|1|1426028400000|12.4|12.4|4.1|4.1|12|12|62|62|223|223|2"
+			+ "|--|fr.putnami.pwt.core.serialization.ppc.shared.BeanSetters@0|DT|a", serial);
 		read = createReader(serial).readObject();
 		assertEquals(bean, read);
 	}
@@ -452,6 +552,11 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		bean.setStaff(Lists.newArrayList(p, p));
 
 		serial = createWriter().write(bean).flush();
+		assertEquals(
+			"0|1|2|3|4|2|5|1|6|7|5|--|"
+				+ "fr.putnami.pwt.core.serialization.ppc.shared.Manager@0|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE|man|AL@1"
+				+ "|fr.putnami.pwt.core.serialization.ppc.shared.Person@2|FEMALE|empl",
+			serial);
 		read = createReader(serial).readObject();
 		assertEquals(bean, read);
 	}
@@ -473,6 +578,10 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 		bean.setStaff(Lists.newArrayList(p, p));
 
 		serial = createWriter().write(bean).flush();
+		System.out.println(serial);
+		assertEquals(
+			"0|1|2|3|4|2|5|1|6|7|5|--|fr.putnami.pwt.core.serialization.ppc.shared.Manager@0|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE|man|AL@1|fr.putnami.pwt.core.serialization.ppc.shared.Person@2|FEMALE|empl"
+			, serial);
 		read = createReader(serial).readObject();
 		assertEquals(bean, read);
 		assertSame(read.getStaff().get(0), read.getStaff().get(1));

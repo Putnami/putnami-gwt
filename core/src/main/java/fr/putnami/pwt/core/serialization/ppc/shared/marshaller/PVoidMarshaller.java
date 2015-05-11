@@ -14,25 +14,27 @@
  */
 package fr.putnami.pwt.core.serialization.ppc.shared.marshaller;
 
-import com.google.common.collect.Lists;
+import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
+import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 
-import java.util.LinkedList;
+public class PVoidMarshaller extends AbstractMarshaller<Void> {
 
-public class LinkedListMarshaller extends AbstractCollectionMatshaller<LinkedList> {
+	@Override
+	public void marshal(Void value, PpcWriter writer) {
+	}
+
+	@Override
+	public Void unmarshal(PpcReader reader) {
+		return null;
+	}
 
 	@Override
 	public String getTypeName() {
-		return "LL";
+		return "v";
 	}
 
 	@Override
 	public Class<?> getType() {
-		return LinkedList.class;
+		return void.class;
 	}
-
-	@Override
-	public LinkedList newInstance() {
-		return Lists.newLinkedList();
-	}
-
 }

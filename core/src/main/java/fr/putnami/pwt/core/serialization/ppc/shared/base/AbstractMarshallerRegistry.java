@@ -21,6 +21,7 @@ import java.util.Map;
 import fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.ArrayListMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.ArrayMatshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.BigDecimalMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.BigIntegerMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.BooleanMarshaller;
@@ -38,6 +39,15 @@ import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.LinkedHashSetMars
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.LinkedListMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.LongMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PBooleanMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PByteMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PCharacterMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PDoubleMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PFloatMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PIntegerMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PLongMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PShortMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.PVoidMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.ShortMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.StringMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.TreeMapMarshaller;
@@ -45,14 +55,22 @@ import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.TreeSetMarshaller
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.VectorMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.VoidMarshaller;
 
-public class AbstractMarshallerRegistry implements MarshallerRegistry {
+public abstract class AbstractMarshallerRegistry implements MarshallerRegistry {
 
 	protected final Map<Object, Marshaller<?>> registry = Maps.newHashMap();
 
 	@Override
 	public <T> Marshaller<T> findMarshaller(Class<T> clazz) {
 		Class type = clazz;
-		Marshaller<T> marshaller = null;
+		Marshaller<T> marshaller = (Marshaller<T>) registry.get(type);
+
+		if(marshaller == null && clazz.isArray()){
+			Class targetClass = clazz.getComponentType();
+			Marshaller<?> componentMarchaller = findMarshaller(targetClass);
+			marshaller = (Marshaller<T>) new ArrayMatshaller(targetClass, componentMarchaller);
+			registry.put(clazz, marshaller);
+		}
+
 		while (marshaller == null && type != null) {
 			marshaller = (Marshaller<T>) registry.get(type);
 			type = type.getSuperclass();
@@ -62,7 +80,14 @@ public class AbstractMarshallerRegistry implements MarshallerRegistry {
 
 	@Override
 	public <T> Marshaller<T> findMarshaller(String className) {
-		Marshaller<T> marshaller = (Marshaller<T>) registry.get(className);
+		Marshaller<T> marshaller = null;
+		if (className.indexOf('[') == 0) {
+			String targetClassName = className.substring(1);
+			Marshaller<T> targetMarshaller = findMarshaller(targetClassName);
+			marshaller = (Marshaller<T>) new ArrayMatshaller(targetMarshaller.getType(), targetMarshaller);
+		} else {
+			marshaller = (Marshaller<T>) registry.get(className);
+		}
 		if (marshaller == null) {
 			throw new SerializationException(className + " doesnt have any marshaller.");
 		}
@@ -75,15 +100,26 @@ public class AbstractMarshallerRegistry implements MarshallerRegistry {
 			throw new SerializationException(marshaller.getTypeName() + " already registered");
 		}
 
-		if (registry.containsKey(marshaller.getType())) {
-			throw new SerializationException(marshaller.getType() + " already registered");
+		Class type = marshaller.getType();
+		if (registry.containsKey(type)) {
+			throw new SerializationException(type + " already registered");
 		}
-		registry.put(marshaller.getType().getName(), marshaller);
-		registry.put(marshaller.getType(), marshaller);
+		registry.put(type.getName(), marshaller);
+		registry.put(type, marshaller);
 		registry.put(marshaller.getTypeName(), marshaller);
 	}
 
 	protected void registerDefault() {
+		register(new PBooleanMarshaller());
+		register(new PByteMarshaller());
+		register(new PCharacterMarshaller());
+		register(new PDoubleMarshaller());
+		register(new PFloatMarshaller());
+		register(new PIntegerMarshaller());
+		register(new PLongMarshaller());
+		register(new PShortMarshaller());
+		register(new PVoidMarshaller());
+
 		register(new ArrayListMarshaller());
 		register(new BigDecimalMarshaller());
 		register(new BigIntegerMarshaller());

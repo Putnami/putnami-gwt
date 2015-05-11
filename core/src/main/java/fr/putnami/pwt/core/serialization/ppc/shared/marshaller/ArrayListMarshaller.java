@@ -26,7 +26,7 @@ public class ArrayListMarshaller extends AbstractCollectionMatshaller<ArrayList>
 	}
 
 	@Override
-	public Class<ArrayList> getType() {
+	public Class<?> getType() {
 		return ArrayList.class;
 	}
 

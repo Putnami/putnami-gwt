@@ -41,7 +41,7 @@ public class CharacterMarshaller extends AbstractMarshaller<Character> {
 	}
 
 	@Override
-	public Class<Character> getType() {
+	public Class<?> getType() {
 		return Character.class;
 	}
 }

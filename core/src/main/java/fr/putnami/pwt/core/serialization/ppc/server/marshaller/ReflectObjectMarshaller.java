@@ -25,11 +25,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import fr.putnami.pwt.core.serialization.ppc.server.MarshallerServerRegistry;
+import fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.AbstractMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.util.PpcUtils;
 
 public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
@@ -86,10 +87,9 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 					Object value = getterMethod.invoke(bean);
 					if (value == null) {
 						writer.writeNull();
-						// } else if (Modifier.isFinal(propertyType.getModifiers())) {
-						// Marshaller<Object> marshaler = (Marshaller<Object>)
-						// marshallers.findMarshaller(propertyType);
-						// marshaler.marshal(value, writer);
+					} else if (Modifier.isFinal(propertyType.getModifiers())) {
+						Marshaller<Object> marshaler = (Marshaller<Object>) marshallers.findMarshaller(propertyType);
+						marshaler.marshal(value, writer);
 					} else {
 						writer.write(value);
 					}
@@ -120,10 +120,9 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 					} else if (short.class.equals(propertyType)) {
 						setterMethod.invoke(instance, reader.readShort());
 					}
-					// } else if (Modifier.isFinal(propertyType.getModifiers())) {
-					// Marshaller<Object> marshaler = (Marshaller<Object>)
-					// marshallers.findMarshaller(propertyType);
-					// setterMethod.invoke(instance, marshaler.unmarshal(reader));
+				} else if (Modifier.isFinal(propertyType.getModifiers())) {
+					Marshaller<Object> marshaler = (Marshaller<Object>) marshallers.findMarshaller(propertyType);
+					setterMethod.invoke(instance, marshaler.unmarshal(reader));
 				} else {
 					setterMethod.invoke(instance, reader.readObject());
 				}
@@ -171,10 +170,11 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 					Object value = field.get(bean);
 					if (value == null) {
 						writer.writeNull();
+					} else if (Modifier.isFinal(type.getModifiers())) {
+						Marshaller<Object> marshaler = (Marshaller<Object>) marshallers.findMarshaller(type);
+						marshaler.marshal(value, writer);
 					} else {
 						writer.write(value);
-						// Marshaller<Object> marshaler = (Marshaller<Object>) marshallers.findMarshaller(type);
-						// marshaler.marshal(value, writer);
 					}
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -204,10 +204,11 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 					} else if (short.class.equals(type)) {
 						field.setShort(instance, reader.readShort());
 					}
+				} else if (Modifier.isFinal(type.getModifiers())) {
+					Marshaller<Object> marshaler = (Marshaller<Object>) marshallers.findMarshaller(type);
+					Object value = marshaler.unmarshal(reader);
+					field.set(instance, value);
 				} else {
-					// Marshaller<Object> marshaler = (Marshaller<Object>) marshallers.findMarshaller(type);
-					// Object value = marshaler.unmarshal(reader);
-					// field.set(instance, value);
 					field.set(instance, reader.readObject());
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
@@ -221,11 +222,11 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 
 	private final Class<T> objectClass;
 
-	// private final MarshallerServerRegistry marshallers;
+	private final MarshallerRegistry marshallers;
 
-	public ReflectObjectMarshaller(Class<T> objectClass, MarshallerServerRegistry marshallers) {
+	public ReflectObjectMarshaller(Class<T> objectClass, MarshallerRegistry marshallers) {
 		this.objectClass = objectClass;
-		// this.marshallers = marshallers;
+		this.marshallers = marshallers;
 
 		try {
 			for (Field field : objectClass.getFields()) {

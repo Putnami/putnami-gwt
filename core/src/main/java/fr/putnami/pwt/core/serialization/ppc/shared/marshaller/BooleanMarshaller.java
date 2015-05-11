@@ -37,11 +37,11 @@ public class BooleanMarshaller extends AbstractMarshaller<Boolean> {
 
 	@Override
 	public String getTypeName() {
-		return "B";
+		return "Z";
 	}
 
 	@Override
-	public Class<Boolean> getType() {
+	public Class<?> getType() {
 		return Boolean.class;
 	}
 }

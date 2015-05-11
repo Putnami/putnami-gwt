@@ -24,7 +24,7 @@ public class VectorMarshaller extends AbstractCollectionMatshaller<Vector> {
 	}
 
 	@Override
-	public Class<Vector> getType() {
+	public Class<?> getType() {
 		return Vector.class;
 	}
 

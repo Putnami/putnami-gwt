@@ -31,8 +31,7 @@ public class HashMapMarshaller<K, V> extends AbstractMapMatshaller<K, V, HashMap
 	}
 
 	@Override
-	public Class<HashMap> getType() {
+	public Class<?> getType() {
 		return HashMap.class;
 	}
-
 }

@@ -63,7 +63,7 @@ public class ReflectEnumMarshaller extends AbstractMarshaller<Enum> {
 	}
 
 	@Override
-	public Class<Enum> getType() {
+	public Class<?> getType() {
 		return Enum.class;
 	}
 }

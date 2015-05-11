@@ -31,6 +31,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
 import java.io.PrintWriter;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
@@ -193,9 +194,19 @@ public class ModelCreator {
 			}
 			Boolean getter = this.getters.containsKey(propertyName);
 			Boolean setter = this.setters.containsKey(propertyName);
+			Boolean isFinal = true;
+			if (propertyType instanceof JClassType) {
+				try {
+					Class<?> propClass = getClass().getClassLoader().loadClass(propertyType.getQualifiedSourceName());
+					isFinal = Modifier.isFinal(propClass.getModifiers());
+				} catch (ClassNotFoundException e) {
+					JClassType classType = (JClassType) propertyType;
+					isFinal = classType.isFinal();
+				}
+			}
 
-			srcWriter.print("PROPERTIES.put(\"%s\", newPropertyDescription(\"%s\", %s.class, %s, %s, %s", propertyName,
-				propertyName, simplePropertyTypeName, modelName, getter, setter);
+			srcWriter.print("PROPERTIES.put(\"%s\", newPropertyDescription(\"%s\", %s.class, %s, %s, %s, %s", propertyName,
+				propertyName, simplePropertyTypeName, modelName, getter, setter, isFinal);
 			this.generateValidators(srcWriter, propertyName);
 			srcWriter.println("));");
 		}

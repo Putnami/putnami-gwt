@@ -37,11 +37,11 @@ public class ShortMarshaller extends AbstractMarshaller<Short> {
 
 	@Override
 	public String getTypeName() {
-		return "SH";
+		return "S";
 	}
 
 	@Override
-	public Class<Short> getType() {
+	public Class<?> getType() {
 		return Short.class;
 	}
 }
