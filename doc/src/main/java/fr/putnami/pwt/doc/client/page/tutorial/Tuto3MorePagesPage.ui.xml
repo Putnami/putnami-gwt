@@ -338,14 +338,6 @@ public class TutorialApp implements Module {
 <pre><![CDATA[
 	<extend-property name="locale" values="fr"/>]]></pre>
 			</c:StaticCode>
-
-			<p>And in order to show the result in dev or superDev mode, remove the "collapse locale property" in the dev module xml file 
-			(<code>fr/putnami/pwt/tutorial/TutorialDev.gwt.xml</code>):</p>
-			<c:StaticCode configuration="{XML_CONFIGURATION}">
-<pre><![CDATA[
-	<!-- Disabled to test I18N templates in dev -->
-	<!-- <collapse-property name="locale" values="*" /> -->]]></pre>
-			</c:StaticCode>
 			
 			<p>Then go to <a href="http://localhost:8080/putnami-pwt-tutorial/?locale=fr">http://localhost:8080/putnami-pwt-tutorial/?locale=fr</a> to see the french version of the welcome page.</p>
 			<p>Go to <a href="http://localhost:8080/putnami-pwt-tutorial/?locale=en">http://localhost:8080/putnami-pwt-tutorial/?locale=en</a> to see the default version.</p>

@@ -43,12 +43,15 @@
 			<c:StaticCode configuration="{JAVA_CONFIGURATION}">
 <pre><![CDATA[
 apply plugin: 'java'
-apply plugin: 'gwt'
-apply plugin: 'jetty'
+apply plugin: 'fr.putnami.gwt'
 
 buildscript {
-	repositories.jcenter()
-	dependencies{ classpath = 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5' }
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.2.0'
+	}
 }
 
 repositories {
@@ -59,8 +62,7 @@ dependencies {
 	compile 'fr.putnami.pwt:pwt:1.1.1'
 }
 
-gwt {
-	gwtVersion = '2.6.1'
+putnami {
 	modules = 'test.HelloPwt'
 }
 ]]></pre>
