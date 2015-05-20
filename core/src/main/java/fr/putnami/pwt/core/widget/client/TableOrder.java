@@ -89,7 +89,6 @@ public class TableOrder<T> extends AbstractTableColumn<T> implements RowOrderCha
 			this.selectedRow = (TableRow<T>) dragIcon.getParent().getParent();
 			this.body = (TableEditorBody<T>) this.selectedRow.getParent();
 
-			int i = 0;
 			this.overRegistration = new HandlerRegistrationCollection();
 			this.upRegistration = RootPanel.get().addDomHandler(this, MouseUpEvent.getType());
 			this.rows = Lists.newArrayList(this.body.getRows());
