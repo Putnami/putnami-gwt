@@ -26,7 +26,6 @@ import java.util.List;
 
 import fr.putnami.pwt.core.editor.client.EditorCollection;
 import fr.putnami.pwt.core.editor.client.EditorInput;
-import fr.putnami.pwt.core.editor.client.EditorLeaf;
 import fr.putnami.pwt.core.editor.client.EditorOutput;
 import fr.putnami.pwt.core.editor.client.EditorValue;
 import fr.putnami.pwt.core.editor.client.Error;
@@ -46,7 +45,7 @@ import fr.putnami.pwt.core.widget.client.util.WidgetUtils;
 
 public class TableEditorBody<T> extends TableBody<T>
 	implements HasDriver<Collection<T>, ModelDriver<Collection<T>>>, EditorOutput<Collection<T>>,
-	EditorInput<Collection<T>>, EditorCollection<T>, EditorModel<T>, EditorLeaf {
+	EditorInput<Collection<T>>, EditorCollection<T>, EditorModel<T> {
 
 	private final List<AbstractTableColumn<?>> columns = Lists.newArrayList();
 
