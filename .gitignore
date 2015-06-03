@@ -49,6 +49,7 @@ target/
 .project
 .settings
 .sonar
+*.iml
 
 # Cargo Containers #
 ######################
