@@ -36,7 +36,7 @@
 				<w:TableOrder  />
 				<w:TableSelecter ui:field="contactTableSelecter" selectionMode="COLUMN" readonly="true" />
 				<w:TableColumn path="gender" readonly="true" />
-				<w:TableColumn path="name" readonly="true" >
+				<w:TableColumn path="name" styleName="superName" readonly="true" >
 						<i:TableFilter />
 						<w:TableSort />
 				</w:TableColumn>

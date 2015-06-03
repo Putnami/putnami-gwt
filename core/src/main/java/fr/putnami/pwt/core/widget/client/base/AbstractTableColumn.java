@@ -66,6 +66,8 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 
 	private ColumnVisibility columnVisibility = ColumnVisibility.VISIBLE;
 
+	private String styleName;
+
 	public AbstractTableColumn() {
 	}
 
@@ -74,6 +76,7 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 		this.colspan = source.colspan;
 		this.columnVisibility = source.columnVisibility;
 		this.type = source.type;
+		this.styleName = source.styleName;
 	}
 
 	@Override
@@ -100,6 +103,14 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 
 	public void setColumnVisibility(ColumnVisibility columnVisibility) {
 		this.columnVisibility = columnVisibility;
+	}
+
+	public String getStyleName() {
+		return styleName;
+	}
+
+	public void setStyleName(String styleName) {
+		this.styleName = styleName;
 	}
 
 	public Collection<AbstractTableColumnAspect<T>> getAspects() {
@@ -169,6 +180,9 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 		this.setResponsiveVisibility(cell);
 		cell.setReadonlyVisibility(this.columnVisibility);
 		cell.setType(this.type);
+		if (getStyleName() != null) {
+			cell.addStyleName(getStyleName());
+		}
 		return cell;
 	}
 
@@ -177,6 +191,9 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 		this.setResponsiveVisibility(cell);
 		cell.setType(this.type);
 		cell.setReadonlyVisibility(this.columnVisibility);
+		if (getStyleName() != null) {
+			cell.addStyleName(getStyleName());
+		}
 		return cell;
 	}
 
