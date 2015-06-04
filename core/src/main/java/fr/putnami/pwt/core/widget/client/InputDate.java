@@ -38,17 +38,13 @@ public class InputDate extends InputGroup<Date>
 
 	private final InputDateBox dateBox = new InputDateBox();
 	private final Button<Date> calendarButton = new Button<Date>();
-	private final ButtonEvent.Handler buttonHandler = new ButtonEvent.Handler() {
-		@Override
-		public void onButtonAction(ButtonEvent event) {
-			InputDate.this.toggleDatePicker();
-		}
-
-	};
+	private final Button<Date> resetButton = new Button<Date>();
 
 	private InputDatePicker datePicker;
 
 	private CompositeFocusHelper compositeFocusHelper;
+
+	private Date value;
 
 	public InputDate() {
 		this.endConstruct();
@@ -64,8 +60,24 @@ public class InputDate extends InputGroup<Date>
 	protected void endConstruct() {
 		this.calendarButton.setType(Type.ICON);
 		this.calendarButton.setIconType(IconFont.ICON_CALENDAR);
-		this.calendarButton.addButtonHandler(this.buttonHandler);
+		this.calendarButton.addButtonHandler(new ButtonEvent.Handler() {
+			@Override
+			public void onButtonAction(ButtonEvent event) {
+				InputDate.this.toggleDatePicker();
+			}
+
+		});
+		this.resetButton.setType(Type.ICON);
+		this.resetButton.setIconType(IconFont.ICON_CANCEL);
+		this.resetButton.addButtonHandler(new ButtonEvent.Handler() {
+			@Override
+			public void onButtonAction(ButtonEvent event) {
+				InputDate.this.edit(InputDate.this.getValue());
+			}
+		});
+
 		this.append(this.dateBox);
+		this.addAddon(this.resetButton);
 		this.addAddon(this.calendarButton);
 		this.compositeFocusHelper = CompositeFocusHelper.createFocusHelper(this, this.dateBox);
 	}
@@ -90,7 +102,8 @@ public class InputDate extends InputGroup<Date>
 
 	@Override
 	public Date flush() {
-		return this.dateBox.flush();
+		this.value = this.dateBox.flush();
+		return this.value;
 	}
 
 	@Override
@@ -99,6 +112,7 @@ public class InputDate extends InputGroup<Date>
 	}
 
 	public void edit(Date value, boolean fireEvents) {
+		this.value = value;
 		this.dateBox.edit(value, fireEvents);
 		if (this.datePicker != null) {
 			this.datePicker.hide();
@@ -122,7 +136,7 @@ public class InputDate extends InputGroup<Date>
 
 	@Override
 	public Date getValue() {
-		return this.dateBox.getValue();
+		return this.value;
 	}
 
 	private void toggleDatePicker() {
