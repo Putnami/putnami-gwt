@@ -23,14 +23,14 @@ import com.google.gwt.dom.client.NodeList;
 import fr.putnami.pwt.core.widget.client.base.SimpleStyle;
 
 /**
- * The DefaultThemeController is the default {@link ThemeController} implemenation. <br/>
+ * The DefaultThemeController is the default {@link ThemeController} implemenation. <br>
  * <strong>Note</strong>: IE8 use {@link DefaultIE8ThemeController}.
  * <p>
  * The DefaultThemeController inserts all style sheet in the root document header. It install first
  * all default theme css then the current theme ones.
  * </p>
  * <ol>
- * <li>Remove all the css in the &lt;head> tag</li>
+ * <li>Remove all the css in the &lt;head&gt; tag</li>
  * <li>Install all css of the default theme</li>
  * <li>Install all css of the current theme</li>
  * </ol>

@@ -166,6 +166,7 @@ public abstract class AbstractForm<T> extends AbstractHTMLPanel
 
 	/**
 	 * @deprecated use {@link #hasErrors()} instead
+	 * @return hasError
 	 */
 	@Deprecated
 	public boolean hasError() {
