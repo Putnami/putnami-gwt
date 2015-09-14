@@ -34,5 +34,4 @@ public class HashSetMarshaller extends AbstractCollectionMatshaller<HashSet> {
 	public HashSet newInstance() {
 		return Sets.newHashSet();
 	}
-
 }

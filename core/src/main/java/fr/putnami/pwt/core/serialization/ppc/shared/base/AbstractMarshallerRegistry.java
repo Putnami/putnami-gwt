@@ -64,7 +64,7 @@ public abstract class AbstractMarshallerRegistry implements MarshallerRegistry {
 		Class type = clazz;
 		Marshaller<T> marshaller = (Marshaller<T>) registry.get(type);
 
-		if(marshaller == null && clazz.isArray()){
+		if (marshaller == null && clazz.isArray()) {
 			Class targetClass = clazz.getComponentType();
 			Marshaller<?> componentMarchaller = findMarshaller(targetClass);
 			marshaller = (Marshaller<T>) new ArrayMatshaller(targetClass, componentMarchaller);

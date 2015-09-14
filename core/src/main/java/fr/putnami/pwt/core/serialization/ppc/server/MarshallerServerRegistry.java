@@ -32,19 +32,18 @@ public class MarshallerServerRegistry extends AbstractMarshallerRegistry {
 	public <T> Marshaller<T> findMarshaller(Class<T> clazz) {
 		Marshaller<T> marshaller = super.findMarshaller(clazz);
 		if (marshaller == null) {
-			if(clazz.isEnum()){
+			if (clazz.isEnum()) {
 				marshaller = new EnumMarshaller<>(clazz);
 			} else if (Serializable.class.isAssignableFrom(clazz)) {
 				marshaller = new ReflectObjectMarshaller<T>(clazz, this);
 			}
-			if(marshaller == null){
+			if (marshaller == null) {
 				throw new SerializationException(clazz + " does not implement Serializable.");
 			}
 			synchronized (registry) {
 				register(marshaller);
 			}
 		}
-
 		return marshaller;
 	}
 }

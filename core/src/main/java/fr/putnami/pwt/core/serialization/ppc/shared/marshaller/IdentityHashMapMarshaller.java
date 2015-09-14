@@ -34,5 +34,4 @@ public class IdentityHashMapMarshaller<K, V> extends AbstractMapMatshaller<K, V,
 	public Class<?> getType() {
 		return IdentityHashMap.class;
 	}
-
 }

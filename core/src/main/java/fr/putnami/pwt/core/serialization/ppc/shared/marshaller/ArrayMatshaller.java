@@ -17,7 +17,6 @@ package fr.putnami.pwt.core.serialization.ppc.shared.marshaller;
 import com.google.common.collect.Lists;
 
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
@@ -55,16 +54,16 @@ public class ArrayMatshaller extends AbstractMarshaller<Object> {
 	}
 
 	private Object toArray(List collect) {
-		if(!targetClass.isPrimitive()){
+		if (!targetClass.isPrimitive()) {
 			Object[] arr = (Object[]) Array.newInstance(targetClass, collect.size());
 			for (int i = 0; i < collect.size(); i++) {
 				arr[i] = collect.get(i);
 			}
 			return arr;
-		} else if(boolean.class.equals(targetClass)){
+		} else if (boolean.class.equals(targetClass)) {
 			boolean[] arr = new boolean[collect.size()];
 			for (int i = 0; i < collect.size(); i++) {
-				arr[i] = (boolean)collect.get(i);
+				arr[i] = (boolean) collect.get(i);
 			}
 			return arr;
 		} else if (byte.class.equals(targetClass)) {
@@ -115,7 +114,7 @@ public class ArrayMatshaller extends AbstractMarshaller<Object> {
 
 	private List toList(Object value) {
 		List list = Lists.newArrayList();
-		if(boolean.class.equals(targetClass)){
+		if (boolean.class.equals(targetClass)) {
 			boolean[] arr = (boolean[]) value;
 			for (boolean v : arr) {
 				list.add(v);

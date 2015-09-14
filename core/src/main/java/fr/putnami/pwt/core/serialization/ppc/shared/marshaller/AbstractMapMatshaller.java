@@ -49,5 +49,4 @@ public abstract class AbstractMapMatshaller<K, V, M extends Map<K, V>> extends A
 		writer.write(getTypeName() + PpcUtils.SEPARATOR_TYPE_REF + id);
 		return true;
 	}
-
 }

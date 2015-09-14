@@ -34,5 +34,4 @@ public class ArrayListMarshaller extends AbstractCollectionMatshaller<ArrayList>
 	public ArrayList newInstance() {
 		return Lists.newArrayList();
 	}
-
 }

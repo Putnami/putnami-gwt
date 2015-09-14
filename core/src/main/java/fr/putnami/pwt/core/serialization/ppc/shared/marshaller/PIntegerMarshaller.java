@@ -40,7 +40,6 @@ public class PIntegerMarshaller extends AbstractMarshaller<Integer> {
 		return "i";
 	}
 
-
 	@Override
 	public Class<?> getType() {
 		return int.class;
