@@ -38,9 +38,9 @@
 			<w:Alert ><h4>Note :</h4><p>In this tutorial, we use Gradle to build the project. If you use Maven, you should see the Maven version <a href="#!Tuto1InitMaven">here</a></p></w:Alert>
 			
 			<w:Heading level="2" summary="docSummary">Gradle and GWT notice</w:Heading>
-			<p>Gradle does not support any official GWT plugin yet. However, there is a very nice one hosted on Github : <a href="https://github.com/steffenschaefer/gwt-gradle-plugin" target="_BLANK">Steffen Schäffer's gwt-gradle-plugin</a>, which is available on <a href="http://bintray.com" target="_BLANK">Bintray</a>'s JCenter repository.</p>
+			<p>Gradle does not support any official GWT plugin yet. However, Putnami made a nice one for you ;) : <a href="https://github.com/Putnami/putnami-gradle-plugin" target="_BLANK">putnami-gradle-plugin</a>, and published it on maven central repository.</p>
 				
-			<p>On this tutorial, we only explains the bases of the plugin. You can refer to the <a href="http://steffenschaefer.github.io/gwt-gradle-plugin/" target="_BLANK">official doc</a> to go furher.</p>
+			<p>On this tutorial, we only explains the bases of the plugin. You can refer to the <a href="https://github.com/Putnami/putnami-gradle-plugin" target="_BLANK">official doc</a> to go furher.</p>
 			
 	
 	
@@ -52,12 +52,12 @@
 			<p>In the project folder, create the gradle build file (<code>build.gradle</code>).</p>
 			<p>We will configure the gradle build :</p>
 			<ol>
-				<li>Configure the build script to use the non official  gwt-gradle-plugin :
+				<li>Configure the build script to use the non official  putnami-gradle-plugin :
 					<c:StaticCode configuration="{JAVA_CONFIGURATION}">
 <pre><![CDATA[
 buildscript {
-	repositories.jcenter()
-	dependencies{ classpath = 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.5' }
+	repositories { mavenCentral() }
+	dependencies { classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.2.0' }
 }]]></pre>
 					</c:StaticCode>
 				</li>
@@ -80,72 +80,10 @@ dependencies {
 				<li>In order to use the gwt-gradle-plugin, we have to apply it and configure it :
 					<c:StaticCode configuration="{JAVA_CONFIGURATION}">
 <pre><![CDATA[
-apply plugin: 'gwt'
+apply plugin: 'fr.putnami.gwt'
 
-gwt {
-	gwtVersion = '2.6.1'
-
-	// Modules used in production
-	modules = ['fr.putnami.pwt.tutorial.Tutorial']
-	// Modules used in dev mode and super dev mode.
-	devModules = ['fr.putnami.pwt.tutorial.TutorialDev']
-
-	superDev {
-		noPrecompile=true
-	}
-
-	// You can skip it if you won't use it
-	// If you add it, you'll have to apply the jetty plugin first.
-	gwtDev {
-		// Allows to debug with the standard Dev mode
-		// ( no more supported on Chrome for Linux or on Firefox)
-		jvmArgs('-Xdebug',  '-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=8000')
-	}
-}]]></pre>
-					</c:StaticCode>
-				</li>
-				<li>If you want to use the gradle eclipse plugin (genrate eclipse configuration files with gradle), apply the plugin :
-					<c:StaticCode configuration="{JAVA_CONFIGURATION}">
-<pre><![CDATA[
-apply plugin: 'eclipse'
-]]></pre>
-					</c:StaticCode>
-					<p>Now you have two options : use the GPE or not. If you use the GPE, you have to hadd the following tweak :</p>
-					<c:StaticCode configuration="{JAVA_CONFIGURATION}">
-<pre><![CDATA[
-//Tweak to move the GWT container classpath entry to the end
-// Must be defined after the gwt-plugin configuration
-if (gwt.eclipse.addGwtContainer) {
-	eclipse.classpath.file{
-		whenMerged{ classpath ->
-			def projectRefs = classpath.entries.findAll{entry -> entry.kind =='con' && entry.path.equals('com.google.gwt.eclipse.core.GWT_CONTAINER')}
-			//move the project references to the end of the list:
-			classpath.entries.removeAll(projectRefs)
-			classpath.entries.addAll(projectRefs)
-		}
-	}
-}]]></pre>
-					</c:StaticCode>
-					<p> else you have to configure the gradle-gwt-plugin in order to use the GWT jars dependencies :</p>
-					<c:StaticCode configuration="{JAVA_CONFIGURATION}">
-<pre><![CDATA[
-gwt {
-	// The following is only needed if you don't use the Google Plugin for Eclipse.
-	eclipse{
-		addGwtContainer=false // Default set to true
-	}
-}]]></pre>
-					</c:StaticCode>
-				</li>
-				<li>Finally, we apply the jetty plugin to launch the web app, and configure a custom task to run the application with draft GWT compilation :
-					<c:StaticCode configuration="{JAVA_CONFIGURATION}">
-<pre><![CDATA[
-apply plugin: 'jetty'
-
-task jettyDraftWar(type: JettyRunWar) {
-	dependsOn draftWar
-	dependsOn.remove('war')
-	webApp=draftWar.archivePath
+putnami {
+	module 'fr.putnami.pwt.tutorial.Tutorial'
 }]]></pre>
 					</c:StaticCode>
 				</li>
@@ -202,28 +140,6 @@ public class TutorialApp implements EntryPoint {
 </module>]]></pre>
 					</c:StaticCode>
 				</li>
-				<li>We also create a GWT module file for the dev tasks : <code>fr/putnami/pwt/tutorial/TutorialDev.gwt.xml</code>
-					<c:StaticCode configuration="{XML_CONFIGURATION}">
-<pre><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<module rename-to="Tutorial">
-	<inherits name="fr.putnami.pwt.tutorial.Tutorial" />
-
-	<!-- We collapse all properties -->
-	<collapse-property name="user.agent" values="*" />
-	<collapse-property name="locale" values="*" />
-	<collapse-property name="canvasElementSupport" values="*" />
-	<collapse-property name="touchEventSupport" values="*" />
-	<collapse-property name="dragEventSupport" values="*" />
-	<collapse-property name="audioElementSupport" values="*" />
-	<collapse-property name="videoElementSupport" values="*" />
-	<collapse-property name="storageSupport" values="*" />
-
-	<set-configuration-property name="devModeRedirectEnabled" value="true" />
-</module>]]></pre>
-					</c:StaticCode>
-					<w:Alert ><h4>Note :</h4><p>In the dev module, we do not use the <code>collapse-all-properties</code> tag because it induce a bug in source mapping in browsers.</p></w:Alert>
-				</li>
 			</ol>
 	
 	
@@ -247,10 +163,10 @@ public class TutorialApp implements EntryPoint {
 			</c:StaticCode>
 	
 			<w:Heading level="2" summary="docSummary">Step 6 : <em>Run the app</em></w:Heading>
-			<p>In order to run the app in draft compile mode, use</p>
-			<p><kbd>gradle jettyDraftWar</kbd></p>
+			<p>In order to run the app in with the super dev mode</p>
+			<p><kbd>gradle gwtDev</kbd></p>
 			<p>To run it in production mode, use</p>
-			<p><kbd>gradle jettyRunWar</kbd></p>
+			<p><kbd>gradle gwtRun</kbd></p>
 			<p>That's it !</p>
 			
 			<w:Alert ><h4>Note :</h4><p>You can see the result in the <code>tutorials/Part1</code> folder in the PWT sources.</p></w:Alert>			

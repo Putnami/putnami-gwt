@@ -42,7 +42,7 @@ import fr.putnami.pwt.core.widget.client.base.AbstractPanel;
 import fr.putnami.pwt.core.widget.client.base.AbstractTableCell;
 
 public class TableRow<T> extends AbstractPanel
-	implements EditorOutput<T>, EditorInput<T>, EditorLeaf, EditorModel<T>, HasReadonly, HasClickHandlers {
+	implements EditorOutput<T>, EditorInput<T>, EditorLeaf, EditorModel<T>, HasReadonly, HasClickHandlers, Comparable<TableRow<T>> {
 
 	private MessageHelper messageHelper;
 	private Model<T> model;
@@ -160,4 +160,8 @@ public class TableRow<T> extends AbstractPanel
 		return this.driver;
 	}
 
+	@Override
+	public int compareTo(TableRow<T> o) {
+		return Integer.compare(index, o.index);
+	}
 }

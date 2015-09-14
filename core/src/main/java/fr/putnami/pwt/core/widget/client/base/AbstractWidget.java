@@ -39,6 +39,7 @@ public abstract class AbstractWidget extends Widget implements HasResponsiveVisi
 
 	public AbstractWidget(AbstractWidget source) {
 		this(source.tagName);
+        this.path = source.path;
 		this.handlerManager = new HandlerManager(source.handlerManager, this);
 		this.handlerManager.resetSinkEvents();
 		StyleUtils.cloneStyle(this, source);

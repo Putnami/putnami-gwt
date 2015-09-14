@@ -170,10 +170,8 @@ public class WelcomeView extends Composite implements View {
 			
 			
 			<w:Heading level="2" summary="docSummary">Step 5 : <em>Test the app</em></w:Heading>
-			<p>In order to run the app in draft compile mode, use</p>
-			<p><kbd>gradle jettyDraftWar</kbd> or <kbd>mvn -Pdev jetty:run</kbd></p>
-			<p>To run it in production mode, use</p>
-			<p><kbd>gradle jettyRunWar</kbd> or <kbd>mvn jetty:run</kbd></p>
+			<p>In order to run the app in dev mode, use</p>
+			<p><kbd>gradle gwtDev</kbd> or <kbd>mvn -Pdev jetty:run</kbd></p>
 			<p>That's it !</p>
 
 			<w:Alert ><h4>Note :</h4><p>You can see the result in the <code>tutorials/Part2</code> folder in the PWT sources.</p></w:Alert>			

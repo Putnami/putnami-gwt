@@ -98,6 +98,7 @@ public class Anchor<T> extends AbstractPanel
 
 	private T value;
 	private String link;
+    private String target;
 
 	public Anchor() {
 		super(AnchorElement.TAG);
@@ -112,6 +113,10 @@ public class Anchor<T> extends AbstractPanel
 	public Anchor(Anchor<T> source) {
 		super(source);
 		this.endConstruct();
+        if (source.link != null) {
+            this.setLink(source.link);
+        }
+        this.setTarget(source.target);
 		this.cloneSourceWidgets(source);
 	}
 
@@ -142,7 +147,20 @@ public class Anchor<T> extends AbstractPanel
 		}
 	}
 
-	public void setLinkAsDummy() {
+    public String getTarget() {
+        return target;
+    }
+
+    public void setTarget(String target) {
+        this.target = target;
+        if (target == null) {
+            this.getElement().removeAttribute("target");
+        } else {
+            AnchorElement.as(this.getElement()).setTarget(target);
+        }
+    }
+
+    public void setLinkAsDummy() {
 		AnchorElement.as(this.getElement()).setHref(AnchorUtils.DUMMY_HREF);
 	}
 
@@ -154,6 +172,13 @@ public class Anchor<T> extends AbstractPanel
 	@Override
 	public void edit(T value) {
 		this.value = value;
+        if (this.link == null) {
+            if (this.value instanceof String) {
+                AnchorElement.as(this.getElement()).setHref((String) this.value);
+            } else {
+                setLinkAsDummy();
+            }
+        }
 	}
 
 	@Override

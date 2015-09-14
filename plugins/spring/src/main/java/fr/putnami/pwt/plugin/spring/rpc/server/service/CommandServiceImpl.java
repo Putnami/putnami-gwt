@@ -17,13 +17,12 @@ package fr.putnami.pwt.plugin.spring.rpc.server.service;
 import com.google.common.collect.Lists;
 
 import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Service;
 
+import java.lang.annotation.Annotation;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,18 +34,27 @@ import fr.putnami.pwt.core.service.shared.domain.CommandRequest;
 import fr.putnami.pwt.core.service.shared.domain.CommandResponse;
 import fr.putnami.pwt.core.service.shared.service.CommandService;
 
-
-public class CommandServiceImpl implements CommandService, BeanPostProcessor {
+public class CommandServiceImpl implements CommandService {
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
+    private final Class<? extends Annotation> serviceAnnotation;
+
 	private final CommandExecutorRegistry executorRegistry = new CommandExecutorRegistryImpl();
+
+    public CommandServiceImpl() {
+        this(Service.class);
+    }
+
+    public CommandServiceImpl(Class<? extends Annotation> serviceAnnotation) {
+        this.serviceAnnotation = serviceAnnotation;
+    }
 
 	@PostConstruct
 	public void afterPropertySet() {
-		for (String beanName : this.applicationContext.getBeanDefinitionNames()) {
-			this.scanBean(this.applicationContext.getBean(beanName), beanName);
+		for (String beanName : this.applicationContext.getBeanNamesForAnnotation(this.serviceAnnotation)) {
+            this.scanBean(this.applicationContext.getBean(beanName), beanName);
 		}
 	}
 
@@ -60,17 +68,6 @@ public class CommandServiceImpl implements CommandService, BeanPostProcessor {
 		return result;
 	}
 
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		return bean;
-	}
-
-	@Override
-	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		this.scanBean(bean, beanName);
-		return bean;
-	}
-
 	protected void injectService(Class<?> serviceInterface, Object service) {
 		this.executorRegistry.injectService(serviceInterface, service);
 	}
@@ -80,7 +77,7 @@ public class CommandServiceImpl implements CommandService, BeanPostProcessor {
 		if (AopUtils.isAopProxy(bean)) {
 			implClass = AopUtils.getTargetClass(bean);
 		}
-		Service serviceAnnotation = AnnotationUtils.findAnnotation(implClass, Service.class);
+		Annotation serviceAnnotation = AnnotationUtils.findAnnotation(implClass, this.serviceAnnotation);
 		if (serviceAnnotation != null) {
 			for (Class<?> inter : implClass.getInterfaces()) {
 				this.injectService(inter, bean);

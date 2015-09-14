@@ -23,6 +23,7 @@ import java.util.List;
 
 import fr.putnami.pwt.core.editor.client.Path;
 import fr.putnami.pwt.core.editor.client.Path.PathElement;
+import fr.putnami.pwt.core.editor.client.util.PathUtils;
 import fr.putnami.pwt.core.editor.client.validator.Validator;
 import fr.putnami.pwt.core.model.client.model.Model;
 import fr.putnami.pwt.core.model.client.model.ModelCollection;
@@ -62,6 +63,9 @@ public final class ModelUtils {
 		PropertyDescription propertyDescription = ModelUtils.resolveProperty(model, path);
 		if (propertyDescription != null) {
 			return (Model<A>) propertyDescription.getModel();
+		}
+		if (PathUtils.isCollection(path)) {
+			return (Model<A>) model.getLeafModel();
 		}
 		return (Model<A>) model;
 	}

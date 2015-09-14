@@ -56,9 +56,9 @@ public abstract class AbstractTextOutput<T> extends AbstractOutput<T> implements
 
 	protected AbstractTextOutput(AbstractTextOutput<T> source) {
 		super(source);
-		this.renderer = source.renderer;
-		this.style = source.style;
-		this.text = source.text;
+        setText(source.text);
+        setRenderer(source.renderer);
+        setStyle(source.style);
 	}
 
 	@Override

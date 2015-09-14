@@ -53,7 +53,7 @@ public abstract class ViewPlace extends Place {
 
 	/**
 	 * @deprecated public only for factory, sould be final field
-	 * @param token
+	 * @param token place token
 	 */
 	@Deprecated
 	public void setToken(String token) {

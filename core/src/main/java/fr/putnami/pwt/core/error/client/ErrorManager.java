@@ -26,7 +26,6 @@ import java.util.List;
  * uncaugth exception to the right handler. It submits the error to each handler while the error is
  * not handled.
  * </p>
- * <p>
  * <strong>Note:</strong> You can use your own implementation by overriding it in your .gwt.xml
  *
  * <pre>
@@ -35,7 +34,6 @@ import java.util.List;
  * &lt;/replace-with&gt;
  * </pre>
  *
- * </p>
  *
  * @since 1.0
  */

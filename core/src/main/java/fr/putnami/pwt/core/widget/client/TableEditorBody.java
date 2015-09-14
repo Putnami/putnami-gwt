@@ -53,6 +53,8 @@ public class TableEditorBody<T> extends TableBody<T>
 	private Model<T> model;
 	private ModelDriver<Collection<T>> driver;
 
+	private boolean rowOrderDirty;
+
 	@UiConstructor
 	public TableEditorBody(String bodyId) {
 		super(bodyId);
@@ -136,10 +138,23 @@ public class TableEditorBody<T> extends TableBody<T>
 
 	@Override
 	public void edit(Collection<T> value) {
-		for (TableRow<T> row : this.getRowList()) {
-			row.setVisible(false);
-		}
+		resetRows();
 		getDriverOrThrow().edit(value);
+	}
+
+	private void resetRows() {
+		if (rowOrderDirty) {
+			Collections.sort(this.getRowList());
+		}
+		List<TableRow<T>> rows = this.getRowList();
+		int i = 0;
+		for (TableRow<T> row : rows) {
+			row.setVisible(false);
+			if (rowOrderDirty) {
+				insert(row, ++i, true);
+			}
+		}
+		this.rowOrderDirty = false;
 	}
 
 	@Override
@@ -188,9 +203,6 @@ public class TableEditorBody<T> extends TableBody<T>
 			rows.remove(secondIndex);
 			rows.add(secondIndex, first);
 
-			first.setIndex(secondIndex);
-			second.setIndex(firstIndex);
-
 			if (values != null) {
 				values.remove(firstIndex);
 				values.add(firstIndex, secondVal);
@@ -204,9 +216,6 @@ public class TableEditorBody<T> extends TableBody<T>
 			rows.add(secondIndex, first);
 			rows.remove(firstIndex);
 			rows.add(firstIndex, second);
-
-			first.setIndex(secondIndex);
-			second.setIndex(firstIndex);
 
 			if (values != null) {
 				values.remove(secondIndex);
@@ -244,5 +253,9 @@ public class TableEditorBody<T> extends TableBody<T>
 			throw new EditorModelNotInitializedException(this);
 		}
 		return this.driver;
+	}
+
+	public void setRowOrderDirty(boolean rowOrderDirty) {
+		this.rowOrderDirty = rowOrderDirty;
 	}
 }

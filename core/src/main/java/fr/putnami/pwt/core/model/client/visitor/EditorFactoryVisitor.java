@@ -23,6 +23,7 @@ import fr.putnami.pwt.core.editor.client.Editor;
 import fr.putnami.pwt.core.editor.client.EditorCollection;
 import fr.putnami.pwt.core.editor.client.Path;
 import fr.putnami.pwt.core.editor.client.factory.CloneableWidget;
+import fr.putnami.pwt.core.editor.client.util.PathUtils;
 import fr.putnami.pwt.core.editor.client.visitor.AbstractVisitor;
 import fr.putnami.pwt.core.model.client.ModelDriver;
 import fr.putnami.pwt.core.model.client.base.EditorProvider;
@@ -146,7 +147,7 @@ public class EditorFactoryVisitor extends AbstractVisitor {
 			ModelDriver<?> driver = context.getDriver();
 			Model<?> model = ModelUtils.resolveModel(driver.getModel(), path);
 			if (model instanceof ModelCollection
-				&& (editor instanceof EditorCollection || path.get(path.size() - 1).getIndexKey() != null)) {
+				&& (editor instanceof EditorCollection || PathUtils.isCollection(path))) {
 				propertyType = (Class<A>) model.getLeafType();
 			} else {
 				propertyType = ModelUtils.resolveType(driver.getModel(), path);

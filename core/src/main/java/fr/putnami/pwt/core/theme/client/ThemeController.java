@@ -28,9 +28,9 @@ import com.google.gwt.core.client.GWT;
  * </p>
  *
  * <pre>
- * &lt;replace-with class="you.package.CustomThemeController">
- * 	&lt;when-type-is class="fr.putnami.pwt.core.theme.client.ThemeController"/>
- * &lt;/replace-with>
+ * &lt;replace-with class="you.package.CustomThemeController"&gt;
+ * 	&lt;when-type-is class="fr.putnami.pwt.core.theme.client.ThemeController"/&gt;
+ * &lt;/replace-with&gt;
  * </pre>
  *
  * @since 1.0

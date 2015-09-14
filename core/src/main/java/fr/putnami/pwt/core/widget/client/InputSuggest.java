@@ -16,6 +16,8 @@ package fr.putnami.pwt.core.widget.client;
 
 import com.google.gwt.event.dom.client.BlurHandler;
 import com.google.gwt.event.dom.client.FocusHandler;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.regexp.shared.RegExp;
 import com.google.gwt.text.shared.Parser;
@@ -102,6 +104,11 @@ public class InputSuggest<T> extends AbstractInputBox<TextBox, T> {
 	}
 
 	@Override
+	public HandlerRegistration addValueChangeHandler(ValueChangeHandler<T> handler) {
+		return addHandler(handler, ValueChangeEvent.getType());
+	}
+
+	@Override
 	public void setRenderer(Renderer<T> renderer) {
 		super.setRenderer(renderer);
 		if (oracle.getDelegate() instanceof SimpleOracle) {
@@ -164,7 +171,9 @@ public class InputSuggest<T> extends AbstractInputBox<TextBox, T> {
 			input.setText(replacementString);
 			input.setCursorPos(replacementString.length());
 
+			T oldValue = InputSuggest.this.currentValue;
 			InputSuggest.this.currentValue = value;
+			ValueChangeEvent.fireIfNotEqual(InputSuggest.this, oldValue, value);
 		}
 	}
 }

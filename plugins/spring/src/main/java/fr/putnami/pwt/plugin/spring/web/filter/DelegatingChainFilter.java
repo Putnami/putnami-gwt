@@ -17,9 +17,7 @@ package fr.putnami.pwt.plugin.spring.web.filter;
 import com.google.common.collect.Lists;
 
 import org.springframework.aop.support.AopUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -34,23 +32,12 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public class DelegatingChainFilter extends GenericFilterBean implements BeanPostProcessor {
+public class DelegatingChainFilter extends GenericFilterBean {
 
 	private final List<Filter> filters = Lists.newArrayList();
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
-
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		return bean;
-	}
-
-	@Override
-	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		scanBean(bean, beanName);
-		return bean;
-	}
 
 	private void scanBean(Object bean, String name) {
 		Class<?> implClass = bean.getClass();
@@ -65,7 +52,7 @@ public class DelegatingChainFilter extends GenericFilterBean implements BeanPost
 	@Override
 	protected void initFilterBean() throws ServletException {
 		findWebApplicationContext();
-		for (String beanName : webApplicationContext.getBeanDefinitionNames()) {
+		for (String beanName : webApplicationContext.getBeanNamesForType(Filter.class)) {
 			scanBean(webApplicationContext.getBean(beanName), beanName);
 		}
 	}
@@ -73,7 +60,7 @@ public class DelegatingChainFilter extends GenericFilterBean implements BeanPost
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException,
 		ServletException {
-		new IteratableFilterChain(filters, chain).doFilter(req, res);
+		new IterableFilterChain(filters, chain).doFilter(req, res);
 	}
 
 	protected WebApplicationContext findWebApplicationContext() {
@@ -83,11 +70,11 @@ public class DelegatingChainFilter extends GenericFilterBean implements BeanPost
 		return webApplicationContext;
 	}
 
-	private class IteratableFilterChain implements FilterChain {
+	private class IterableFilterChain implements FilterChain {
 		private final FilterChain defaultChain;
 		private Iterator<Filter> filterIterator;
 
-		public IteratableFilterChain(List<Filter> filters, FilterChain chain) {
+		public IterableFilterChain(List<Filter> filters, FilterChain chain) {
 			this.filterIterator = filters.iterator();
 			this.defaultChain = chain;
 		}
@@ -102,5 +89,4 @@ public class DelegatingChainFilter extends GenericFilterBean implements BeanPost
 			}
 		}
 	}
-
 }

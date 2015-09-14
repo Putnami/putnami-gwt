@@ -64,6 +64,7 @@ import fr.putnami.pwt.core.theme.client.IconFont;
 import fr.putnami.pwt.core.widget.client.base.SimpleStyle;
 import fr.putnami.pwt.core.widget.client.event.ButtonEvent;
 import fr.putnami.pwt.core.widget.client.event.ButtonEvent.Handler;
+import fr.putnami.pwt.core.widget.client.util.AnchorUtils;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 
 public class InputList<T> extends List
@@ -125,6 +126,7 @@ public class InputList<T> extends List
 			StyleUtils.addStyle(this.deleteButton, InputList.STYLE_CLOSE);
 			StyleUtils.addStyle(this.clear, InputList.STYLE_CLEAR);
 			this.deleteButton.setTabIndex(-1);
+			this.deleteButton.setLink(AnchorUtils.DUMMY_HREF);
 			this.deleteButton.addClickHandler(new ClickHandler() {
 				@Override
 				public void onClick(ClickEvent event) {

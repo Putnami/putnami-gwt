@@ -14,8 +14,8 @@
  */
 package fr.putnami.pwt.core.widget.client;
 
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.Style;
@@ -28,23 +28,25 @@ import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.RootPanel;
 
 import java.util.List;
-import java.util.Map;
 
+import fr.putnami.pwt.core.event.client.EventBus;
 import fr.putnami.pwt.core.event.client.HandlerRegistrationCollection;
 import fr.putnami.pwt.core.theme.client.CssStyle;
 import fr.putnami.pwt.core.theme.client.IconFont;
 import fr.putnami.pwt.core.widget.client.base.AbstractTableCell;
 import fr.putnami.pwt.core.widget.client.base.AbstractTableColumn;
 import fr.putnami.pwt.core.widget.client.base.SimpleStyle;
+import fr.putnami.pwt.core.widget.client.event.RowOrderChangeEvent;
 import fr.putnami.pwt.core.widget.client.util.SelectionUtils;
 import fr.putnami.pwt.core.widget.client.util.StyleUtils;
 
-public class TableOrder<T> extends AbstractTableColumn<T> {
+public class TableOrder<T> extends AbstractTableColumn<T> implements RowOrderChangeEvent.HasRowOrderChangeHandlers {
 
 	private static final CssStyle STYLE_TABLE_ORDER = new SimpleStyle("table-order");
 	private static final CssStyle STYLE_ROW_DRAGING = new SimpleStyle("success");
@@ -69,7 +71,7 @@ public class TableOrder<T> extends AbstractTableColumn<T> {
 		private TableEditorBody<T> body;
 		private TableRow<T> hoverRow;
 		private TableRow<T> selectedRow;
-		private Map<TableRow<T>, Integer> rows = Maps.newHashMap();
+		private Iterable<TableRow<T>> rows;
 
 		private HandlerRegistration upRegistration;
 		private HandlerRegistrationCollection overRegistration;
@@ -87,11 +89,10 @@ public class TableOrder<T> extends AbstractTableColumn<T> {
 			this.selectedRow = (TableRow<T>) dragIcon.getParent().getParent();
 			this.body = (TableEditorBody<T>) this.selectedRow.getParent();
 
-			int i = 0;
 			this.overRegistration = new HandlerRegistrationCollection();
 			this.upRegistration = RootPanel.get().addDomHandler(this, MouseUpEvent.getType());
-			for (TableRow<T> row : this.body.getRows()) {
-				this.rows.put(row, i++);
+			this.rows = Lists.newArrayList(this.body.getRows());
+			for (TableRow<T> row : this.rows) {
 				this.overRegistration.add(row.addDomHandler(this, MouseOverEvent.getType()));
 			}
 			TableOrder.this.disableTextSelection(true);
@@ -113,15 +114,20 @@ public class TableOrder<T> extends AbstractTableColumn<T> {
 			this.upRegistration = null;
 			this.overRegistration = null;
 
+			if (event != null) {
+				event.stopPropagation();
+				if (!Iterables.elementsEqual(this.rows, this.body.getRows())) {
+					EventBus.get().fireEventFromSource(new RowOrderChangeEvent(this.body), TableOrder.this);
+					this.body.setRowOrderDirty(true);
+				}
+			}
+
 			this.body = null;
 			this.hoverRow = null;
 			this.selectedRow = null;
 			TableOrder.this.disableTextSelection(false);
 
 			RootPanel.get().getElement().getStyle().clearCursor();
-			if (event != null) {
-				event.stopPropagation();
-			}
 		}
 
 		@Override
@@ -172,4 +178,13 @@ public class TableOrder<T> extends AbstractTableColumn<T> {
 		SelectionUtils.disableTextSelectInternal(rootPanelElement, disable);
 	}
 
+	@Override
+	public com.google.web.bindery.event.shared.HandlerRegistration addRowOrderChangeHandler(RowOrderChangeEvent.Handler handler) {
+		return EventBus.get().addHandlerToSource(RowOrderChangeEvent.TYPE, this, handler);
+	}
+
+	@Override
+	public void fireEvent(GwtEvent<?> event) {
+		EventBus.get().fireEvent(event);
+	}
 }

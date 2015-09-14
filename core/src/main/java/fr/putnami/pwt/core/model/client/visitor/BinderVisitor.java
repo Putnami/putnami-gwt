@@ -84,7 +84,7 @@ public class BinderVisitor extends AbstractVisitor {
 				EditorValue traversalEditor = editorList.getEditorForTraversal(i);
 				Context<EditorValue> contextCreated = (Context<EditorValue>) this.driver.getContext(traversalEditor);
 				if (contextCreated == null) {
-					contextCreated = ContextFactory.Util.get().createContext(this.driver, null, traversalEditor);
+					contextCreated = ContextFactory.Util.get().createContext(this.driver, context, traversalEditor);
 					if (editor instanceof HasReadonly) {
 						this.driver.accept(new ReadonlyVisitor(editor, ((HasReadonly) editor).getReadonly(), true), contextCreated);
 					}

@@ -19,15 +19,10 @@ package fr.putnami.pwt.core.error.client;
  * <p>
  * You can register your handler implementation in {@link ErrorManager}
  * </p>
- * <p>
  * <strong>Register a handler</strong>
- *
  * <pre>
  * ErrorManager.get().registerErrorHandler(handler);
  * </pre>
- *
- * </p>
- * <p>
  * <strong>Simple handler</strong>
  *
  * <pre>
@@ -43,8 +38,6 @@ package fr.putnami.pwt.core.error.client;
  * }
  * </pre>
  *
- * </p>
- *
  * @since 1.0
  */
 public interface ErrorHandler {
@@ -58,8 +51,6 @@ public interface ErrorHandler {
 	/**
 	 * Handle the error. If the handler can manage the exception, it must return true to stop the
 	 * chaining, otherwise false to follow the chain.
-	 * <p>
-	 * </p>
 	 *
 	 * @param error to handle
 	 * @return true, if error handled

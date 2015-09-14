@@ -91,10 +91,12 @@ public class Image extends AbstractWidget implements EditorOutput<String> {
 
 	public void setSrc(String src) {
 		this.src = src;
-		if (this.src != null && this.src.startsWith("/")) {
-			this.src = GWT.getModuleName() + this.src;
+		if (this.src != null) {
+			if (this.src.startsWith("/")) {
+				this.src = GWT.getModuleName() + this.src;
+			}
+			this.imgElement.setSrc(this.src);
 		}
-		this.imgElement.setSrc(this.src);
 	}
 
 	public String getAlt() {

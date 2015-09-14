@@ -41,7 +41,7 @@ public @interface MvpDescription {
 
 	/**
 	 * Each activity class will be registered in the MvpController with the following :
-	 * GWT.<ActivityFactory> create(class)
+	 * GWT.&lt;ActivityFactory&gt; create(class)
 	 *
 	 * @return activities to register
 	 */

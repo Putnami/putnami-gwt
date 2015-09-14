@@ -14,6 +14,8 @@
  */
 package fr.putnami.pwt.core.editor.client.util;
 
+import com.google.common.collect.Iterables;
+
 import fr.putnami.pwt.core.editor.client.Path;
 import fr.putnami.pwt.core.editor.client.Path.PathElement;
 
@@ -56,5 +58,9 @@ public final class PathUtils {
 
 	public static boolean isRoot(Path path) {
 		return path == null || path.isRoot();
+	}
+
+	public static boolean isCollection(Path path) {
+		return path != null && !path.isEmpty() && Iterables.getLast(path).getIndexKey() != null;
 	}
 }
