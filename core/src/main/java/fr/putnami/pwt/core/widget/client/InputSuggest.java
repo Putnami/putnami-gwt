@@ -174,7 +174,6 @@ public class InputSuggest<T> extends AbstractInputBox<TextBox, T> {
 			T oldValue = InputSuggest.this.currentValue;
 			InputSuggest.this.currentValue = value;
 			ValueChangeEvent.fireIfNotEqual(InputSuggest.this, oldValue, value);
-
 		}
 	}
 }

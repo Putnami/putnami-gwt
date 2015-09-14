@@ -34,7 +34,6 @@ import fr.putnami.pwt.core.service.shared.domain.CommandRequest;
 import fr.putnami.pwt.core.service.shared.domain.CommandResponse;
 import fr.putnami.pwt.core.service.shared.service.CommandService;
 
-
 public class CommandServiceImpl implements CommandService {
 
 	@Autowired

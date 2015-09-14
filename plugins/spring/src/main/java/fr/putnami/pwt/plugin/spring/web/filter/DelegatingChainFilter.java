@@ -39,7 +39,6 @@ public class DelegatingChainFilter extends GenericFilterBean {
 	@Autowired
 	private WebApplicationContext webApplicationContext;
 
-
 	private void scanBean(Object bean, String name) {
 		Class<?> implClass = bean.getClass();
 		if (AopUtils.isAopProxy(bean)) {
@@ -90,5 +89,4 @@ public class DelegatingChainFilter extends GenericFilterBean {
 			}
 		}
 	}
-
 }
