@@ -237,51 +237,75 @@ public abstract class AbstractPpcTest extends GWTTestCase {
 	@Test
 	public void testEnum() {
 		// write
-		assertEquals("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE", createWriter().write(
-			Gender.MALE)
-			.flush());
+		assertEquals("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE", 
+				createWriter().write(Gender.MALE).flush());
 		// read
-		assertEquals(Gender.MALE, createReader("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE")
-			.<Gender> readObject());
+		assertEquals(Gender.MALE, 
+				createReader("0|1|2|--|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE")
+				.<Gender> readObject());
 	}
 
 	@Test
 	public void testArray() {
 		boolean[] booleans = {true, false};
-		System.out.println(booleans.getClass().getName());
 		String serial = createWriter().write(booleans).flush();
 		assertEquals("0|2|1|1|1|0|--|[z@0|Z", serial);
 		assertArrayEquals(booleans, createReader(serial).readObject());
-		Boolean[] bBooleans = {true, false};
-		System.out.println(bBooleans.getClass().getName());
+		
+		byte[] bytes = {12, 39};
+		serial = createWriter().write(bytes).flush();
+		assertEquals("0|2|1|12|1|39|--|[b@0|B", serial);
+		assertArrayEquals(bytes, createReader(serial).readObject());
+		
+		char[] chars = {'e'};
+		serial = createWriter().write(chars).flush();
+		assertEquals("0|1|1|e|--|[c@0|C", serial);
+		assertArrayEquals(chars, createReader(serial).readObject());
+		
+		double[] doubles = {1};
+		serial = createWriter().write(doubles).flush();
+		assertEquals("0|1|1|1.0|--|[d@0|D", serial);
+		assertArrayEquals(doubles, createReader(serial).readObject());
+		
+		float[] floats = {1};
+		serial = createWriter().write(floats).flush();
+		assertEquals("0|1|1|1.0|--|[f@0|F", serial);
+		assertArrayEquals(floats, createReader(serial).readObject());
+		
+		int[] ints = {1};
+		serial = createWriter().write(ints).flush();
+		assertEquals("0|1|1|1|--|[i@0|I", serial);
+		assertArrayEquals(ints, createReader(serial).readObject());
+		
+		long[] longs = {1};
+		serial = createWriter().write(longs).flush();
+		assertEquals("0|1|1|1|--|[j@0|J", serial);
+		assertArrayEquals(longs, createReader(serial).readObject());
+		
+		short[] shorts = {1};
+		serial = createWriter().write(shorts).flush();
+		assertEquals("0|1|1|1|--|[s@0|S", serial);
+		assertArrayEquals(shorts, createReader(serial).readObject());
+
+		String[] strings = {"a", "b", "a"};
+		serial = createWriter().write(strings).flush();
+		assertEquals("0|3|1|2|1|3|1|2|--|[X@0|X|a|b", serial);
+		assertArrayEquals(strings, createReader(serial).readObject());
+		
+		Boolean[] bBooleans = {true, false, null};
 		serial = createWriter().write(bBooleans).flush();
-		assertEquals("0|2|1|1|1|0|--|[Z@0|Z", serial);
+		assertEquals("0|3|1|1|1|0||--|[Z@0|Z", serial);
 		assertArrayEquals(bBooleans, createReader(serial).readObject());
 
-		byte[] bytes = {1};
-		System.out.println(bytes.getClass().getName());
-		char[] chars = {'e'};
-		System.out.println(chars.getClass().getName());
-		double[] doubles = {1};
-		System.out.println(doubles.getClass().getName());
-		float[] floats = {1};
-		System.out.println(floats.getClass().getName());
-		int[] ints = {1};
-		System.out.println(ints.getClass().getName());
-		long[] longs = {1};
-		System.out.println(longs.getClass().getName());
-		short[] shorts = {1};
-		System.out.println(shorts.getClass().getName());
+		Date[] dates = {parseDate("20150311")};
+		serial = createWriter().write(dates).flush();
+		assertEquals("0|1|1|1426028400000|--|[DT@0|DT", serial);
+		assertArrayEquals(dates, createReader(serial).readObject());
 
-		// String[] strings = {"a", "b", "a"};
-		// Gender[] longs = {Gender.MALE};
-		// String serial = createWriter().write(longs).flush();
-		// assertEquals("0|3|1|2|1|3|1|4|--|AL@0|S|a|b|c", serial);
-		// assertEquals(longs, createReader(serial).readObject());
-
-		// long[] longs = {1, 2, 3};
-		// serial = createWriter().write(longs).flush();
-		// assertEquals(longs, createReader(serial).readObject());
+		Gender[] enums = {Gender.MALE};
+		serial = createWriter().write(enums).flush();
+		assertEquals("0|1|1|2|3|--|[E@0|E|fr.putnami.pwt.core.serialization.ppc.shared.Gender|MALE", serial);
+		assertArrayEquals(enums, createReader(serial).readObject());
 	}
 
 	private void assertArrayEquals(Object expected, Object actual) {

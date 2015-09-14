@@ -16,7 +16,7 @@ package fr.putnami.pwt.core.serialization.ppc.server;
 
 import java.io.Serializable;
 
-import fr.putnami.pwt.core.serialization.ppc.server.marshaller.ReflectEnumMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.client.EnumMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.server.marshaller.ReflectObjectMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 import fr.putnami.pwt.core.serialization.ppc.shared.base.AbstractMarshallerRegistry;
@@ -26,18 +26,21 @@ public class MarshallerServerRegistry extends AbstractMarshallerRegistry {
 
 	public MarshallerServerRegistry() {
 		registerDefault();
-		register(new ReflectEnumMarshaller(getClass().getClassLoader()));
 	}
 
 	@Override
 	public <T> Marshaller<T> findMarshaller(Class<T> clazz) {
 		Marshaller<T> marshaller = super.findMarshaller(clazz);
 		if (marshaller == null) {
-			if (!Serializable.class.isAssignableFrom(clazz)) {
+			if(clazz.isEnum()){
+				marshaller = new EnumMarshaller<>(clazz);
+			} else if (Serializable.class.isAssignableFrom(clazz)) {
+				marshaller = new ReflectObjectMarshaller<T>(clazz, this);
+			}
+			if(marshaller == null){
 				throw new SerializationException(clazz + " does not implement Serializable.");
 			}
 			synchronized (registry) {
-				marshaller = new ReflectObjectMarshaller<T>(clazz, this);
 				register(marshaller);
 			}
 		}
