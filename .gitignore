@@ -42,6 +42,7 @@ bin/
 build/
 war/
 target/
+gwt-unitCache/
 .idea
 .settings
 .classpath
