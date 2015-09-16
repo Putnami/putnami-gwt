@@ -14,6 +14,7 @@
  */
 package fr.putnami.pwt.plugin.spring.rpc.server;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -30,6 +31,7 @@ public class ComandSocketConfig implements WebSocketConfigurer {
 		registry.addHandler(commandSocketHandler(), "/commandSocket");
 	}
 
+	@Bean
 	public CommandSocketHandler commandSocketHandler() {
 		return new CommandSocketHandler();
 	}

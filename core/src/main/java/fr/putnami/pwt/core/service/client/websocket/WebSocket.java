@@ -117,22 +117,22 @@ public class WebSocket {
 		if (message == null) {
 			return;
 		}
-		this.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::jsSocket.send(message);
+		this.@fr.putnami.pwt.core.service.client.websocket.WebSocket::jsSocket.send(message);
 	}-*/;
 
 	private native void nativeClose()
 	/*-{
-		this.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::jsSocket.close();
+		this.@fr.putnami.pwt.core.service.client.websocket.WebSocket::jsSocket.close();
 	}-*/;
 
 	private native int nativeGetBufferedAmount()
 	/*-{
-		return this.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::jsSocket.bufferedAmount;
+		return this.@fr.putnami.pwt.core.service.client.websocket.WebSocket::jsSocket.bufferedAmount;
 	}-*/;
 
 	private native int nativeGetReadyState()
 	/*-{
-		return this.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::jsSocket.readyState;
+		return this.@fr.putnami.pwt.core.service.client.websocket.WebSocket::jsSocket.readyState;
 	}-*/;
 
 	private native JavaScriptObject nativeCreateWebSocket(WebSocket webSocket, final String url)
@@ -140,20 +140,20 @@ public class WebSocket {
 		var socket = new WebSocket(url);
 
 		socket.onopen = function() {
-			webSocket.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::onOpen()();
+			webSocket.@fr.putnami.pwt.core.service.client.websocket.WebSocket::onOpen()();
 		}
 
 		socket.onclose = function() {
-			webSocket.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::onClose()();
+			webSocket.@fr.putnami.pwt.core.service.client.websocket.WebSocket::onClose()();
 		}
 
 		socket.onerror = function() {
-			webSocket.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::onError()();
+			webSocket.@fr.putnami.pwt.core.service.client.websocket.WebSocket::onError()();
 		}
 
 		socket.onmessage = function(socketResponse) {
 			if (socketResponse.data) {
-				webSocket.@fr.putnami.pwt.core.serialization.client.websocket.WebSocket::onMessage(Ljava/lang/String;)(socketResponse.data);
+				webSocket.@fr.putnami.pwt.core.service.client.websocket.WebSocket::onMessage(Ljava/lang/String;)(socketResponse.data);
 			}
 		}
 

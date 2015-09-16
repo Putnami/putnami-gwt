@@ -44,7 +44,6 @@ import fr.putnami.pwt.core.service.shared.domain.CommandDefinition;
 import fr.putnami.pwt.core.service.shared.domain.CommandRequest;
 import fr.putnami.pwt.core.service.shared.domain.CommandResponse;
 import fr.putnami.pwt.core.service.shared.exception.CommandException;
-import fr.putnami.pwt.core.service.shared.service.CommandService;
 
 public final class DefaultCommandController extends CommandController {
 
@@ -138,8 +137,6 @@ public final class DefaultCommandController extends CommandController {
 	}
 
 	private static final String RPC_CONTENT_TYPE = "application/x-ppc; charset=utf-8";
-	private static final String REMOTE_SERVICE_INTERFACE_NAME = CommandService.class.getName();
-	private static final String METHOD_NAME = "executeCommands";
 
 	private static DefaultCommandController instance;
 

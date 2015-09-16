@@ -42,8 +42,6 @@ import fr.putnami.pwt.core.service.shared.service.CommandService;
 
 @Controller
 public class CommandController {
-	private static final int BUFFER_SIZE = 4096;
-
 	private final Log logger = LogFactory.getLog(this.getClass());
 
 	private static final PpcSerializer serializer = new PpcServerSerializer();
@@ -56,52 +54,52 @@ public class CommandController {
 		@RequestBody String payload)
 		throws Throwable {
 
-			PpcReader reader = serializer.newReader();
-			reader.prepare(payload);
-			List<CommandRequest> commands = reader.readObject();
-			List<CommandResponse> responses = commandService.executeCommands(commands);
+		PpcReader reader = serializer.newReader();
+		reader.prepare(payload);
+		List<CommandRequest> commands = reader.readObject();
+		List<CommandResponse> responses = commandService.executeCommands(commands);
 
-			PpcWriter writer = serializer.newWriter();
-			writer.write(responses);
+		PpcWriter writer = serializer.newWriter();
+		writer.write(responses);
 
-			String responseContent = writer.flush();
-			byte[] responseBytes = responseContent.getBytes(RPCServletUtils.CHARSET_UTF8);
+		String responseContent = writer.flush();
+		byte[] responseBytes = responseContent.getBytes(RPCServletUtils.CHARSET_UTF8);
 
-			boolean gzipEncode =
-				RPCServletUtils.acceptsGzipEncoding(request)
-					&& RPCServletUtils.exceedsUncompressedContentLengthLimit(responseContent);
+		boolean gzipEncode =
+			RPCServletUtils.acceptsGzipEncoding(request)
+				&& RPCServletUtils.exceedsUncompressedContentLengthLimit(responseContent);
 
-			if (gzipEncode) {
-				ByteArrayOutputStream output = null;
-				GZIPOutputStream gzipOutputStream = null;
-				try {
-					output = new ByteArrayOutputStream(responseBytes.length);
-					gzipOutputStream = new GZIPOutputStream(output);
-					gzipOutputStream.write(responseBytes);
-					gzipOutputStream.finish();
-					gzipOutputStream.flush();
-					response.setHeader("Content-Encoding", "gzip");
-					responseBytes = output.toByteArray();
-				} catch (IOException e) {
-					logger.error("Unable to compress response", e);
-					response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-					return;
-				} finally {
-					if (null != gzipOutputStream) {
-						gzipOutputStream.close();
-					}
-					if (null != output) {
-						output.close();
-					}
+		if (gzipEncode) {
+			ByteArrayOutputStream output = null;
+			GZIPOutputStream gzipOutputStream = null;
+			try {
+				output = new ByteArrayOutputStream(responseBytes.length);
+				gzipOutputStream = new GZIPOutputStream(output);
+				gzipOutputStream.write(responseBytes);
+				gzipOutputStream.finish();
+				gzipOutputStream.flush();
+				response.setHeader("Content-Encoding", "gzip");
+				responseBytes = output.toByteArray();
+			} catch (IOException e) {
+				logger.error("Unable to compress response", e);
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				return;
+			} finally {
+				if (null != gzipOutputStream) {
+					gzipOutputStream.close();
+				}
+				if (null != output) {
+					output.close();
 				}
 			}
+		}
 
-			// Send the reply.
-			response.setContentLength(responseBytes.length);
-			response.setContentType("application/json; charset=utf-8");
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.setHeader("Content-Disposition", "attachment");
-			response.getOutputStream().write(responseBytes);
+		// Send the reply.
+		response.setContentLength(responseBytes.length);
+		response.setContentType("application/json; charset=utf-8");
+		response.setStatus(HttpServletResponse.SC_OK);
+		response.setHeader("Content-Disposition", "attachment");
+		response.getOutputStream().write(responseBytes);
 	}
 
 }
