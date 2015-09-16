@@ -24,6 +24,7 @@
 	
 	<inherits name="fr.putnami.pwt.core.event.Event"/>
 	<inherits name="fr.putnami.pwt.core.error.Error"/>
+	<inherits name="fr.putnami.pwt.core.serialization.ppc.Ppc"/>
 
 
 	<source path="client"/>

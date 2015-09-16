@@ -16,20 +16,12 @@ package fr.putnami.pwt.plugin.spring.rpc.server.service;
 
 import com.google.common.collect.Lists;
 
-import org.springframework.aop.support.AopUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.stereotype.Service;
 
-import java.lang.annotation.Annotation;
 import java.util.List;
-
-import javax.annotation.PostConstruct;
 
 import fr.putnami.pwt.core.service.server.service.CommandExecutor;
 import fr.putnami.pwt.core.service.server.service.CommandExecutorRegistry;
-import fr.putnami.pwt.core.service.server.service.CommandExecutorRegistryImpl;
 import fr.putnami.pwt.core.service.shared.domain.CommandRequest;
 import fr.putnami.pwt.core.service.shared.domain.CommandResponse;
 import fr.putnami.pwt.core.service.shared.service.CommandService;
@@ -37,26 +29,7 @@ import fr.putnami.pwt.core.service.shared.service.CommandService;
 public class CommandServiceImpl implements CommandService {
 
 	@Autowired
-	private ApplicationContext applicationContext;
-
-    private final Class<? extends Annotation> serviceAnnotation;
-
-	private final CommandExecutorRegistry executorRegistry = new CommandExecutorRegistryImpl();
-
-    public CommandServiceImpl() {
-        this(Service.class);
-    }
-
-    public CommandServiceImpl(Class<? extends Annotation> serviceAnnotation) {
-        this.serviceAnnotation = serviceAnnotation;
-    }
-
-	@PostConstruct
-	public void afterPropertySet() {
-		for (String beanName : this.applicationContext.getBeanNamesForAnnotation(this.serviceAnnotation)) {
-            this.scanBean(this.applicationContext.getBean(beanName), beanName);
-		}
-	}
+	private CommandExecutorRegistry executorRegistry;
 
 	@Override
 	public List<CommandResponse> executeCommands(List<CommandRequest> commands) {
@@ -66,23 +39,6 @@ public class CommandServiceImpl implements CommandService {
 			result.add(executor.executeCommand(request));
 		}
 		return result;
-	}
-
-	protected void injectService(Class<?> serviceInterface, Object service) {
-		this.executorRegistry.injectService(serviceInterface, service);
-	}
-
-	private void scanBean(Object bean, String name) {
-		Class<?> implClass = bean.getClass();
-		if (AopUtils.isAopProxy(bean)) {
-			implClass = AopUtils.getTargetClass(bean);
-		}
-		Annotation serviceAnnotation = AnnotationUtils.findAnnotation(implClass, this.serviceAnnotation);
-		if (serviceAnnotation != null) {
-			for (Class<?> inter : implClass.getInterfaces()) {
-				this.injectService(inter, bean);
-			}
-		}
 	}
 
 }

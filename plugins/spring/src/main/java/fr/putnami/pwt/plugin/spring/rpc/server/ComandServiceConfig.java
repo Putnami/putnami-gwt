@@ -14,15 +14,19 @@
  */
 package fr.putnami.pwt.plugin.spring.rpc.server;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
+import fr.putnami.pwt.core.service.server.service.CommandExecutorRegistry;
+import fr.putnami.pwt.core.service.server.service.CommandExecutorRegistryImpl;
 import fr.putnami.pwt.core.service.shared.service.CommandService;
 import fr.putnami.pwt.plugin.spring.rpc.server.controller.CommandController;
 import fr.putnami.pwt.plugin.spring.rpc.server.filter.RequestContextFilter;
 import fr.putnami.pwt.plugin.spring.rpc.server.service.CommandServiceImpl;
+import fr.putnami.pwt.plugin.spring.rpc.server.service.CommandServiceScanProcessor;
 
 @Configuration
 public class ComandServiceConfig {
@@ -35,6 +39,19 @@ public class ComandServiceConfig {
 	@Bean
 	public RequestContextFilter requestContextInterceptor() {
 		return new RequestContextFilter();
+	}
+
+	@Bean
+	public CommandExecutorRegistry commandExecutorRegistry() {
+		return new CommandExecutorRegistryImpl();
+	}
+
+	@Bean
+	@Autowired
+	public CommandServiceScanProcessor serviceScanProcessor(CommandExecutorRegistry registry) {
+		CommandServiceScanProcessor serviceScanProcessor = new CommandServiceScanProcessor();
+		serviceScanProcessor.setRegistry(registry);
+		return serviceScanProcessor;
 	}
 
 	@Bean

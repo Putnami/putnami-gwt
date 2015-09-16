@@ -18,7 +18,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.google.gwt.core.ext.GeneratorContext;
-import com.google.gwt.core.ext.PropertyOracle;
 import com.google.gwt.core.ext.TreeLogger;
 import com.google.gwt.core.ext.TreeLogger.Type;
 import com.google.gwt.core.ext.UnableToCompleteException;
@@ -36,16 +35,13 @@ import com.google.gwt.user.client.rpc.RpcToken.RpcTokenImplementation;
 import com.google.gwt.user.client.rpc.RpcTokenException;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
-import com.google.gwt.user.rebind.rpc.SerializableTypeOracleBuilder;
-import com.google.gwt.user.rebind.rpc.TypeSerializerCreator;
 
 import java.io.PrintWriter;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
+import fr.putnami.pwt.core.model.rebind.ModelCreator;
 import fr.putnami.pwt.core.service.client.AbstractServiceBinder;
 import fr.putnami.pwt.core.service.client.CallbackAdapter;
 import fr.putnami.pwt.core.service.client.CommandController;
@@ -64,7 +60,6 @@ public class ServiceBinderCreator {
 	private final JClassType handlerType;
 
 	private String proxyModelQualifiedName;
-	private String serializerTypeName;
 
 	private Collection<JType> imports = Sets.newHashSet();
 
@@ -82,14 +77,12 @@ public class ServiceBinderCreator {
 			return this.proxyModelQualifiedName;
 		}
 
-		this.serializerTypeName = this.createSerializer(logger, context);
 		this.collectImports();
 
 		SourceWriter srcWriter = this.getSourceWriter(printWriter, context);
-
 		srcWriter.indent();
 		srcWriter.println();
-		this.generateSerializer(srcWriter);
+		this.createSerializer(logger, context, srcWriter);
 		srcWriter.println();
 		this.generateServiceImplementation(logger, srcWriter);
 		this.generateServiceImplementationWithCallback(logger, srcWriter);
@@ -99,107 +92,86 @@ public class ServiceBinderCreator {
 		return this.proxyModelQualifiedName;
 	}
 
-	private String createSerializer(TreeLogger logger, GeneratorContext context) throws UnableToCompleteException,
+	private void createSerializer(TreeLogger logger, GeneratorContext context, SourceWriter srcWriter) throws UnableToCompleteException,
 		NotFoundException {
 
-		/* Hack because SerializableTypeOracleBuilder constructor has only two arguments since GWT 2.7 */
+		final Collection<JType> typesToSerialize = Sets.newHashSet();
 
-		SerializableTypeOracleBuilder typesSentFromBrowser = null;
-		SerializableTypeOracleBuilder typesSentToBrowser = null;
-		try {
-			try {
-				Constructor<SerializableTypeOracleBuilder> constructor =
-					SerializableTypeOracleBuilder.class.getConstructor(TreeLogger.class, PropertyOracle.class,
-						GeneratorContext.class);
-				typesSentFromBrowser = constructor.newInstance(logger, context.getPropertyOracle(), context);
-				typesSentToBrowser = constructor.newInstance(logger, context.getPropertyOracle(), context);
-			} catch (NoSuchMethodException exc) {
-				try {
-					Constructor<SerializableTypeOracleBuilder> constructor =
-						SerializableTypeOracleBuilder.class.getConstructor(TreeLogger.class, GeneratorContext.class);
-					typesSentFromBrowser = constructor.newInstance(logger, context);
-					typesSentToBrowser = constructor.newInstance(logger, context);
-				} catch (NoSuchMethodException ex) {
-					logger.branch(TreeLogger.ERROR, "Unable to find a SerializableTypeOracleBuilder constructor", null);
-					throw new UnableToCompleteException();
-				}
-			}
-		} catch (InstantiationException e) {
-			logger.branch(TreeLogger.ERROR, "Unable to invoke SerializableTypeOracleBuilder constructor", null);
-			throw new UnableToCompleteException();
-		} catch (IllegalAccessException e) {
-			logger.branch(TreeLogger.ERROR, "Unable to invoke SerializableTypeOracleBuilder constructor", null);
-			throw new UnableToCompleteException();
-		} catch (IllegalArgumentException e) {
-			logger.branch(TreeLogger.ERROR, "Unable to invoke SerializableTypeOracleBuilder constructor", null);
-			throw new UnableToCompleteException();
-		} catch (InvocationTargetException e) {
-			logger.branch(TreeLogger.ERROR, "Unable to invoke SerializableTypeOracleBuilder constructor", null);
-			throw new UnableToCompleteException();
-		}
-		/* End of Hack */
 		JMethod[] methods = this.serviceType.getOverridableMethods();
 		TypeOracle typeOracle = context.getTypeOracle();
 
 		JClassType rteType = typeOracle.getType(RpcTokenException.class.getName());
 		JClassType rpcTokenClass = typeOracle.getType(RpcToken.class.getName());
-		RpcTokenImplementation tokenClassToUse =
-			this.serviceType.findAnnotationInTypeHierarchy(RpcTokenImplementation.class);
+		RpcTokenImplementation tokenClassToUse = this.serviceType.findAnnotationInTypeHierarchy(RpcTokenImplementation.class);
 		if (tokenClassToUse != null) {
 			JClassType rpcTokenType = typeOracle.getType(tokenClassToUse.value());
 			if (rpcTokenType.isAssignableTo(rpcTokenClass)) {
-				typesSentFromBrowser.addRootType(logger, rpcTokenType);
-				typesSentToBrowser.addRootType(logger, rteType);
+				typesToSerialize.add(rpcTokenType);
+				typesToSerialize.add(rteType);
 			} else {
-				logger.branch(TreeLogger.ERROR, "RPC token class " + tokenClassToUse.value() + " must implement "
-					+ RpcToken.class.getName(), null);
+				logger.branch(TreeLogger.ERROR,
+						"RPC token class " + tokenClassToUse.value() + " must implement " + RpcToken.class.getName(), null);
 				throw new UnableToCompleteException();
 			}
 		} else {
 			JClassType[] rpcTokenSubclasses = rpcTokenClass.getSubtypes();
 			for (JClassType rpcTokenSubclass : rpcTokenSubclasses) {
-				typesSentFromBrowser.addRootType(logger, rpcTokenSubclass);
+				typesToSerialize.add(rpcTokenSubclass);
 			}
 			if (rpcTokenSubclasses.length > 0) {
-				typesSentToBrowser.addRootType(logger, rteType);
+				typesToSerialize.add(rteType);
 			}
 		}
-		typesSentFromBrowser.addRootType(logger, typeOracle.getType(CommandDefinition.class.getName()));
-		typesSentFromBrowser.addRootType(logger, typeOracle.getType(CommandRequest.class.getName()));
-		typesSentToBrowser.addRootType(logger, typeOracle.getType(CommandResponse.class.getName()));
+		typesToSerialize.add(typeOracle.getType(CommandDefinition.class.getName()));
+		typesToSerialize.add(typeOracle.getType(CommandRequest.class.getName()));
+		typesToSerialize.add(typeOracle.getType(CommandResponse.class.getName()));
 
 		for (JMethod method : methods) {
 			JType returnType = method.getReturnType();
 			if (returnType != JPrimitiveType.VOID) {
-				typesSentToBrowser.addRootType(logger, returnType);
+				extractAllType(returnType, typesToSerialize);
 			}
-
-			JParameter[] params = method.getParameters();
-			for (JParameter param : params) {
+			for (JParameter param : method.getParameters()) {
 				JType paramType = param.getType();
-				typesSentFromBrowser.addRootType(logger, paramType);
+				extractAllType(paramType, typesToSerialize);
 			}
-
-			JType[] exs = method.getThrows();
-			if (exs.length > 0) {
-				for (JType ex : exs) {
-					typesSentToBrowser.addRootType(logger, ex);
-				}
+			for (JType ex : method.getThrows()) {
+				extractAllType(ex, typesToSerialize);
 			}
 		}
 
-		String serializerSimpleName = this.serviceType.getSimpleSourceName() + "_TypeSerializer";
-		String serializeQualifiedName = this.serviceType.getQualifiedSourceName() + "_TypeSerializer";
+		srcWriter.println("static {");
+		srcWriter.indent();
+		srcWriter.println("fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry registry = fr.putnami.pwt.core.serialization.ppc.client.PpcClientSerializer.get().getMarshallerRegistry();");
 
-		TypeSerializerCreator tsc =
-			new TypeSerializerCreator(logger, typesSentFromBrowser.build(logger), typesSentToBrowser.build(logger), context,
-				serializeQualifiedName, serializerSimpleName);
-
-		return tsc.realize(logger);
+		for (JType jType : typesToSerialize) {
+			String modelClassName = ModelCreator.createSubModel(logger, context, jType);
+			if (modelClassName != null) {
+				srcWriter.println("fr.putnami.pwt.core.serialization.ppc.client.ModelMarshaller.register(registry, new %s());",
+					modelClassName);
+			}
+			if(jType.isEnum() != null){
+				srcWriter.println("registry.register(new fr.putnami.pwt.core.serialization.ppc.client.EnumMarshaller(%s.class));",
+					jType.getQualifiedBinaryName());
+			}
+		}
+		srcWriter.outdent();
+		srcWriter.println("}");
 	}
 
-	private void generateSerializer(SourceWriter srcWriter) {
-		srcWriter.println("private final %s serializer = new %s();", this.serializerTypeName, this.serializerTypeName);
+	private void extractAllType(JType type, Collection<JType> collect) {
+		if(collect.contains(type)){
+			return;
+		}
+
+		collect.add(type);
+
+		if (type instanceof JParameterizedType) {
+			JParameterizedType parameterizedType = (JParameterizedType) type;
+			for (JType paramType : parameterizedType.getTypeArgs()) {
+				extractAllType(paramType, collect);
+			}
+		}
 	}
 
 	private static class CallbackMethod {
@@ -366,7 +338,6 @@ public class ServiceBinderCreator {
 		srcWriter.print("CommandParam commandParam = new CommandParam(");
 		srcWriter.print("%s, ", lazy);
 		srcWriter.print("%s, ", quiet);
-		srcWriter.print("this.serializer, ");
 		srcWriter.print("Lists.newArrayList(Arrays.asList(");
 		int i = 0;
 		for (JParameter parameter : method.getParameters()) {

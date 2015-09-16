@@ -15,22 +15,19 @@
 package fr.putnami.pwt.core.service.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.impl.Serializer;
 
 import java.util.List;
 
 public class CommandParam {
 	private final boolean lazy;
 	private final boolean quiet;
-	private final Serializer serializer;
 	private final List params;
 	private final List callbacks;
 
-	public CommandParam(boolean lazy, boolean quiet, Serializer serializer, List params, List callbacks) {
+	public CommandParam(boolean lazy, boolean quiet, List params, List callbacks) {
 		super();
 		this.lazy = lazy;
 		this.quiet = quiet;
-		this.serializer = serializer;
 		this.params = params;
 		this.callbacks = callbacks;
 	}
@@ -41,10 +38,6 @@ public class CommandParam {
 
 	public boolean isQuiet() {
 		return this.quiet;
-	}
-
-	public Serializer getSerializer() {
-		return this.serializer;
 	}
 
 	public List getParams() {
