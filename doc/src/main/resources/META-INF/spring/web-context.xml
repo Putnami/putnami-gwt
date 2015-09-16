@@ -37,7 +37,9 @@
 
 		<bean class="fr.putnami.pwt.doc.server.config.SecurityConfig" />
 		<bean class="fr.putnami.pwt.doc.server.config.MvcConfig" />
+		<bean class="fr.putnami.pwt.plugin.spring.rpc.server.ComandSocketConfig" />
+		
 		<bean class="fr.putnami.pwt.plugin.ajaxbot.AjaxBotIndexingConfig" />
-<!-- 		<bean class="fr.putnami.pwt.plugin.spring.rpc.server.ComandServiceConfig" /> -->
+		<bean class="fr.putnami.pwt.plugin.spring.rpc.server.ComandServiceConfig" />
 
 </beans>

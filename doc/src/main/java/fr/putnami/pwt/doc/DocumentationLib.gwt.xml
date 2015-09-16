@@ -22,8 +22,9 @@
 	<inherits name="com.google.gwt.user.User"/>
 	<inherits name="com.google.gwt.xml.XML" />
 
+<!-- 	<inherits name="fr.putnami.pwt.core.service.Service"/> -->
+	<inherits name="fr.putnami.pwt.core.service.WebSocket"/>
 	<inherits name="fr.putnami.pwt.core.model.Model"/>
-	<inherits name="fr.putnami.pwt.core.service.Service"/>
 	<inherits name="fr.putnami.pwt.core.mvp.Mvp"/>
 	<inherits name="fr.putnami.pwt.core.widget.Widget"/>
 	<inherits name="fr.putnami.pwt.core.error.DefaultErrorDisplayer"/>

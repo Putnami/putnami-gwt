@@ -21,6 +21,7 @@ uploadArchives.enabled = false
 
 putnami {
 	module 'fr.putnami.pwt.doc.Documentation'
+	gwtServletLib = true
 	
 	jetty{
 		maxHeapSize = "512m"

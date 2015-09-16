@@ -23,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import fr.putnami.pwt.doc.server.controller.PutnamiController;
+import fr.putnami.pwt.doc.server.service.DocServiceImpl;
+import fr.putnami.pwt.doc.shared.service.DocService;
 
 @Configuration
 @EnableWebMvc
@@ -53,6 +55,11 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 	@Bean
 	public PutnamiController putnamiController() {
 		return new PutnamiController();
+	}
+
+	@Bean
+	public DocService docService() {
+		return new DocServiceImpl();
 	}
 
 	@Bean
