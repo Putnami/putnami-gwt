@@ -12,26 +12,28 @@
  * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
  * see <http://www.gnu.org/licenses/>.
  */
-package fr.putnami.pwt.core.serialization.ppc.client;
+package fr.putnami.pwt.core.serialization.ppc.server.marshaller;
 
-import fr.putnami.pwt.core.serialization.ppc.shared.base.AbstractPpcSerializer;
+import java.lang.reflect.Array;
+import java.util.List;
 
-public final class PpcClientSerializer extends AbstractPpcSerializer {
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.AbstractArrayMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
 
-	private static PpcClientSerializer instance;
+public class ReflectArrayMarshaller extends AbstractArrayMarshaller {
 
-	private PpcClientSerializer() {
-		setMarshallerRegistry(new MarshallerClientRegistry() {
-			{
-				registerDefault();
-			}
-		});
+	public ReflectArrayMarshaller(Class arrayClass, Marshaller marshaller) {
+		super(arrayClass, marshaller);
 	}
 
-	public static PpcClientSerializer get() {
-		if (instance == null) {
-			instance = new PpcClientSerializer();
+
+	@Override
+	protected Object[] newArray(Class targetClass, List list) {
+		Object[] arr = (Object[]) Array.newInstance(targetClass, list.size());
+		for (int i = 0; i < list.size(); i++) {
+			arr[i] = list.get(i);
 		}
-		return instance;
+		return arr;
 	}
+
 }

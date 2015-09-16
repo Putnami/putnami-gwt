@@ -14,24 +14,25 @@
  */
 package fr.putnami.pwt.core.serialization.ppc.client;
 
-import fr.putnami.pwt.core.serialization.ppc.shared.base.AbstractPpcSerializer;
+import java.util.List;
 
-public final class PpcClientSerializer extends AbstractPpcSerializer {
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.AbstractArrayMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
 
-	private static PpcClientSerializer instance;
+public class ArrayMarshaller extends AbstractArrayMarshaller {
 
-	private PpcClientSerializer() {
-		setMarshallerRegistry(new MarshallerClientRegistry() {
-			{
-				registerDefault();
-			}
-		});
+	public ArrayMarshaller(Class arrayClass, Marshaller marshaller) {
+		super(arrayClass, marshaller);
 	}
 
-	public static PpcClientSerializer get() {
-		if (instance == null) {
-			instance = new PpcClientSerializer();
-		}
-		return instance;
+	@Override
+	protected Object[] newArray(Class<?> targetClass2, List list) {
+		return _getArray(list);
 	}
+
+	public static native Object[] _getArray(List<?> list)
+	/*-{
+		return list.@java.util.Arrays$ArrayList::array;
+	}-*/;
+
 }

@@ -22,5 +22,5 @@ public interface MarshallerRegistry {
 
 	<T> Marshaller<T> findMarshaller(String className);
 
-	void register(Marshaller marshaller);
+	boolean register(Marshaller marshaller);
 }

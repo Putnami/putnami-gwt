@@ -17,6 +17,7 @@ package fr.putnami.pwt.core.serialization.ppc.server;
 import java.io.Serializable;
 
 import fr.putnami.pwt.core.serialization.ppc.client.EnumMarshaller;
+import fr.putnami.pwt.core.serialization.ppc.server.marshaller.ReflectArrayMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.server.marshaller.ReflectObjectMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 import fr.putnami.pwt.core.serialization.ppc.shared.base.AbstractMarshallerRegistry;
@@ -45,5 +46,35 @@ public class MarshallerServerRegistry extends AbstractMarshallerRegistry {
 			}
 		}
 		return marshaller;
+	}
+
+	@Override
+	public <T> Marshaller<T> findMarshaller(String className) {
+		Marshaller<T> marshaller = null;
+		if (className.indexOf('[') == 0) {
+			String targetClassName = className.substring(1);
+			Marshaller<T> targetMarshaller = findMarshaller(targetClassName);
+			marshaller = newArrayMarshaller(targetMarshaller.getType(), targetMarshaller);
+		} else {
+			marshaller = (Marshaller<T>) registry.get(className);
+		}
+		if (marshaller == null) {
+			try {
+				Class clazz = Class.forName(className);
+				return findMarshaller(clazz);
+			} catch (ClassNotFoundException e) {
+				// no op
+			}
+		}
+		if (marshaller == null) {
+			throw new SerializationException(className + " doesnt have any marshaller.");
+		}
+		return marshaller;
+
+	}
+
+	@Override
+	protected Marshaller newArrayMarshaller(Class targetClass, Marshaller<?> marchaller) {
+		return new ReflectArrayMarshaller(targetClass, marchaller);
 	}
 }

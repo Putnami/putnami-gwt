@@ -32,10 +32,10 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 
 	private final Model<T> model;
 	private final List<String> properties;
-	private final MarshallerRegistry marshallers;
+	private final MarshallerRegistry registry;
 
-	public ModelMarshaller(Model<T> model, MarshallerRegistry marshallers) {
-		this.marshallers = marshallers;
+	public ModelMarshaller(Model<T> model, MarshallerRegistry registry) {
+		this.registry = registry;
 		this.model = model;
 		this.properties = Lists.newArrayList(model.getPropertyNames());
 		Collections.sort(properties);
@@ -66,7 +66,7 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 			} else if (value == null) {
 				writer.writeNull();
 			} else if (propertyDescription.isFinal()) {
-				Marshaller<Object> marshaler = marshallers.findMarshaller(propertyClass);
+				Marshaller<Object> marshaler = registry.findMarshaller(propertyClass);
 				if (marshaler != null) {
 					marshaler.marshal(value, writer);
 				} else {
@@ -101,7 +101,7 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 			} else if (short.class.equals(propertyClass)) {
 				model.set(instance, property, reader.readShort());
 			} else if (propertyDescription.isFinal()) {
-				Marshaller<Object> marshaler = marshallers.findMarshaller(propertyClass);
+				Marshaller<Object> marshaler = registry.findMarshaller(propertyClass);
 				if (marshaler != null) {
 				model.set(instance, property, marshaler.unmarshal(reader));
 				} else {
@@ -133,6 +133,31 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 	public boolean writeType(PpcWriter writer, Integer id) {
 		writer.write(getTypeName() + PpcUtils.SEPARATOR_TYPE_REF + id);
 		return true;
+	}
+
+	public static void register(MarshallerRegistry registry, Model model) {
+		boolean registered = registry.register(new ModelMarshaller(model, registry));
+		if (registered) {
+			Model parentModel = model.getParentModel();
+			if (parentModel != null) {
+				register(registry, parentModel);
+			}
+			Model leafModel = model.getParentModel();
+			if (leafModel != null) {
+				register(registry, leafModel);
+			}
+			List<String> properties = Lists.newArrayList(model.getPropertyNames());
+			for (String propertyName : properties) {
+				PropertyDescription property = model.getProperty(propertyName);
+				Model portertyModel = property.getModel();
+				if (portertyModel != null) {
+					register(registry, portertyModel);
+				}
+				if (property.getClazz().isEnum()) {
+					registry.register(new EnumMarshaller(property.getClazz()));
+				}
+			}
+		}
 	}
 
 }

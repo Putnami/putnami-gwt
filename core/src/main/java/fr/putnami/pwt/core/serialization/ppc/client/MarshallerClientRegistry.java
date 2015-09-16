@@ -15,10 +15,17 @@
 package fr.putnami.pwt.core.serialization.ppc.client;
 
 import fr.putnami.pwt.core.serialization.ppc.shared.base.AbstractMarshallerRegistry;
+import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
 
 public class MarshallerClientRegistry extends AbstractMarshallerRegistry {
 
 	public MarshallerClientRegistry() {
+	}
+
+	@Override
+	protected Marshaller newArrayMarshaller(Class targetClass, Marshaller<?> componentMarchaller) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

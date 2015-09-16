@@ -108,8 +108,8 @@ public class SimpleReader implements PpcReader {
 		String objectRef = getString(index);
 		Object val = null;
 
-		Integer instanceId = PpcUtils.extractInstanceIdFromRef(objectRef);
 		String className = PpcUtils.extractClassFromRef(objectRef);
+		Integer instanceId = PpcUtils.extractInstanceIdFromRef(objectRef);
 
 		if (instanceId != null) {
 			val = cache.inverse().get(instanceId);

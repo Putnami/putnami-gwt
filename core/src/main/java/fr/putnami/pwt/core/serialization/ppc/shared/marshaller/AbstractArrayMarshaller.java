@@ -16,19 +16,18 @@ package fr.putnami.pwt.core.serialization.ppc.shared.marshaller;
 
 import com.google.common.collect.Lists;
 
-import java.lang.reflect.Array;
 import java.util.List;
 
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 import fr.putnami.pwt.core.serialization.ppc.shared.util.PpcUtils;
 
-public class ArrayMatshaller extends AbstractMarshaller<Object> {
+public abstract class AbstractArrayMarshaller extends AbstractMarshaller<Object> {
 
 	private Marshaller<Object> targetMarshaler;
 	private Class<?> targetClass;
 
-	public ArrayMatshaller(Class arrayClass, Marshaller marshaller) {
+	public AbstractArrayMarshaller(Class arrayClass, Marshaller marshaller) {
 		this.targetMarshaler = marshaller;
 		this.targetClass = arrayClass;
 	}
@@ -55,11 +54,7 @@ public class ArrayMatshaller extends AbstractMarshaller<Object> {
 
 	private Object toArray(List collect) {
 		if (!targetClass.isPrimitive()) {
-			Object[] arr = (Object[]) Array.newInstance(targetClass, collect.size());
-			for (int i = 0; i < collect.size(); i++) {
-				arr[i] = collect.get(i);
-			}
-			return arr;
+			return newArray(targetClass, collect);
 		} else if (boolean.class.equals(targetClass)) {
 			boolean[] arr = new boolean[collect.size()];
 			for (int i = 0; i < collect.size(); i++) {
@@ -111,6 +106,8 @@ public class ArrayMatshaller extends AbstractMarshaller<Object> {
 		}
 		return null;
 	}
+
+	protected abstract Object[] newArray(Class<?> targetClass2, List list);
 
 	private List toList(Object value) {
 		List list = Lists.newArrayList();

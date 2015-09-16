@@ -21,7 +21,6 @@ import java.util.Map;
 import fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.ArrayListMarshaller;
-import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.ArrayMatshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.BigDecimalMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.BigIntegerMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.BooleanMarshaller;
@@ -67,7 +66,7 @@ public abstract class AbstractMarshallerRegistry implements MarshallerRegistry {
 		if (marshaller == null && clazz.isArray()) {
 			Class targetClass = clazz.getComponentType();
 			Marshaller<?> componentMarchaller = findMarshaller(targetClass);
-			marshaller = (Marshaller<T>) new ArrayMatshaller(targetClass, componentMarchaller);
+			marshaller = newArrayMarshaller(targetClass, componentMarchaller);
 			registry.put(clazz, marshaller);
 		}
 
@@ -84,7 +83,7 @@ public abstract class AbstractMarshallerRegistry implements MarshallerRegistry {
 		if (className.indexOf('[') == 0) {
 			String targetClassName = className.substring(1);
 			Marshaller<T> targetMarshaller = findMarshaller(targetClassName);
-			marshaller = (Marshaller<T>) new ArrayMatshaller(targetMarshaller.getType(), targetMarshaller);
+			marshaller = newArrayMarshaller(targetMarshaller.getType(), targetMarshaller);
 		} else {
 			marshaller = (Marshaller<T>) registry.get(className);
 		}
@@ -95,18 +94,17 @@ public abstract class AbstractMarshallerRegistry implements MarshallerRegistry {
 	}
 
 	@Override
-	public void register(Marshaller marshaller) {
+	public boolean register(Marshaller marshaller) {
 		if (registry.containsKey(marshaller.getTypeName())) {
-			throw new SerializationException(marshaller.getTypeName() + " already registered");
+			return false;
 		}
 
 		Class type = marshaller.getType();
-		if (registry.containsKey(type)) {
-			throw new SerializationException(type + " already registered");
-		}
 		registry.put(type.getName(), marshaller);
 		registry.put(type, marshaller);
 		registry.put(marshaller.getTypeName(), marshaller);
+
+		return true;
 	}
 
 	protected void registerDefault() {
@@ -151,5 +149,7 @@ public abstract class AbstractMarshallerRegistry implements MarshallerRegistry {
 		register(new VectorMarshaller());
 		register(new VoidMarshaller());
 	}
+
+	protected abstract Marshaller newArrayMarshaller(Class targetClass, Marshaller<?> componentMarchaller);
 
 }
