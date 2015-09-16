@@ -110,6 +110,7 @@ public class ModelCreator {
 		this.listGetters(methods);
 		this.listSetters(methods);
 
+
 		this.createSubModels(logger, context);
 
 		SourceWriter srcWriter = this.getSourceWriter(printWriter, context);
@@ -190,19 +191,21 @@ public class ModelCreator {
 			}
 			Boolean getter = this.getters.containsKey(propertyName);
 			Boolean setter = this.setters.containsKey(propertyName);
+			Boolean isPublic = this.publicFields.containsKey(propertyName);
 			Boolean isFinal = true;
+			Boolean isTransient = false;
 			if (propertyType instanceof JClassType) {
 				try {
 					Class<?> propClass = getClass().getClassLoader().loadClass(propertyType.getQualifiedSourceName());
 					isFinal = Modifier.isFinal(propClass.getModifiers());
+					isTransient = Modifier.isTransient(propClass.getModifiers());
 				} catch (ClassNotFoundException e) {
 					JClassType classType = (JClassType) propertyType;
 					isFinal = classType.isFinal();
 				}
 			}
-
-			srcWriter.print("PROPERTIES.put(\"%s\", newPropertyDescription(\"%s\", %s.class, %s, %s, %s, %s",
-				propertyName, propertyName, simplePropertyTypeName, modelName, getter, setter, isFinal);
+			srcWriter.print("PROPERTIES.put(\"%s\", newPropertyDescription(\"%s\", %s.class, %s, %s, %s, %s, %s, %s",
+				propertyName, propertyName, simplePropertyTypeName, modelName, getter, setter, isPublic, isFinal, isTransient);
 			this.generateValidators(srcWriter, propertyName);
 			srcWriter.println("));");
 		}

@@ -164,14 +164,17 @@ public abstract class AbstractModel<T> implements Model<T> {
 	protected abstract <P> P internalGet(T bean, String fieldName);
 
 	protected static PropertyDescription newPropertyDescription(String name, Class<?> clazz, Model<?> model,
-		boolean hasGetter, boolean hasSetter, boolean isFinal, Validator<?>... validators) {
+		boolean hasGetter, boolean hasSetter, boolean isPublic, boolean isFinal, boolean isTransient,
+		Validator<?>... validators) {
 		PropertyDescription prop = new PropertyDescription();
 		prop.setName(name);
 		prop.setClazz(clazz);
 		prop.setHasGetter(hasGetter);
 		prop.setHasSetter(hasSetter);
 		prop.setModel(model);
+		prop.setPublic(isPublic);
 		prop.setFinal(isFinal);
+		prop.setTransient(isTransient);
 		for (Validator<?> validator : validators) {
 			prop.addValidator(validator);
 		}

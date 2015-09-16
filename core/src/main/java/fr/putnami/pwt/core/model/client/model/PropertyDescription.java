@@ -29,6 +29,8 @@ public final class PropertyDescription {
 	private boolean hasSetter;
 	private Collection<Validator<?>> validators;
 	private boolean isFinal;
+	private boolean isTransient;
+	private boolean isPublic;
 
 	public PropertyDescription() {
 	}
@@ -94,6 +96,22 @@ public final class PropertyDescription {
 
 	public boolean isFinal() {
 		return isFinal;
+	}
+
+	public void setTransient(boolean isTransient) {
+		this.isTransient = isTransient;
+	}
+
+	public boolean isTransient() {
+		return isTransient;
+	}
+
+	public void setPublic(boolean isPublic) {
+		this.isPublic = isPublic;
+	}
+
+	public boolean isPublic() {
+		return isPublic;
 	}
 
 }
