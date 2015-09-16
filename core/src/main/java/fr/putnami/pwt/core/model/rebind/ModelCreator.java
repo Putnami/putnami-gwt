@@ -65,9 +65,13 @@ public class ModelCreator {
 		// BigDecimal
 		BigDecimal.class.getName(),
 		// Others
-		Object.class.getName(), String.class.getName(), Date.class.getName(),
+		Object.class.getName(), String.class.getName(), Date.class.getName(), Class.class.getName(),
+		Exception.class.getName(), Object[].class.getName(),
+		RuntimeException.class.getName(), Throwable.class.getName(),
 		// Collections
-		List.class.getName(), Set.class.getName(), Map.class.getName());
+		List.class.getName(), Set.class.getName(), Map.class.getName(),
+		// Miscellus
+		"?");
 
 	private static final Set<String> COLLECTION_TYPES = Sets.newHashSet(List.class.getName(), Collection.class.getName());
 
@@ -133,18 +137,8 @@ public class ModelCreator {
 
 	private void createSubModels(TreeLogger logger, GeneratorContext context) {
 		for (JType jType : this.imports) {
-			if (jType == null) {
-				continue;
-			}
-			if (jType.isEnum() != null) {
-				continue;
-			}
-			if (ModelCreator.DISCARD_MODEL_TYPES.contains(jType.getQualifiedSourceName())) {
-				continue;
-			}
-			if (jType instanceof JClassType) {
-				ModelCreator creator = new ModelCreator((JClassType) jType);
-				String subModelType = creator.create(logger, context);
+			String subModelType = createSubModel(logger, context, jType);
+			if (subModelType != null) {
 				this.subModels.put(jType, subModelType);
 			}
 		}
@@ -152,8 +146,8 @@ public class ModelCreator {
 
 	private void generateSingleton(TreeLogger logger, SourceWriter srcWriter) {
 		String className =
-			this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName :
-				this.proxyModelQualifiedName.substring(this.proxyModelQualifiedName.lastIndexOf('.') + 1,
+			this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName : this.proxyModelQualifiedName
+				.substring(this.proxyModelQualifiedName.lastIndexOf('.') + 1,
 					this.proxyModelQualifiedName.length());
 		srcWriter.println("public static final %s INSTANCE = new %s();", className, className);
 	}
@@ -179,12 +173,14 @@ public class ModelCreator {
 					String submodelName = this.subModels.get(subType);
 					if (submodelName != null) {
 						submodelName += ".INSTANCE";
-					} else {
+					} else if (!"?".equals(subType.getSimpleSourceName())) {
 						submodelName = subType.getSimpleSourceName() + ".class";
+					} else {
+						submodelName = "(Class) null";
 					}
 					modelName =
-						String.format("new ModelCollection<%s>(%s.class, %s)",
-							subType.getSimpleSourceName(), propertyType.getSimpleSourceName(), submodelName);
+						String.format("new ModelCollection(%s.class, %s)",
+							propertyType.getSimpleSourceName(), submodelName);
 				} else {
 					logger.branch(Type.WARN, String.format(
 						"Property [%s] on bean %s is a raw collection type. You cannot use it on editors.",
@@ -205,8 +201,8 @@ public class ModelCreator {
 				}
 			}
 
-			srcWriter.print("PROPERTIES.put(\"%s\", newPropertyDescription(\"%s\", %s.class, %s, %s, %s, %s", propertyName,
-				propertyName, simplePropertyTypeName, modelName, getter, setter, isFinal);
+			srcWriter.print("PROPERTIES.put(\"%s\", newPropertyDescription(\"%s\", %s.class, %s, %s, %s, %s",
+				propertyName, propertyName, simplePropertyTypeName, modelName, getter, setter, isFinal);
 			this.generateValidators(srcWriter, propertyName);
 			srcWriter.println("));");
 		}
@@ -309,8 +305,8 @@ public class ModelCreator {
 	private void generateConstructor(TreeLogger logger, SourceWriter srcWriter) {
 		int lastIndex = this.proxyModelQualifiedName.lastIndexOf('.');
 		String className =
-			lastIndex == -1 ? this.proxyModelQualifiedName :
-				this.proxyModelQualifiedName.substring(lastIndex + 1, this.proxyModelQualifiedName.length());
+			lastIndex == -1 ? this.proxyModelQualifiedName : this.proxyModelQualifiedName.substring(lastIndex + 1,
+				this.proxyModelQualifiedName.length());
 		srcWriter.println("public %s(){", className);
 		srcWriter.indent();
 
@@ -360,7 +356,8 @@ public class ModelCreator {
 				if (primitiveType != null) {
 					String boxedName = primitiveType.getQualifiedBoxedSourceName();
 					boxedName = boxedName.substring(boxedName.lastIndexOf(".") + 1, boxedName.length());
-					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) PrimitiveUtils.castTo%s(bean.%s); }", propertyName,
+					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) PrimitiveUtils.castTo%s(bean.%s); }",
+						propertyName,
 						boxedName, propertyName);
 				} else {
 					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) bean.%s; }", propertyName, propertyName);
@@ -484,6 +481,9 @@ public class ModelCreator {
 			if (jType.isPrimitive() != null) {
 				continue;
 			}
+			if ("?".equals(jType.getSimpleSourceName())) {
+				continue;
+			}
 			composerFactory.addImport(jType.getQualifiedSourceName());
 		}
 		for (String submodel : this.subModels.values()) {
@@ -505,6 +505,23 @@ public class ModelCreator {
 				this.proxyModelQualifiedName.length());
 
 		return ctx.tryCreate(logger, packageName, className);
+	}
+
+	public static String createSubModel(TreeLogger logger, GeneratorContext context, JType jType) {
+		if (jType == null) {
+			return null;
+		}
+		if (jType.isEnum() != null) {
+			return null;
+		}
+		if (ModelCreator.DISCARD_MODEL_TYPES.contains(jType.getQualifiedSourceName())) {
+			return null;
+		}
+		if (jType instanceof JClassType) {
+			ModelCreator creator = new ModelCreator((JClassType) jType);
+			return creator.create(logger, context);
+		}
+		return null;
 	}
 
 }
