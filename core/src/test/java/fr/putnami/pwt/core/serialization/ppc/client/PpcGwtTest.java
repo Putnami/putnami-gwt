@@ -51,7 +51,7 @@ public class PpcGwtTest extends AbstractPpcTest {
 	@Override
 	protected PpcSerializer getSerializer() {
 		if (serializer == null) {
-			serializer = new PpcClientSerializer();
+			serializer = PpcClientSerializer.get();
 
 			Model<Person> personModel = GWT.create(PersonModel.class);
 			Model<Manager> managerModel = GWT.create(ManagerModel.class);
