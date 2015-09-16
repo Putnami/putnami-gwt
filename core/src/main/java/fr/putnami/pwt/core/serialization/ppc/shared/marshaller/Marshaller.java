@@ -29,5 +29,7 @@ public interface Marshaller<T> {
 
 	T newInstance();
 
-	boolean writeType(PpcWriter writer, Integer index);
+	Integer writeInstanceId(PpcWriter writer, Integer instanceId);
+
+	Integer readInstanceId(PpcReader reader);
 }

@@ -70,7 +70,6 @@ public class MarshallerServerRegistry extends AbstractMarshallerRegistry {
 			throw new SerializationException(className + " doesnt have any marshaller.");
 		}
 		return marshaller;
-
 	}
 
 	@Override

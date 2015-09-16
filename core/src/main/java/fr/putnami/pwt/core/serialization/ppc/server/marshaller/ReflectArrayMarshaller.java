@@ -26,7 +26,6 @@ public class ReflectArrayMarshaller extends AbstractArrayMarshaller {
 		super(arrayClass, marshaller);
 	}
 
-
 	@Override
 	protected Object[] newArray(Class targetClass, List list) {
 		Object[] arr = (Object[]) Array.newInstance(targetClass, list.size());
@@ -35,5 +34,4 @@ public class ReflectArrayMarshaller extends AbstractArrayMarshaller {
 		}
 		return arr;
 	}
-
 }

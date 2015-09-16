@@ -71,7 +71,8 @@ public class ServiceBinderCreator {
 			this.handlerType.getQualifiedSourceName() + "_" + this.serviceType.getSimpleSourceName() + "_ServiceBinder";
 	}
 
-	public String create(TreeLogger logger, GeneratorContext context) throws UnableToCompleteException, NotFoundException {
+	public String create(TreeLogger logger, GeneratorContext context) throws UnableToCompleteException,
+		NotFoundException {
 		PrintWriter printWriter = this.getPrintWriter(logger, context);
 		if (printWriter == null) {
 			return this.proxyModelQualifiedName;
@@ -92,7 +93,8 @@ public class ServiceBinderCreator {
 		return this.proxyModelQualifiedName;
 	}
 
-	private void createSerializer(TreeLogger logger, GeneratorContext context, SourceWriter srcWriter) throws UnableToCompleteException,
+	private void createSerializer(TreeLogger logger, GeneratorContext context, SourceWriter srcWriter)
+		throws UnableToCompleteException,
 		NotFoundException {
 
 		final Collection<JType> typesToSerialize = Sets.newHashSet();
@@ -102,7 +104,8 @@ public class ServiceBinderCreator {
 
 		JClassType rteType = typeOracle.getType(RpcTokenException.class.getName());
 		JClassType rpcTokenClass = typeOracle.getType(RpcToken.class.getName());
-		RpcTokenImplementation tokenClassToUse = this.serviceType.findAnnotationInTypeHierarchy(RpcTokenImplementation.class);
+		RpcTokenImplementation tokenClassToUse = this.serviceType.findAnnotationInTypeHierarchy(
+			RpcTokenImplementation.class);
 		if (tokenClassToUse != null) {
 			JClassType rpcTokenType = typeOracle.getType(tokenClassToUse.value());
 			if (rpcTokenType.isAssignableTo(rpcTokenClass)) {
@@ -110,7 +113,7 @@ public class ServiceBinderCreator {
 				typesToSerialize.add(rteType);
 			} else {
 				logger.branch(TreeLogger.ERROR,
-						"RPC token class " + tokenClassToUse.value() + " must implement " + RpcToken.class.getName(), null);
+					"RPC token class " + tokenClassToUse.value() + " must implement " + RpcToken.class.getName(), null);
 				throw new UnableToCompleteException();
 			}
 		} else {
@@ -142,7 +145,8 @@ public class ServiceBinderCreator {
 
 		srcWriter.println("static {");
 		srcWriter.indent();
-		srcWriter.println("fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry registry = fr.putnami.pwt.core.serialization.ppc.client.PpcClientSerializer.get().getMarshallerRegistry();");
+		srcWriter.println(
+			"fr.putnami.pwt.core.serialization.ppc.shared.MarshallerRegistry registry = fr.putnami.pwt.core.serialization.ppc.client.PpcClientSerializer.get().getMarshallerRegistry();");
 
 		for (JType jType : typesToSerialize) {
 			String modelClassName = ModelCreator.createSubModel(logger, context, jType);
@@ -150,8 +154,9 @@ public class ServiceBinderCreator {
 				srcWriter.println("fr.putnami.pwt.core.serialization.ppc.client.ModelMarshaller.register(registry, new %s());",
 					modelClassName);
 			}
-			if(jType.isEnum() != null){
-				srcWriter.println("registry.register(new fr.putnami.pwt.core.serialization.ppc.client.EnumMarshaller(%s.class));",
+			if (jType.isEnum() != null) {
+				srcWriter.println(
+					"registry.register(new fr.putnami.pwt.core.serialization.ppc.client.EnumMarshaller(%s.class));",
 					jType.getQualifiedBinaryName());
 			}
 		}
@@ -160,7 +165,7 @@ public class ServiceBinderCreator {
 	}
 
 	private void extractAllType(JType type, Collection<JType> collect) {
-		if(collect.contains(type)){
+		if (collect.contains(type)) {
 			return;
 		}
 
@@ -435,8 +440,8 @@ public class ServiceBinderCreator {
 
 		String packageName = this.handlerType.getPackage().getName();
 		String className =
-			this.proxyModelQualifiedName.indexOf('.') == -1 ?
-				this.proxyModelQualifiedName : this.proxyModelQualifiedName.substring(
+			this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName : this.proxyModelQualifiedName
+				.substring(
 					this.proxyModelQualifiedName.lastIndexOf('.') + 1, this.proxyModelQualifiedName.length());
 
 		ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, className);
@@ -474,8 +479,8 @@ public class ServiceBinderCreator {
 		String packageName =
 			this.proxyModelQualifiedName.indexOf('.') == -1 ? "" : this.proxyModelQualifiedName.substring(0,
 				this.proxyModelQualifiedName.lastIndexOf('.'));
-		String className = this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName :
-			this.proxyModelQualifiedName.substring(
+		String className = this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName
+			: this.proxyModelQualifiedName.substring(
 				this.proxyModelQualifiedName.lastIndexOf('.') + 1, this.proxyModelQualifiedName.length());
 
 		return ctx.tryCreate(logger, packageName, className);

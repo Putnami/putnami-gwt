@@ -105,20 +105,17 @@ public class SimpleReader implements PpcReader {
 		}
 		int index = Integer.parseInt(token);
 
-		String objectRef = getString(index);
+		String className = getString(index);
 		Object val = null;
 
-		String className = PpcUtils.extractClassFromRef(objectRef);
-		Integer instanceId = PpcUtils.extractInstanceIdFromRef(objectRef);
-
+		Marshaller<O> marshaller = marshallers.findMarshaller(className);
+		Integer instanceId = marshaller.readInstanceId(this);
 		if (instanceId != null) {
 			val = cache.inverse().get(instanceId);
 		}
-
 		if (val != null) {
 			return (O) val;
 		}
-		Marshaller<O> marshaller = marshallers.findMarshaller(className);
 		O value = marshaller.unmarshal(this);
 		if (instanceId != null) {
 			cache.put(value, instanceId);

@@ -116,16 +116,18 @@ public class SimpleWriter implements PpcWriter {
 			throw new SerializationException("Can not resolve marsahller for " + valueClass);
 		}
 
-		Integer index = cache.get(value);
+		Integer instanceId = cache.get(value);
 
-		if (index == null) {
-			index = cache.size();
-			if (marshaller.writeType(this, index)) {
-				cache.put(value, index);
+		write(marshaller.getTypeName());
+		if (instanceId == null) {
+			instanceId = cache.size();
+			instanceId = marshaller.writeInstanceId(this, instanceId);
+			if (instanceId != null) {
+				cache.put(value, instanceId);
 			}
 			marshaller.marshal(value, this);
 		} else {
-			marshaller.writeType(this, index);
+			marshaller.writeInstanceId(this, instanceId);
 		}
 		return this;
 	}

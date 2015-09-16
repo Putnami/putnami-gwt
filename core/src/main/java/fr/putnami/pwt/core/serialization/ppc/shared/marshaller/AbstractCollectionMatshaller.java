@@ -18,7 +18,6 @@ import java.util.Collection;
 
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
-import fr.putnami.pwt.core.serialization.ppc.shared.util.PpcUtils;
 
 public abstract class AbstractCollectionMatshaller<C extends Collection> extends AbstractMarshaller<C> {
 
@@ -42,8 +41,13 @@ public abstract class AbstractCollectionMatshaller<C extends Collection> extends
 	}
 
 	@Override
-	public boolean writeType(PpcWriter writer, Integer id) {
-		writer.write(getTypeName() + PpcUtils.SEPARATOR_TYPE_REF + id);
-		return true;
+	public Integer writeInstanceId(PpcWriter writer, Integer instanceId) {
+		writer.write((int) instanceId);
+		return instanceId;
+	}
+
+	@Override
+	public Integer readInstanceId(PpcReader reader) {
+		return reader.readInt();
 	}
 }

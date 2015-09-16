@@ -19,7 +19,6 @@ import java.util.Map.Entry;
 
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
-import fr.putnami.pwt.core.serialization.ppc.shared.util.PpcUtils;
 
 public abstract class AbstractMapMatshaller<K, V, M extends Map<K, V>> extends AbstractMarshaller<M> {
 
@@ -45,8 +44,13 @@ public abstract class AbstractMapMatshaller<K, V, M extends Map<K, V>> extends A
 	}
 
 	@Override
-	public boolean writeType(PpcWriter writer, Integer id) {
-		writer.write(getTypeName() + PpcUtils.SEPARATOR_TYPE_REF + id);
-		return true;
+	public Integer writeInstanceId(PpcWriter writer, Integer instanceId) {
+		writer.write((int) instanceId);
+		return instanceId;
+	}
+
+	@Override
+	public Integer readInstanceId(PpcReader reader) {
+		return reader.readInt();
 	}
 }

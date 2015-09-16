@@ -27,12 +27,11 @@ public class ArrayMarshaller extends AbstractArrayMarshaller {
 
 	@Override
 	protected Object[] newArray(Class<?> targetClass2, List list) {
-		return _getArray(list);
+		return nativeGetArray(list);
 	}
 
-	public static native Object[] _getArray(List<?> list)
+	public static native Object[] nativeGetArray(List<?> list)
 	/*-{
 		return list.@java.util.Arrays$ArrayList::array;
 	}-*/;
-
 }

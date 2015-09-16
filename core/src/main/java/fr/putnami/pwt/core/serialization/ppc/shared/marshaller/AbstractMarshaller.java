@@ -14,6 +14,7 @@
  */
 package fr.putnami.pwt.core.serialization.ppc.shared.marshaller;
 
+import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 
@@ -24,8 +25,12 @@ public abstract class AbstractMarshaller<T> implements Marshaller<T> {
 	}
 
 	@Override
-	public boolean writeType(PpcWriter writer, Integer index) {
-		writer.write(getTypeName());
-		return false;
+	public Integer writeInstanceId(PpcWriter writer, Integer instanceId) {
+		return null;
+	}
+
+	@Override
+	public Integer readInstanceId(PpcReader reader) {
+		return null;
 	}
 }

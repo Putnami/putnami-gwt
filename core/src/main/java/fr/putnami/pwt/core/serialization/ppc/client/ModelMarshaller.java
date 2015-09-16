@@ -26,27 +26,36 @@ import fr.putnami.pwt.core.serialization.ppc.shared.PpcReader;
 import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.AbstractMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
-import fr.putnami.pwt.core.serialization.ppc.shared.util.PpcUtils;
 
 public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 
 	private final Model<T> model;
-	private final List<String> properties;
+	private final List<String> properties = Lists.newArrayList();
 	private final MarshallerRegistry registry;
 
 	public ModelMarshaller(Model<T> model, MarshallerRegistry registry) {
 		this.registry = registry;
 		this.model = model;
-		this.properties = Lists.newArrayList(model.getPropertyNames());
+		for (String propertyName : model.getPropertyNames()) {
+			PropertyDescription propDescription = model.getProperty(propertyName);
+
+			boolean toAdd = !propDescription.isTransient()
+				&& propDescription.isPublic()
+				|| (propDescription.isHasGetter() && propDescription.isHasSetter());
+
+			if (toAdd) {
+				properties.add(propertyName);
+			}
+		}
 		Collections.sort(properties);
 	}
 
 	@Override
 	public void marshal(T bean, PpcWriter writer) {
 		for (String property : properties) {
-			PropertyDescription propertyDescription = model.getProperty(property);
+			PropertyDescription propDescription = model.getProperty(property);
 			Object value = model.get(bean, property);
-			Class propertyClass = propertyDescription.getClazz();
+			Class propertyClass = propDescription.getClazz();
 			if (boolean.class.equals(propertyClass)) {
 				writer.write(Boolean.TRUE.equals(value));
 			} else if (byte.class.equals(propertyClass)) {
@@ -65,7 +74,7 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 				writer.write((short) (value == null ? 0 : value));
 			} else if (value == null) {
 				writer.writeNull();
-			} else if (propertyDescription.isFinal()) {
+			} else if (propDescription.isFinal()) {
 				Marshaller<Object> marshaler = registry.findMarshaller(propertyClass);
 				if (marshaler != null) {
 					marshaler.marshal(value, writer);
@@ -83,32 +92,34 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 		T instance = newInstance();
 		for (String property : properties) {
 			PropertyDescription propertyDescription = model.getProperty(property);
-			Class propertyClass = propertyDescription.getClazz();
-			if (boolean.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readBoolean());
-			} else if (byte.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readByte());
-			} else if (char.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readChar());
-			} else if (double.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readDouble());
-			} else if (float.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readFloat());
-			} else if (int.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readInt());
-			} else if (long.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readLong());
-			} else if (short.class.equals(propertyClass)) {
-				model.set(instance, property, reader.readShort());
-			} else if (propertyDescription.isFinal()) {
-				Marshaller<Object> marshaler = registry.findMarshaller(propertyClass);
-				if (marshaler != null) {
-				model.set(instance, property, marshaler.unmarshal(reader));
+			if (propertyDescription.isHasSetter()) {
+				Class propertyClass = propertyDescription.getClazz();
+				if (boolean.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readBoolean());
+				} else if (byte.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readByte());
+				} else if (char.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readChar());
+				} else if (double.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readDouble());
+				} else if (float.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readFloat());
+				} else if (int.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readInt());
+				} else if (long.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readLong());
+				} else if (short.class.equals(propertyClass)) {
+					model.set(instance, property, reader.readShort());
+				} else if (propertyDescription.isFinal()) {
+					Marshaller<Object> marshaler = registry.findMarshaller(propertyClass);
+					if (marshaler != null) {
+						model.set(instance, property, marshaler.unmarshal(reader));
+					} else {
+						model.set(instance, property, reader.readObject());
+					}
 				} else {
 					model.set(instance, property, reader.readObject());
 				}
-			} else {
-				model.set(instance, property, reader.readObject());
 			}
 		}
 		return instance;
@@ -130,9 +141,14 @@ public class ModelMarshaller<T> extends AbstractMarshaller<T> {
 	}
 
 	@Override
-	public boolean writeType(PpcWriter writer, Integer id) {
-		writer.write(getTypeName() + PpcUtils.SEPARATOR_TYPE_REF + id);
-		return true;
+	public Integer writeInstanceId(PpcWriter writer, Integer instanceId) {
+		writer.write((int) instanceId);
+		return instanceId;
+	}
+
+	@Override
+	public Integer readInstanceId(PpcReader reader) {
+		return reader.readInt();
 	}
 
 	public static void register(MarshallerRegistry registry, Model model) {

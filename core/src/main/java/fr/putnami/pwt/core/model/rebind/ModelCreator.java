@@ -110,7 +110,6 @@ public class ModelCreator {
 		this.listGetters(methods);
 		this.listSetters(methods);
 
-
 		this.createSubModels(logger, context);
 
 		SourceWriter srcWriter = this.getSourceWriter(printWriter, context);

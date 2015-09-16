@@ -17,7 +17,6 @@ package fr.putnami.pwt.core.serialization.ppc.shared.util;
 public final class PpcUtils {
 	public static final String SEPARATOR = "|";
 	public static final String SEPARATOR_STRINGS = "--";
-	public static final String SEPARATOR_TYPE_REF = "@";
 
 	private PpcUtils() {
 	}
@@ -28,22 +27,6 @@ public final class PpcUtils {
 
 	public static String decodeString(String value) {
 		return value;
-	}
-
-	public static String extractClassFromRef(String ref) {
-		int atIndex = ref.indexOf(SEPARATOR_TYPE_REF);
-		if (atIndex != -1) {
-			return ref.substring(0, atIndex);
-		}
-		return ref;
-	}
-
-	public static Integer extractInstanceIdFromRef(String ref) {
-		int atIndex = ref.indexOf(SEPARATOR_TYPE_REF);
-		if (atIndex != -1) {
-			return Integer.parseInt(ref.substring(atIndex + 1));
-		}
-		return null;
 	}
 
 }

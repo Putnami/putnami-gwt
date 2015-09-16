@@ -31,7 +31,6 @@ import fr.putnami.pwt.core.serialization.ppc.shared.PpcWriter;
 import fr.putnami.pwt.core.serialization.ppc.shared.SerializationException;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.AbstractMarshaller;
 import fr.putnami.pwt.core.serialization.ppc.shared.marshaller.Marshaller;
-import fr.putnami.pwt.core.serialization.ppc.shared.util.PpcUtils;
 
 public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 
@@ -148,6 +147,9 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 		public void marshal(Object bean, PpcWriter writer) {
 			try {
 				Class<?> type = field.getType();
+				if (Modifier.isTransient(field.getModifiers())) {
+					return;
+				}
 				if (type.isPrimitive()) {
 					if (boolean.class.equals(type)) {
 						writer.write(field.getBoolean(bean));
@@ -186,6 +188,9 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 		public void unmarshal(Object instance, PpcReader reader) {
 			try {
 				Class<?> type = field.getType();
+				if (Modifier.isTransient(field.getModifiers())) {
+					return;
+				}
 				if (type.isPrimitive()) {
 					if (boolean.class.equals(type)) {
 						field.setBoolean(instance, reader.readBoolean());
@@ -230,7 +235,8 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 
 		try {
 			for (Field field : objectClass.getFields()) {
-				if (Modifier.isPublic(field.getModifiers())) {
+				if (Modifier.isPublic(field.getModifiers()) ||
+					!Modifier.isTransient(field.getModifiers())) {
 					propertyMarshaller.put(field.getName(), new PublicFieldMarshaller(field));
 					propertyNames.add(field.getName());
 				}
@@ -244,7 +250,7 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 				Method setter = entry.getValue();
 				Method getter = getters.get(propertyName);
 
-				if (getter != null && !propertyMarshaller.containsKey(propertyName)) {
+				if (getter != null && setter != null && !propertyMarshaller.containsKey(propertyName)) {
 					propertyMarshaller.put(propertyName, new GetterSetterMarshaller(propertyName, getter, setter));
 					propertyNames.add(propertyName);
 				}
@@ -329,9 +335,14 @@ public class ReflectObjectMarshaller<T> extends AbstractMarshaller<T> {
 	}
 
 	@Override
-	public boolean writeType(PpcWriter writer, Integer id) {
-		writer.write(getTypeName() + PpcUtils.SEPARATOR_TYPE_REF + id);
-		return true;
+	public Integer writeInstanceId(PpcWriter writer, Integer instanceId) {
+		writer.write((int) instanceId);
+		return instanceId;
+	}
+
+	@Override
+	public Integer readInstanceId(PpcReader reader) {
+		return reader.readInt();
 	}
 
 }
