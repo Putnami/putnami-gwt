@@ -69,7 +69,6 @@ public class InputFile extends InputGroup<FileDto> implements HasDrawable {
 
 	private static final CssStyle STYLE_DRAGOVER = new SimpleStyle("file-dragover");
 	private static final CssStyle STYLE_MUTTED = new SimpleStyle("text-muted");
-
 	private class UploadForm {
 
 		private final FlowPanel formPanel = new FlowPanel();
@@ -121,6 +120,12 @@ public class InputFile extends InputGroup<FileDto> implements HasDrawable {
 	private String fileId;
 	private UploadForm uploadForm;
 	private Request sendRequest;
+
+
+	private String urlUpload = URL_UPLOAD;
+	private String urlStatus = URL_STATUS;
+	private String urlDownload = URL_DOWNLOAD;
+
 
 	public InputFile() {
 		this.endConstruct();
@@ -221,7 +226,7 @@ public class InputFile extends InputGroup<FileDto> implements HasDrawable {
 					displaySize = nf.format(size) + " B";
 				}
 
-				this.fileNameAnchor.setLink(InputFile.URL_DOWNLOAD + value.getToken());
+				this.fileNameAnchor.setLink(urlDownload + value.getToken());
 				this.fileNameAnchor.setText(value.getName() + " - (" + displaySize + ")");
 				this.placeholderText.setText(null);
 				this.append(this.fileNameAnchor);
@@ -311,8 +316,32 @@ public class InputFile extends InputGroup<FileDto> implements HasDrawable {
 		StyleUtils.removeStyle(this, STYLE_ERROR);
 		this.fileId = UUID.uuid();
 		this.initProgressBar();
-		nativeUploadData(object, this, URL_UPLOAD + this.fileId,
+		nativeUploadData(object, this, urlUpload + this.fileId,
 			CsrfController.get().getHeader(), CsrfController.get().getToken());
+	}
+
+	public String getUrlUpload() {
+		return urlUpload;
+	}
+
+	public void setUrlUpload(String urlUpload) {
+		this.urlUpload = urlUpload;
+	}
+
+	public String getUrlStatus() {
+		return urlStatus;
+	}
+
+	public void setUrlStatus(String urlStatus) {
+		this.urlStatus = urlStatus;
+	}
+
+	public String getUrlDownload() {
+		return urlDownload;
+	}
+
+	public void setUrlDownload(String urlDownload) {
+		this.urlDownload = urlDownload;
 	}
 
 	private static native void nativeUploadData(JavaScriptObject file, InputFile inputFile, String url,
