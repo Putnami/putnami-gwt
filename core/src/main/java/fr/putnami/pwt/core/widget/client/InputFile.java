@@ -121,11 +121,9 @@ public class InputFile extends InputGroup<FileDto> implements HasDrawable {
 	private UploadForm uploadForm;
 	private Request sendRequest;
 
-
 	private String urlUpload = URL_UPLOAD;
 	private String urlStatus = URL_STATUS;
 	private String urlDownload = URL_DOWNLOAD;
-
 
 	public InputFile() {
 		this.endConstruct();
