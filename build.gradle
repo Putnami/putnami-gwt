@@ -16,10 +16,12 @@ buildscript {
 	repositories {
 		mavenLocal()
 		mavenCentral()
-		jcenter()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
-		classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.5.0-SNAPSHOT'
+		classpath "gradle.plugin.fr.putnami.gwt:putnami-gradle-plugin:0.5.0"
 		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.7.0'
 	}
 }
@@ -34,19 +36,11 @@ allprojects {
 
 subprojects {
 	apply plugin: 'maven'
-	apply plugin: 'eclipse'
 	apply plugin: 'license'
 	apply plugin: 'fr.putnami.gwt-lib'
 
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
-
-
-	eclipse {
-		classpath {
-			downloadSources=true
-		}
-	}
 
 	configurations {
 		log4j
@@ -78,6 +72,7 @@ subprojects {
 }
 
 configure(subprojects.findAll {it.name != 'pwt-doc'}) {
+	apply plugin: 'maven-publish'
 	apply plugin: 'checkstyle'
 	apply plugin: 'signing'
 
@@ -109,6 +104,20 @@ configure(subprojects.findAll {it.name != 'pwt-doc'}) {
 	signing {
 		required { gradle.taskGraph.hasTask("uploadArchives") }
 	    sign configurations.archives
+	}
+
+	publishing {
+		publications {
+			mavenJava(MavenPublication) {
+				from components.java
+
+				groupId = project.group
+				version = project.version
+
+				artifact sourcesJar { classifier 'sources' }
+				artifact javadocJar { classifier 'javadoc' }
+			}
+		}
 	}
 
 	uploadArchives {
