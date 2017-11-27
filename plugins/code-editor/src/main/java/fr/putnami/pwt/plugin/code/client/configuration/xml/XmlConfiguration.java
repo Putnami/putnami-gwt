@@ -36,7 +36,7 @@ public final class XmlConfiguration implements CodeEditorConfiguration {
 
 	private List<CodeEditorAspect> aspects = Lists.newArrayList();
 
-	private static enum XmlPartitionTokenContent implements TokenContent {
+	private enum XmlPartitionTokenContent implements TokenContent {
 		INNER_TAG;
 	}
 
@@ -59,13 +59,13 @@ public final class XmlConfiguration implements CodeEditorConfiguration {
 	}
 
 	static class XMLStartTagDetector extends RegExpWordMatcher {
-		public XMLStartTagDetector(TokenContent tokenContent) {
+		XMLStartTagDetector(TokenContent tokenContent) {
 			super(tokenContent, "\\<(/)?[a-zA-Z0-9\\:\\.\\-]*((/)?\\>)?");
 		}
 	}
 
 	static class XMLEndTagDetector extends RegExpWordMatcher {
-		public XMLEndTagDetector(TokenContent tokenContent) {
+		XMLEndTagDetector(TokenContent tokenContent) {
 			super(tokenContent, "(/)?\\>");
 		}
 	}

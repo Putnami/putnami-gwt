@@ -65,7 +65,7 @@ public class CodeContentAssistAspect extends ContentAssistAspect<String> impleme
 
 	static class CodeDefaultContentAssistHandler extends AbstractContentAssistHandler<String> {
 
-		public CodeDefaultContentAssistHandler() {
+		CodeDefaultContentAssistHandler() {
 			super(new SimpleOracle<String>());
 		}
 

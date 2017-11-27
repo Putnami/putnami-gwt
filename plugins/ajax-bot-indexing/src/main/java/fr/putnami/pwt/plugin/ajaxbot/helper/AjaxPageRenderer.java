@@ -115,7 +115,7 @@ public class AjaxPageRenderer {
 	}
 
 	class ConnectionFilter extends FalsifyingWebConnection {
-		public ConnectionFilter(WebClient webClient) throws IllegalArgumentException {
+		ConnectionFilter(WebClient webClient) throws IllegalArgumentException {
 			super(webClient);
 		}
 

@@ -39,7 +39,7 @@
     </module>
     <module name="LocalVariableName">
       <property name="severity" value="error"/>
-      <property name="tokens" value="PARAMETER_DEF,VARIABLE_DEF"/>
+      <property name="tokens" value="VARIABLE_DEF"/>
     </module>
     <module name="LeftCurly">
       <property name="severity" value="error"/>

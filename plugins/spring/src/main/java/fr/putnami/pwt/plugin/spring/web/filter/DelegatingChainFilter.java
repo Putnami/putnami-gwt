@@ -74,7 +74,7 @@ public class DelegatingChainFilter extends GenericFilterBean {
 		private final FilterChain defaultChain;
 		private Iterator<Filter> filterIterator;
 
-		public IterableFilterChain(List<Filter> filters, FilterChain chain) {
+		IterableFilterChain(List<Filter> filters, FilterChain chain) {
 			this.filterIterator = filters.iterator();
 			this.defaultChain = chain;
 		}
