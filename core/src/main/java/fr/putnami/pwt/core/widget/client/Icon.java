@@ -36,7 +36,7 @@ public class Icon extends AbstractWidget {
 
 		private final String style;
 
-		private Color(String style) {
+		Color(String style) {
 			this.style = style;
 		}
 

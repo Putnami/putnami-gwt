@@ -153,7 +153,7 @@ public class InputSuggest<T> extends AbstractInputBox<TextBox, T> {
 
 	class TextBoxContentAssistHandler extends AbstractContentAssistHandler<T> {
 
-		public TextBoxContentAssistHandler(Oracle<T> oracle) {
+		TextBoxContentAssistHandler(Oracle<T> oracle) {
 			super(oracle);
 		}
 

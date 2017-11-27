@@ -43,7 +43,7 @@ public class Affix extends OneWidgetPanel {
 
 		private final String style;
 
-		private Affixed(String style) {
+		Affixed(String style) {
 			this.style = style;
 		}
 

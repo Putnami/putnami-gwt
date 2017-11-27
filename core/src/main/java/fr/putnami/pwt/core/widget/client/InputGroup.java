@@ -42,7 +42,7 @@ public class InputGroup<T> extends AbstractPanel implements EditorInput<T> {
 
 		private final String style;
 
-		private Style(String style) {
+		Style(String style) {
 			this.style = style;
 		}
 
@@ -59,7 +59,7 @@ public class InputGroup<T> extends AbstractPanel implements EditorInput<T> {
 
 		private final String style;
 
-		private Size(String style) {
+		Size(String style) {
 			this.style = style;
 		}
 

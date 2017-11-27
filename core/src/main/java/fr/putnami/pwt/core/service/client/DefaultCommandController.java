@@ -58,7 +58,7 @@ public final class DefaultCommandController extends CommandController {
 		private final List<Request> requests;
 		private AsyncCallback<List<CommandResponse>> callback;
 
-		public ServiceCallback(List<Request> requests, AsyncCallback<List<CommandResponse>> callback) {
+		ServiceCallback(List<Request> requests, AsyncCallback<List<CommandResponse>> callback) {
 			this.requests = requests;
 			this.callback = callback;
 		}

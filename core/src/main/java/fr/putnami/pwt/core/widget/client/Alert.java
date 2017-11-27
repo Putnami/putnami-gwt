@@ -52,7 +52,7 @@ public class Alert<T> extends AbstractForm<T> implements HasAlertDismissHandlers
 
 		private final String style;
 
-		private Type(String style) {
+		Type(String style) {
 			this.style = style;
 		}
 

@@ -53,7 +53,7 @@ public class Navbar extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private ContainerType(String style) {
+		ContainerType(String style) {
 			this.style = style;
 		}
 
@@ -70,7 +70,7 @@ public class Navbar extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private Type(String style) {
+		Type(String style) {
 			this.style = style;
 		}
 
@@ -88,7 +88,7 @@ public class Navbar extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private Position(String style) {
+		Position(String style) {
 			this.style = style;
 		}
 
@@ -100,7 +100,7 @@ public class Navbar extends AbstractPanel implements CloneableWidget {
 
 	private class NavbarButton extends Widget implements CloneableWidget {
 
-		public NavbarButton() {
+		NavbarButton() {
 			this.setElement(Document.get().createAnchorElement());
 			StyleUtils.addStyle(this, Navbar.STYLE_TOGGLE);
 			StyleUtils.addStyle(this, Navbar.STYLE_TEXT_MUTED);

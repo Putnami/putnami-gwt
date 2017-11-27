@@ -55,7 +55,7 @@ public abstract class AbstractHover implements IsWidget, HasWidgets, HasOneWidge
 
 		private String name;
 
-		private Visibility(String name) {
+		Visibility(String name) {
 			this.name = name;
 		}
 
@@ -73,7 +73,7 @@ public abstract class AbstractHover implements IsWidget, HasWidgets, HasOneWidge
 
 		private String name;
 
-		private Placement(String name) {
+		Placement(String name) {
 			this.name = name;
 		}
 
@@ -83,7 +83,7 @@ public abstract class AbstractHover implements IsWidget, HasWidgets, HasOneWidge
 		}
 	}
 
-	public static enum Trigger {
+	public enum Trigger {
 			HOVER,
 			FOCUS,
 			MANUAL;

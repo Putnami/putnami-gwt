@@ -52,7 +52,7 @@ public class OutputProgressBar<T extends Number> extends AbstractWidget implemen
 
 		private final String style;
 
-		private Color(String style) {
+		Color(String style) {
 			this.style = style;
 		}
 

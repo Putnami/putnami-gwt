@@ -40,7 +40,7 @@ public class InputCheckBox<T> extends AbstractInputChoice<T, List<T>> {
 
 		private final String style;
 
-		private Type(String style) {
+		Type(String style) {
 			this.style = style;
 		}
 
@@ -109,7 +109,7 @@ public class InputCheckBox<T> extends AbstractInputChoice<T, List<T>> {
 
 		private T value;
 
-		public CheckboxContainer(T value) {
+		CheckboxContainer(T value) {
 			this.value = value;
 			Container newContainer = null;
 			Container label = new Container(LabelElement.TAG);

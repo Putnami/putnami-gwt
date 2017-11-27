@@ -49,12 +49,12 @@ public class NavSpy extends AbstractComposite implements HasDrawable {
 		private final int level;
 		private Nav subNavContainer;
 
-		public NavWidget(NavWidget parentNav, int level) {
+		NavWidget(NavWidget parentNav, int level) {
 			this.parentNav = parentNav;
 			this.level = level;
 		}
 
-		public NavWidget(NavWidget parentNav, final Element heading) {
+		NavWidget(NavWidget parentNav, final Element heading) {
 			super(heading.getInnerHTML(), new ScheduledCommand() {
 				@Override
 				public void execute() {

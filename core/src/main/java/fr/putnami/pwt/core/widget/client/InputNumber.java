@@ -43,7 +43,7 @@ import fr.putnami.pwt.core.widget.client.mask.StaticStringTokenHelper;
 
 public class InputNumber<N extends Number> extends AbstractInputBox<TextBox, N> {
 
-	public static enum NumberType {
+	public enum NumberType {
 			FLOAT(FloatRenderer.get(), FloatParser.get()),
 			DOUBLE(DoubleRenderer.instance(), DoubleParser.instance()),
 			BIG_DECIMAL(BigDecimalRenderer.get(), BigDecimalParser.get()),
@@ -54,7 +54,7 @@ public class InputNumber<N extends Number> extends AbstractInputBox<TextBox, N> 
 		private final Renderer<? extends Number> renderer;
 		private final Parser<? extends Number> parser;
 
-		private NumberType(Renderer<? extends Number> renderer, Parser<? extends Number> parser) {
+		NumberType(Renderer<? extends Number> renderer, Parser<? extends Number> parser) {
 			this.renderer = renderer;
 			this.parser = parser;
 		}

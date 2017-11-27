@@ -69,7 +69,7 @@ public class InputSwitch<T> extends AbstractInputChoice<T, T> {
 
 		private T value;
 
-		public SwitchItem(T value) {
+		SwitchItem(T value) {
 			this.value = value;
 			StyleUtils.addStyle(this, InputSwitch.STYLE_ITEM);
 			this.getElement().setInnerHTML(InputSwitch.this.getChoiceRenderer().renderItem(value));

@@ -38,7 +38,7 @@ public class InputRadio<T> extends AbstractInputChoice<T, T> {
 
 		private final String style;
 
-		private Type(String style) {
+		Type(String style) {
 			this.style = style;
 		}
 
@@ -83,7 +83,7 @@ public class InputRadio<T> extends AbstractInputChoice<T, T> {
 
 		private T value;
 
-		public RadioContainer(T value) {
+		RadioContainer(T value) {
 			this.value = value;
 			Container newContainer = null;
 			Container label = new Container(LabelElement.TAG);

@@ -41,7 +41,7 @@ public class ErrorGroup extends AbstractWidget implements EditorError, HasDrawab
 
 		private final String style;
 
-		private Color(String style) {
+		Color(String style) {
 			this.style = style;
 		}
 

@@ -62,7 +62,7 @@ public class TableSelecter<T> extends AbstractTableColumn<T> implements HasSelec
 
 		private T value;
 
-		public TDSelecter() {
+		TDSelecter() {
 			super(TableCellElement.TAG_TD);
 			if (TableSelecter.this.singleSelection) {
 				this.inputElem = InputElement.as(DOM.createInputRadio(TableSelecter.this.groupId));

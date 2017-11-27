@@ -39,7 +39,7 @@ public class TabPanel extends AbstractPanel implements CloneableWidget {
 
 		private final TabPanelContent containerSource;
 
-		public TabNavigationCommand(TabPanelContent container) {
+		TabNavigationCommand(TabPanelContent container) {
 			this.containerSource = container;
 		}
 

@@ -47,7 +47,7 @@ public abstract class AbstractInputSelect<T, U> extends AbstractInputChoice<T, U
 	private class ItemClickCommand implements ScheduledCommand {
 		private T item;
 
-		public ItemClickCommand(T item) {
+		ItemClickCommand(T item) {
 			this.item = item;
 		}
 

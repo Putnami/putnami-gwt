@@ -32,7 +32,7 @@ public class HandlerManager implements HasHandlers {
 
 	@SuppressWarnings("deprecation")
 	private static class Bus extends com.google.web.bindery.event.shared.SimpleEventBus {
-		public Bus(boolean fireInReverseOrder) {
+		Bus(boolean fireInReverseOrder) {
 			super(fireInReverseOrder);
 		}
 

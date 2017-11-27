@@ -32,7 +32,7 @@ public interface HasResponsiveVisibility {
 
 		private final String value;
 
-		private TargetSize(String value) {
+		TargetSize(String value) {
 			this.value = value;
 		}
 
@@ -51,7 +51,7 @@ public interface HasResponsiveVisibility {
 		private final String prefix;
 		private final String suffix;
 
-		private Visibility(String prefix, String suffix) {
+		Visibility(String prefix, String suffix) {
 			this.prefix = prefix;
 			this.suffix = suffix;
 		}
@@ -68,11 +68,11 @@ public interface HasResponsiveVisibility {
 		}
 	}
 
-	public static class VisibilityStyle implements CssStyle, Iterable<VisibilityStyle> {
+	class VisibilityStyle implements CssStyle, Iterable<VisibilityStyle> {
 		private final TargetSize size;
 		private final Visibility visibility;
 
-		public VisibilityStyle(TargetSize size, Visibility visibility) {
+		VisibilityStyle(TargetSize size, Visibility visibility) {
 			this.size = size;
 			this.visibility = visibility;
 		}

@@ -72,7 +72,7 @@ public class ContentAssistAspect<T> {
 
 		private final Oracle.Suggestion<T> suggestion;
 
-		public SuggestionItem(Oracle.Suggestion<T> suggestion, String displayedValue) {
+		SuggestionItem(Oracle.Suggestion<T> suggestion, String displayedValue) {
 			this.setElement(Document.get().createLIElement());
 			this.suggestion = suggestion;
 			AnchorElement anchor = Document.get().createAnchorElement();
@@ -84,7 +84,7 @@ public class ContentAssistAspect<T> {
 
 	static class DefaultContentAssistHandler<T> extends AbstractContentAssistHandler<T> {
 
-		public DefaultContentAssistHandler() {
+		DefaultContentAssistHandler() {
 			super(new SimpleOracle<T>());
 		}
 
@@ -107,7 +107,7 @@ public class ContentAssistAspect<T> {
 	class SuggestionDisplayImpl implements SuggestionDisplay<T> {
 
 		private class DropdownMenu extends AbstractPanel {
-			public DropdownMenu() {
+			DropdownMenu() {
 				super(UListElement.TAG);
 				StyleUtils.addStyle(this, ContentAssistAspect.STYLE_MENU);
 				StyleUtils.addStyle(this, ContentAssistAspect.STYLE_SCROLLABLE);
@@ -123,7 +123,7 @@ public class ContentAssistAspect<T> {
 
 		private boolean hideWhenEmpty = true;
 
-		public SuggestionDisplayImpl() {
+		SuggestionDisplayImpl() {
 			this.suggestionPopup = new PopupPanel(true, false);
 			this.suggestionPopup.setPreviewingAllNativeEvents(true);
 			StyleUtils.addStyle(this.suggestionPopup, ContentAssistAspect.STYLE_POPUP);

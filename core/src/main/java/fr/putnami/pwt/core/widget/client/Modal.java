@@ -56,7 +56,7 @@ public class Modal extends AbstractPanel implements HasOneWidget, CloneableWidge
 
 	private static class ModalBackdrop extends Widget {
 
-		public ModalBackdrop() {
+		ModalBackdrop() {
 			this.setElement(Document.get().createDivElement());
 			StyleUtils.addStyle(this, Modal.STYLE_BACKDROP);
 			StyleUtils.addStyle(this, Modal.STYLE_FADE);
@@ -92,7 +92,7 @@ public class Modal extends AbstractPanel implements HasOneWidget, CloneableWidge
 
 		private final String style;
 
-		private Size(String style) {
+		Size(String style) {
 			this.style = style;
 		}
 

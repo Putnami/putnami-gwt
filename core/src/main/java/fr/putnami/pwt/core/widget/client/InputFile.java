@@ -76,7 +76,7 @@ public class InputFile extends InputGroup<FileDto> implements HasDrawable {
 
 		private final HandlerRegistrationCollection handlerRegistrations = new HandlerRegistrationCollection();
 
-		public UploadForm() {
+		UploadForm() {
 			this.formPanel.getElement().getStyle().setHeight(0, Unit.PX);
 			this.formPanel.getElement().getStyle().setWidth(0, Unit.PX);
 			this.formPanel.getElement().getStyle().setOverflow(Overflow.HIDDEN);

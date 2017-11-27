@@ -35,7 +35,7 @@ public abstract class AbstractTextOutput<T> extends AbstractOutput<T> implements
 
 		private final String style;
 
-		private Style(String style) {
+		Style(String style) {
 			this.style = style;
 		}
 

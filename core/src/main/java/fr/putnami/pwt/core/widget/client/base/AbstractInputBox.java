@@ -53,7 +53,7 @@ public abstract class AbstractInputBox<T extends TextBoxBase, I> extends Abstrac
 
 		private final String style;
 
-		private Size(String style) {
+		Size(String style) {
 			this.style = style;
 		}
 

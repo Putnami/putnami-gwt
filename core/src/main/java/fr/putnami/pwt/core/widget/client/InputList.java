@@ -80,7 +80,7 @@ public class InputList<T> extends List
 
 		private final Button<T> addButton;
 
-		public NewListItem() {
+		NewListItem() {
 			super();
 			this.addButton = new Button<T>();
 			this.addButton.setType(Button.Type.LINK);
@@ -119,7 +119,7 @@ public class InputList<T> extends List
 
 		private boolean focused = false;
 
-		public InternalListItem() {
+		InternalListItem() {
 			super();
 			this.resetFocusHandler();
 			StyleUtils.addStyle(this.container, InputList.STYLE_ITEM_CONTAINER);

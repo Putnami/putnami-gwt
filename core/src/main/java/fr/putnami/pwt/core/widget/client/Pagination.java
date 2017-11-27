@@ -50,7 +50,7 @@ public class Pagination extends AbstractComposite implements HasPageChangeHandle
 
 		private final String style;
 
-		private Size(String style) {
+		Size(String style) {
 			this.style = style;
 		}
 
@@ -66,7 +66,7 @@ public class Pagination extends AbstractComposite implements HasPageChangeHandle
 
 		private final String style;
 
-		private Style(String style) {
+		Style(String style) {
 			this.style = style;
 		}
 
@@ -79,7 +79,7 @@ public class Pagination extends AbstractComposite implements HasPageChangeHandle
 	private class Page extends Widget implements ClickHandler {
 		private final int page;
 
-		public Page(String label, int page) {
+		Page(String label, int page) {
 			this.setElement(Document.get().createLIElement());
 			this.page = page;
 			if (Pagination.this.currentPage == page) {
@@ -107,7 +107,7 @@ public class Pagination extends AbstractComposite implements HasPageChangeHandle
 
 		private final boolean previous;
 
-		public NavigationPage(boolean previous) {
+		NavigationPage(boolean previous) {
 			this.previous = previous;
 			this.setElement(Document.get().createLIElement());
 			this.addDomHandler(this, ClickEvent.getType());

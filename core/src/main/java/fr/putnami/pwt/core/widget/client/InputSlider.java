@@ -151,7 +151,7 @@ public class InputSlider<T> extends AbstractInput<T> implements ValueChangeHandl
 		private boolean focused = false;
 		private int valueIndex = -1;
 
-		public HandleWidget() {
+		HandleWidget() {
 			super(DOM.createDiv());
 			StyleUtils.addStyle(this, AbstractInput.STYLE_CONTROL);
 			StyleUtils.addStyle(this, InputSlider.STYLE_HANDLE);

@@ -53,7 +53,7 @@ public class Carousel extends AbstractPanel implements ClickHandler, MouseOverHa
 
 		private final String style;
 
-		private ItemType(String style) {
+		ItemType(String style) {
 			this.style = style;
 		}
 
@@ -69,7 +69,7 @@ public class Carousel extends AbstractPanel implements ClickHandler, MouseOverHa
 
 		private final String style;
 
-		private LeftRightType(String style) {
+		LeftRightType(String style) {
 			this.style = style;
 		}
 
@@ -82,7 +82,7 @@ public class Carousel extends AbstractPanel implements ClickHandler, MouseOverHa
 	private class IndicatorItem extends ListItem implements ClickHandler {
 		private final int itemIndex;
 
-		public IndicatorItem(int itemIndex) {
+		IndicatorItem(int itemIndex) {
 			this.itemIndex = itemIndex;
 			this.addClickHandler(this);
 		}

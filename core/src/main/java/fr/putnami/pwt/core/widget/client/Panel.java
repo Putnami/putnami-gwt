@@ -57,7 +57,7 @@ public class Panel extends AbstractPanel implements CloneableWidget, HasOneWidge
 
 		private final String style;
 
-		private Color(String style) {
+		Color(String style) {
 			this.style = style;
 		}
 

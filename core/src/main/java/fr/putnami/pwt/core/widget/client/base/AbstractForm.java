@@ -66,7 +66,7 @@ public abstract class AbstractForm<T> extends AbstractHTMLPanel
 
 		private final String style;
 
-		private Layout(String style) {
+		Layout(String style) {
 			this.style = style;
 		}
 

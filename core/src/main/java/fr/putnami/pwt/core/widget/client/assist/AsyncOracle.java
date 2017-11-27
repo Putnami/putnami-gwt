@@ -44,7 +44,7 @@ public abstract class AsyncOracle<T> extends AbstractOracle<T> {
 
 		private final Oracle.Callback<T> delegate;
 
-		public DelegateCallback(Oracle.Callback<T> callback) {
+		DelegateCallback(Oracle.Callback<T> callback) {
 			super();
 			this.delegate = callback;
 		}

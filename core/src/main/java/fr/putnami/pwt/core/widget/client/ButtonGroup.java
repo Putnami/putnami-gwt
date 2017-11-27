@@ -34,7 +34,7 @@ public class ButtonGroup extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private Type(String style) {
+		Type(String style) {
 			this.style = style;
 		}
 
@@ -52,7 +52,7 @@ public class ButtonGroup extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private Size(String style) {
+		Size(String style) {
 			this.style = style;
 		}
 

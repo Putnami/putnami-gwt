@@ -49,7 +49,7 @@ public class InputDateBox extends AbstractInputBox<TextBox, Date> {
 		int max;
 		int maxLenght;
 
-		public NumericHelperFactory(String placeholder, String format, int defaultValue, int min, int max, int maxLenght) {
+		NumericHelperFactory(String placeholder, String format, int defaultValue, int min, int max, int maxLenght) {
 			this.placeholder = placeholder;
 			this.format = format;
 			this.defaultValue = defaultValue;
@@ -74,7 +74,7 @@ public class InputDateBox extends AbstractInputBox<TextBox, Date> {
 	private static class StringHelperFactory implements HelperFactory {
 		String[] restrictedValues;
 
-		public StringHelperFactory(String placeholder, String... restrictedValues) {
+		StringHelperFactory(String placeholder, String... restrictedValues) {
 			this.restrictedValues = restrictedValues;
 		}
 

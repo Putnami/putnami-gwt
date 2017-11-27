@@ -40,7 +40,7 @@ public class List extends AbstractPanel implements CloneableWidget {
 		final CssStyle listStyle;
 		final CssStyle itemStyle;
 
-		private Type(String listStyle, String itemTag, String itemStyle) {
+		Type(String listStyle, String itemTag, String itemStyle) {
 			this.itemTag = itemTag;
 			this.listStyle = new SimpleStyle(listStyle);
 			this.itemStyle = new SimpleStyle(itemStyle);

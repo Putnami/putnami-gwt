@@ -34,7 +34,7 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 
 		private final String style;
 
-		private Type(String style) {
+		Type(String style) {
 			this.style = style;
 		}
 
@@ -44,7 +44,7 @@ public abstract class AbstractTableColumn<T> implements HasReadonly, IsWidget, H
 		}
 	}
 
-	public static enum ColumnVisibility {
+	public enum ColumnVisibility {
 			VISIBLE,
 			HIDE,
 			HIDE_READONLY,

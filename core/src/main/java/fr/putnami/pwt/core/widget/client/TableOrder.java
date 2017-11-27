@@ -56,7 +56,7 @@ public class TableOrder<T> extends AbstractTableColumn<T> implements RowOrderCha
 
 		private final Icon dragIcon;
 
-		public TDHandle() {
+		TDHandle() {
 			super(TableCellElement.TAG_TD);
 			this.dragIcon = new Icon();
 			this.dragIcon.setType(IconFont.ICON_DRAG);

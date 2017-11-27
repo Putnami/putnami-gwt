@@ -32,7 +32,7 @@ public class Nav extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private LinkStyle(String style) {
+		LinkStyle(String style) {
 			this.style = style;
 		}
 
@@ -52,7 +52,7 @@ public class Nav extends AbstractPanel implements CloneableWidget {
 
 		private final String style;
 
-		private Style(String style) {
+		Style(String style) {
 			this.style = style;
 		}
 
