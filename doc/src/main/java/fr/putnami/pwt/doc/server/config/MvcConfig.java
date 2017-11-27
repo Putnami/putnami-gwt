@@ -22,8 +22,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import fr.putnami.pwt.doc.server.controller.PutnamiController;
-
 @Configuration
 @EnableWebMvc
 public class MvcConfig extends WebMvcConfigurerAdapter {
@@ -40,19 +38,6 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 			.addResourceLocations("/assets/").setCachePeriod(RESOURCE_CACHE_PERIOD);
 		registry.addResourceHandler("/Documentation/**")
 			.addResourceLocations("/Documentation/").setCachePeriod(RESOURCE_CACHE_PERIOD);
-	}
-
-	@Bean
-	public InternalResourceViewResolver getInternalResourceViewResolver() {
-		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-		resolver.setPrefix("/WEB-INF/pages/");
-		resolver.setSuffix(".jsp");
-		return resolver;
-	}
-
-	@Bean
-	public PutnamiController putnamiController() {
-		return new PutnamiController();
 	}
 
 	@Bean

@@ -61,7 +61,6 @@
 							<w:NavLink label="Address book" link="#!AddressBook"/>
 							<w:NavLink label="Contacts table" link="#!ContactsTable"/>
 						</w:NavDropdown>
-						<w:NavLink label="Coming soon ..." link="#!ComingSoon" />
 					</w:Nav>
 				</w:Navbar>
 			</w:Affix>
@@ -75,7 +74,7 @@
 			<p>Licensed under <a href="https://www.gnu.org/licenses/lgpl-3.0.txt" target="_blank">LGPL v 3.0</a></p>
 			<ul class="list-inline">
 			  <li><a href="https://github.com/putnami" target="_blank">@PutnamiTeam</a></li>
-			  <li>current version @releaseVersion@</li>
+			  <li>current version <strong>1.1.1</strong></li>
 			  <li><a href="https://github.com/putnami/putnami-pwt" target="_blank"><i class="icon icon-github-squared" />GitHub</a></li>
 			  <li><a href="https://github.com/putnami/putnami-pwt/issues" target="_blank"><i class="icon icon-extinguisher" />Issues</a></li>
 			  <li><a href="https://groups.google.com/forum/#!forum/putnami-web-toolkit" target="_blank"><i class="icon icon-coffee" />Google Group</a></li>
