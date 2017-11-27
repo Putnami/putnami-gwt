@@ -12,6 +12,20 @@
  * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
  * see <http://www.gnu.org/licenses/>.
  */
+/**
+ * This file is part of pwt.
+ * <p>
+ * pwt is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * <p>
+ * pwt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
+ * see <http://www.gnu.org/licenses/>.
+ */
 package fr.putnami.pwt.core.model.rebind;
 
 import com.google.common.collect.Lists;
@@ -32,6 +46,7 @@ import com.google.gwt.user.rebind.SourceWriter;
 
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -59,16 +74,28 @@ public class ModelCreator {
 
 	private static final Set<String> DISCARD_MODEL_TYPES = Sets.newHashSet(
 		// Primitives
-		Boolean.class.getName(), Byte.class.getName(), Character.class.getName(), Double.class.getName(), Float.class
-			.getName(), Integer.class.getName(), Long.class.getName(), Short.class.getName(),
+		Boolean.class.getName(),
+		Byte.class.getName(),
+		Character.class.getName(),
+		Double.class.getName(),
+		Float.class.getName(),
+		Integer.class.getName(),
+		Long.class.getName(),
+		Short.class.getName(),
 		// BigDecimal
 		BigDecimal.class.getName(),
 		// Others
-		Object.class.getName(), String.class.getName(), Date.class.getName(),
+		Object.class.getName(),
+		String.class.getName(),
+		Date.class.getName(),
+		Timestamp.class.getName(),
 		// Collections
-		List.class.getName(), Set.class.getName(), Map.class.getName());
+		List.class.getName(),
+		Set.class.getName(),
+		Map.class.getName());
 
-	private static final Set<String> COLLECTION_TYPES = Sets.newHashSet(List.class.getName(), Collection.class.getName());
+	private static final Set<String> COLLECTION_TYPES = Sets
+		.newHashSet(List.class.getName(), Collection.class.getName());
 
 	private JClassType beanType;
 	private String proxyModelQualifiedName;
@@ -330,7 +357,8 @@ public class ModelCreator {
 	}
 
 	private void generateInternalGet(TreeLogger logger, SourceWriter srcWriter) {
-		srcWriter.println("protected <P> P internalGet(%s bean, String fieldName){", this.beanType.getSimpleSourceName());
+		srcWriter
+			.println("protected <P> P internalGet(%s bean, String fieldName){", this.beanType.getSimpleSourceName());
 		srcWriter.indent();
 		for (String propertyName : this.propertyTypes.keySet()) {
 			JType propertyType = this.propertyTypes.get(propertyName);
@@ -343,16 +371,19 @@ public class ModelCreator {
 					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) PrimitiveUtils.castTo%s(bean.%s()); }",
 						propertyName, boxedName, getter.getName());
 				} else {
-					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) bean.%s(); }", propertyName, getter.getName());
+					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) bean.%s(); }", propertyName,
+						getter.getName());
 				}
 			} else if (this.publicFields.containsKey(propertyName)) {
 				if (primitiveType != null) {
 					String boxedName = primitiveType.getQualifiedBoxedSourceName();
 					boxedName = boxedName.substring(boxedName.lastIndexOf(".") + 1, boxedName.length());
-					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) PrimitiveUtils.castTo%s(bean.%s); }", propertyName,
+					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) PrimitiveUtils.castTo%s(bean.%s); }",
+						propertyName,
 						boxedName, propertyName);
 				} else {
-					srcWriter.println("if(\"%s\".equals(fieldName)){  return (P) bean.%s; }", propertyName, propertyName);
+					srcWriter
+						.println("if(\"%s\".equals(fieldName)){  return (P) bean.%s; }", propertyName, propertyName);
 				}
 			}
 		}
@@ -372,20 +403,24 @@ public class ModelCreator {
 			JMethod setter = this.setters.get(propertyName);
 			if (setter != null) {
 				if (primitiveType != null) {
-					srcWriter.println("if(\"%s\".equals(fieldName)){  bean.%s((%s) PrimitiveUtils.asPrimitive((%s)value)); }",
+					srcWriter.println(
+						"if(\"%s\".equals(fieldName)){  bean.%s((%s) PrimitiveUtils.asPrimitive((%s)value)); }",
 						propertyName, setter.getName(), propertyType.getSimpleSourceName(),
 						primitiveType.getQualifiedBoxedSourceName());
 				} else {
-					srcWriter.println("if(\"%s\".equals(fieldName)){  bean.%s((%s) value); }", propertyName, setter.getName(),
+					srcWriter.println("if(\"%s\".equals(fieldName)){  bean.%s((%s) value); }", propertyName,
+						setter.getName(),
 						propertyType.getSimpleSourceName());
 				}
 			} else if (this.publicFields.containsKey(propertyName)) {
 				if (primitiveType != null) {
-					srcWriter.println("if(\"%s\".equals(fieldName)){ bean.%s = PrimitiveUtils.asPrimitive((%s) value); }",
-						propertyName, propertyName, primitiveType.getQualifiedBoxedSourceName());
+					srcWriter
+						.println("if(\"%s\".equals(fieldName)){ bean.%s = PrimitiveUtils.asPrimitive((%s) value); }",
+							propertyName, propertyName, primitiveType.getQualifiedBoxedSourceName());
 				} else {
-					srcWriter.println("if(\"%s\".equals(fieldName)){  bean.%s = (%s) value; }", propertyName, propertyName,
-						propertyType.getSimpleSourceName());
+					srcWriter
+						.println("if(\"%s\".equals(fieldName)){  bean.%s = (%s) value; }", propertyName, propertyName,
+							propertyType.getSimpleSourceName());
 				}
 			}
 		}
@@ -395,7 +430,7 @@ public class ModelCreator {
 
 	private void listPublicFields(JField[] fields) {
 		for (JField field : fields) {
-			if (field.isPublic()) {
+			if (field.isPublic() && !field.isFinal()) {
 				this.publicFields.put(field.getName(), field.getType());
 				this.propertyTypes.put(field.getName(), field.getType());
 				this.addImport(field.getType());
@@ -416,8 +451,12 @@ public class ModelCreator {
 
 	private void listGetters(JMethod[] methods) {
 		for (JMethod method : methods) {
-			if (method.getName().startsWith("get") || method.getName().startsWith("is") && method.getParameters().length == 0
-				&& !method.getReturnType().equals(JPrimitiveType.VOID) && method.isPublic()) {
+			if (method.getName().startsWith("get") && method.getName().length() > 3
+				|| method.getName().startsWith("is") && method.getName().length() > 2
+				&& method.getParameters().length == 0
+				&& !method.getReturnType().equals(JPrimitiveType.VOID)
+				&& method.isPublic()) {
+
 				this.getters.put(this.extractPropertyNameFromMethod(method), method);
 				this.propertyTypes.put(this.extractPropertyNameFromMethod(method), method.getReturnType());
 				this.addImport(method.getReturnType());
@@ -442,6 +481,7 @@ public class ModelCreator {
 		} else {
 			propertyName = propertyName.substring(3, propertyName.length());
 		}
+		System.out.println("extractPropertyNameFromMethod " + method + "");
 		String firstChar = propertyName.substring(0, 1);
 		propertyName = propertyName.replaceFirst(firstChar, firstChar.toLowerCase());
 
@@ -453,8 +493,10 @@ public class ModelCreator {
 			this.proxyModelQualifiedName.indexOf('.') == -1 ? "" : this.proxyModelQualifiedName.substring(0,
 				this.proxyModelQualifiedName.lastIndexOf('.'));
 		String className =
-			this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName : this.proxyModelQualifiedName
-				.substring(this.proxyModelQualifiedName.lastIndexOf('.') + 1, this.proxyModelQualifiedName.length());
+			this.proxyModelQualifiedName.indexOf('.') == -1 ? this.proxyModelQualifiedName
+				: this.proxyModelQualifiedName
+					.substring(this.proxyModelQualifiedName.lastIndexOf('.') + 1,
+						this.proxyModelQualifiedName.length());
 
 		ClassSourceFileComposerFactory composerFactory = new ClassSourceFileComposerFactory(packageName, className);
 
@@ -495,5 +537,4 @@ public class ModelCreator {
 
 		return ctx.tryCreate(logger, packageName, className);
 	}
-
 }
