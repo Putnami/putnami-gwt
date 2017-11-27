@@ -1,12 +1,12 @@
 ext {
 	releaseVersion = '1.1.1'
 	snapshotVersion = '1.2.0-SNAPSHOT'
-	gwtVersion = '2.7.0'
-	guavaVersion = '17.0'
+	gwtVersion = '2.8.2'
+	guavaVersion = '23.5-jre'
 	junitVersion = '4.11'
 	log4jVersion = '1.6.1'
 	slf4jVersion = '1.2.14'
-	
+
 	licenceFile = rootProject.file('settings/LICENSE_LGPL_HEADER')
 	checkStyleConfig = rootProject.file('settings/checkstyle/pwt-checkstyle.xml')
 	findbugsConfig = rootProject.file('settings/findbugs/excludeFilter.xml')
@@ -19,7 +19,7 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.2.0'
+		classpath 'fr.putnami.gwt:putnami-gradle-plugin:0.5.0-SNAPSHOT'
 		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.7.0'
 	}
 }
@@ -35,11 +35,11 @@ allprojects {
 subprojects {
 	apply plugin: 'maven'
 	apply plugin: 'eclipse'
-	apply plugin: 'license'	
+	apply plugin: 'license'
 	apply plugin: 'fr.putnami.gwt-lib'
 
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 
 
 	eclipse {
@@ -63,13 +63,13 @@ subprojects {
 		log4j "org.slf4j:slf4j-log4j12:$log4jVersion"
 		log4j "log4j:log4j:$slf4jVersion"
 	}
-	
+
 	license {
 		skipExistingHeaders = true
 		header licenceFile;
 		ext.projectName = project.name
 	}
-	
+
 	putnami {
 		gwtVersion =  project.gwtVersion
 	}
@@ -83,7 +83,7 @@ configure(subprojects.findAll {it.name != 'pwt-doc'}) {
 
 	//Include all non java (like *.gwt.xml) files from 'src/main/java' folder in resources
 	sourceSets.main.resources.srcDir 'src/main/java'
-	
+
 	checkstyle{
 		configFile checkStyleConfig
 	}
@@ -128,7 +128,7 @@ configure(subprojects.findAll {it.name != 'pwt-doc'}) {
 				else {
 					repository(url : new File(rootProject.buildDir, 'repoRelease').toURI())
 				}
-        
+
             	pom.project {
 					url 'http://pwt.putnami.org'
 					name project.name
