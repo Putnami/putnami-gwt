@@ -481,7 +481,6 @@ public class ModelCreator {
 		} else {
 			propertyName = propertyName.substring(3, propertyName.length());
 		}
-		System.out.println("extractPropertyNameFromMethod " + method + "");
 		String firstChar = propertyName.substring(0, 1);
 		propertyName = propertyName.replaceFirst(firstChar, firstChar.toLowerCase());
 
