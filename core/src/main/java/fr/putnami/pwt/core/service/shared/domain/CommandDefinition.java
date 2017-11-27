@@ -14,8 +14,8 @@
  */
 package fr.putnami.pwt.core.service.shared.domain;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.Lists;
 
 import java.io.Serializable;
@@ -73,7 +73,7 @@ public class CommandDefinition implements Serializable {
 
 	@Override
 	public String toString() {
-		ToStringHelper helper = Objects.toStringHelper(CommandDefinition.class);
+		MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(CommandDefinition.class);
 		helper.add("service", this.serviceName);
 		helper.add("method", this.methodName);
 		helper.add("return", this.returnType);

@@ -14,6 +14,7 @@
  */
 package fr.putnami.pwt.plugin.code.client.token;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 
 public class SimpleToken<T extends TokenContent> implements Token<T> {
@@ -149,6 +150,9 @@ public class SimpleToken<T extends TokenContent> implements Token<T> {
 
 	@Override
 	public String toString() {
-		return Objects.toStringHelper(this).add("type", this.type).add("text", this.text).toString();
+		return MoreObjects.toStringHelper(this)
+			.add("type", this.type)
+			.add("text", this.text)
+			.toString();
 	}
 }

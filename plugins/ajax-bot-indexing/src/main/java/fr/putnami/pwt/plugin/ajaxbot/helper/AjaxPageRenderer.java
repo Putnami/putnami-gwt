@@ -51,7 +51,7 @@ public class AjaxPageRenderer {
 
 	public String crawlPage(String queryString) throws IOException {
 		anchors.clear();
-		WebClient webClient = new WebClient(BrowserVersion.FIREFOX_17);
+		WebClient webClient = new WebClient(BrowserVersion.FIREFOX_38);
 		new ConnectionFilter(webClient);
 
 		HtmlPage page = webClient.getPage(baseUrl + queryString);

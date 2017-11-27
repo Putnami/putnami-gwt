@@ -12,10 +12,24 @@
  * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
  * see <http://www.gnu.org/licenses/>.
  */
+/**
+ * This file is part of pwt.
+ * <p>
+ * pwt is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
+ * General Public License as published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ * <p>
+ * pwt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
+ * see <http://www.gnu.org/licenses/>.
+ */
 package fr.putnami.pwt.core.editor.client.impl;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
-import com.google.common.base.Objects.ToStringHelper;
 import com.google.common.collect.Maps;
 
 import java.util.Map;
@@ -105,10 +119,9 @@ public class SimpleEditorContext<E extends Editor> implements Context<E> {
 
 	@Override
 	public String toString() {
-		ToStringHelper helper = Objects.toStringHelper(this);
+		MoreObjects.ToStringHelper helper = MoreObjects.toStringHelper(this);
 		helper.add("editor", this.editor.getClass().getSimpleName());
 		helper.add("path", this.path);
 		return helper.toString();
 	}
-
 }
