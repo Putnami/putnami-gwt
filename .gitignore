@@ -51,6 +51,7 @@ gwt-unitCache/
 .settings
 .sonar
 *.iml
+out/
 
 # Cargo Containers #
 ######################
