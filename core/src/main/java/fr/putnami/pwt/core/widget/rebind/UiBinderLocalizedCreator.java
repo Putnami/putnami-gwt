@@ -1,14 +1,14 @@
 /**
  * This file is part of pwt.
- *
+ * <p>
  * pwt is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
  * General Public License as published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
- *
+ * <p>
  * pwt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
  * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
  * General Public License for more details.
- *
+ * <p>
  * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
  * see <http://www.gnu.org/licenses/>.
  */
@@ -28,6 +28,7 @@ import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Map;
 
 import fr.putnami.pwt.core.widget.client.binder.UiBinderLocalized;
@@ -101,7 +102,10 @@ public class UiBinderLocalizedCreator {
 	private Resource getTemplateResource(GeneratorContext context) {
 		String packageResourcePath = this.targetType.getPackage().getName().replace('.', '/') + "/";
 		ResourceOracle resourceOracle = context.getResourcesOracle();
-		Map<String, Resource> reourceMap = resourceOracle.getResourceMap();
+		Map<String, Resource> reourceMap = new HashMap<>();
+		for (Resource resource : resourceOracle.getResources()) {
+			reourceMap.put(resource.getPath(), resource);
+		}
 		String templatePath =
 			packageResourcePath + this.templateName + "_" + this.locale + UiBinderLocalizedCreator.TEMPLATE_SUFFIX;
 		Resource templateResource = reourceMap.get(templatePath);
@@ -128,8 +132,9 @@ public class UiBinderLocalizedCreator {
 		srcWriter.println("}");
 		srcWriter.println();
 		srcWriter.println("@Override");
-		srcWriter.println("public %s createAndBindUi(%s owner) {", this.widgetType.getSimpleSourceName(), this.targetType
-			.getSimpleSourceName());
+		srcWriter
+			.println("public %s createAndBindUi(%s owner) {", this.widgetType.getSimpleSourceName(), this.targetType
+				.getSimpleSourceName());
 		srcWriter.indent();
 		srcWriter.println("return Binder.BINDER.createAndBindUi(owner);");
 		srcWriter.outdent();
@@ -166,5 +171,4 @@ public class UiBinderLocalizedCreator {
 		String className = this.binderProxySimpleName;
 		return ctx.tryCreate(logger, packageName, className);
 	}
-
 }
