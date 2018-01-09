@@ -1,8 +1,8 @@
 ext {
 	releaseVersion = '1.1.1'
-	snapshotVersion = '1.2.0-SNAPSHOT'
+	snapshotVersion = '1.2.1-SNAPSHOT'
 	gwtVersion = '2.8.2'
-	guavaVersion = '23.5-jre'
+	guavaVersion = '18.0'
 	junitVersion = '4.11'
 	log4jVersion = '1.6.1'
 	slf4jVersion = '1.2.14'
