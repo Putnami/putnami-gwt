@@ -12,20 +12,6 @@
  * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
  * see <http://www.gnu.org/licenses/>.
  */
-/**
- * This file is part of pwt.
- * <p>
- * pwt is free software: you can redistribute it and/or modify it under the terms of the GNU Lesser
- * General Public License as published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- * <p>
- * pwt is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
- * General Public License for more details.
- * <p>
- * You should have received a copy of the GNU Lesser General Public License along with pwt. If not,
- * see <http://www.gnu.org/licenses/>.
- */
 package fr.putnami.pwt.core.model.rebind;
 
 import com.google.common.collect.Lists;
@@ -94,8 +80,8 @@ public class ModelCreator {
 		Set.class.getName(),
 		Map.class.getName());
 
-	private static final Set<String> COLLECTION_TYPES = Sets
-		.newHashSet(List.class.getName(), Collection.class.getName());
+	private static final Set<Class> COLLECTION_TYPES = Sets
+		.newHashSet();
 
 	private JClassType beanType;
 	private String proxyModelQualifiedName;
@@ -197,26 +183,36 @@ public class ModelCreator {
 			if (modelName != null) {
 				modelName += ".INSTANCE";
 			}
-			if (ModelCreator.COLLECTION_TYPES.contains(propertyType.getQualifiedSourceName())) {
-				JParameterizedType parametrizedType = propertyType.isParameterized();
-				JType subType = propertyType;
-				if (parametrizedType != null) {
-					subType = parametrizedType.getTypeArgs()[0];
-					String submodelName = this.subModels.get(subType);
-					if (submodelName != null) {
-						submodelName += ".INSTANCE";
-					} else {
-						submodelName = subType.getSimpleSourceName() + ".class";
+
+			try {
+				if (propertyType.isPrimitive() == null) {
+					Class<?> propertyClass = Class.forName(propertyType.getQualifiedSourceName());
+
+					if (Collection.class.isAssignableFrom(propertyClass)) {
+						JParameterizedType parametrizedType = propertyType.isParameterized();
+						JType subType = propertyType;
+						if (parametrizedType != null) {
+							subType = parametrizedType.getTypeArgs()[0];
+							String submodelName = this.subModels.get(subType);
+							if (submodelName != null) {
+								submodelName += ".INSTANCE";
+							} else {
+								submodelName = subType.getSimpleSourceName() + ".class";
+							}
+							modelName =
+								String.format("new ModelCollection<%s>(%s.class, %s)",
+									subType.getSimpleSourceName(), propertyType.getSimpleSourceName(), submodelName);
+						} else {
+							logger.branch(Type.WARN, String.format(
+								"Property [%s] on bean %s is a raw collection type. You cannot use it on editors.",
+								propertyName, this.beanType.getQualifiedSourceName()));
+							modelName = "new ModelCollection((Model) null)";
+						}
 					}
-					modelName =
-						String.format("new ModelCollection<%s>(%s.class, %s)",
-							subType.getSimpleSourceName(), propertyType.getSimpleSourceName(), submodelName);
-				} else {
-					logger.branch(Type.WARN, String.format(
-						"Property [%s] on bean %s is a raw collection type. You cannot use it on editors.",
-						propertyName, this.beanType.getQualifiedSourceName()));
-					modelName = "new ModelCollection((Model) null)";
 				}
+			} catch (ClassNotFoundException e) {
+				logger.branch(Type.WARN, String.format(
+					"%s class not found.", propertyType.getQualifiedSourceName()));
 			}
 			Boolean getter = this.getters.containsKey(propertyName);
 			Boolean setter = this.setters.containsKey(propertyName);
